@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glidox Shop | Free Fire Elmas Satışı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4b2b;
+            --secondary: #ff416c;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --text-dim: #a0a0a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: #ffffff; 
+            font-family: 'Poppins', sans-serif;
+            opacity: 0; 
+            transition: opacity 0.6s ease-in-out; 
+        }
+        
+        body.loaded { opacity: 1; }
+
+        header { 
+            background-color: rgba(22, 22, 22, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 15px 8%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid rgba(255, 75, 43, 0.3); 
+            position: sticky; top: 0; z-index: 1000; 
+        }
+        .logo { 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px; font-weight: bold; color: var(--primary); 
+            text-decoration: none; letter-spacing: 3px; text-transform: uppercase; 
+        }
+
+        /* --- Hero Section --- */
+        .game-hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://a-static.besthdwallpaper.com/mission-landscape-map-garena-free-fire-video-game-wallpaper-2400x1350-73457_50.jpg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid var(--primary);
+        }
+        .game-hero h1 { font-family: 'Orbitron', sans-serif; font-size: 35px; letter-spacing: 3px; }
+        .game-hero span { color: var(--primary); text-shadow: 0 0 15px rgba(255, 75, 43, 0.5); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        
+        .input-group {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .input-group label { display: block; margin-bottom: 15px; font-family: 'Orbitron', sans-serif; color: var(--text-dim); }
+        .input-group input {
+            width: 100%; max-width: 400px;
+            padding: 15px;
+            background: #000;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        
+        .price-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .price-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .price-card.active { border-color: var(--primary); box-shadow: 0 0 20px rgba(255, 75, 43, 0.3); background: rgba(255, 75, 43, 0.05); }
+
+        .item-amount { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: bold; display: block; margin-bottom: 10px; }
+        .price-tag { color: var(--primary); font-weight: 600; font-size: 18px; }
+
+        .buy-now-btn {
+            display: block; width: 100%; max-width: 300px; margin: 50px auto;
+            padding: 18px; background: linear-gradient(45deg, var(--primary), var(--secondary)); color: #fff;
+            text-decoration: none; text-align: center; border-radius: 8px;
+            font-family: 'Orbitron', sans-serif; font-weight: bold;
+            transition: 0.4s; box-shadow: 0 0 20px rgba(255, 75, 43, 0.3);
+        }
+        .buy-now-btn:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(255, 75, 43, 0.5); }
+
+        footer { text-align: center; padding: 40px; color: #555; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Glidox</a>
+        <nav><a href="games.html" style="color: #fff; text-decoration: none; font-family: 'Orbitron'; font-size: 13px;">← GERİ</a></nav>
+    </header>
+
+    <div class="game-hero">
+        <h1>FREE FIRE <span>ELMAS</span></h1>
+        <p style="color: #ccc; margin-top: 10px;">ID vasitəsilə sürətli və təhlükəsiz yükləmə</p>
+    </div>
+
+    <div class="container">
+        <div class="input-group">
+            <label>FREE FIRE OYUNÇU ID-Sİ</label>
+            <input type="number" placeholder="Məs: 123456789" id="ff-id">
+        </div>
+
+        <div class="price-grid">
+            <div class="price-card" onclick="selectCard(this)">
+                <span class="item-amount">110 Elmas</span>
+                <span class="price-tag">2.00 AZN</span>
+            </div>
+            <div class="price-card" onclick="selectCard(this)">
+                <span class="item-amount">341 Elmas</span>
+                <span class="price-tag">6.00 AZN</span>
+            </div>
+            <div class="price-card" onclick="selectCard(this)">
+                <span class="item-amount">572 Elmas</span>
+                <span class="price-tag">9.20 AZN</span>
+            </div>
+            <div class="price-card" onclick="selectCard(this)">
+                <span class="item-amount">1166 Elmas</span>
+                <span class="price-tag">17.50 AZN</span>
+            </div>
+            <div class="price-card" onclick="selectCard(this)">
+                <span class="item-amount">2398 Elmas</span>
+                <span class="price-tag">32.50 AZN</span>
+            </div>
+            <div class="price-card" onclick="selectCard(this)">
+                <span class="item-amount">6160 Elmas</span>
+                <span class="price-tag">81.00 AZN</span>
+            </div>
+        </div>
+
+        <a href="#" class="buy-now-btn" onclick="order()">SİFARİŞİ TAMAMLA</a>
+    </div>
+
+    <footer>&copy; 2026 GLIDOX SHOP - Bütün hüquqlar qorunur</footer>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => document.body.classList.add("loaded"));
+
+        function selectCard(element) {
+            document.querySelectorAll('.price-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function order() {
+            const userId = document.getElementById('ff-id').value;
+            const selectedCard = document.querySelector('.price-card.active');
+            
+            if(!userId) {
+                alert("Zəhmət olmasa Player ID daxil edin!");
+                return;
+            }
+            if(!selectedCard) {
+                alert("Zəhmət olmasa bir paket seçin!");
+                return;
+            }
+            
+            const amount = selectedCard.querySelector('.item-amount').innerText;
+            const price = selectedCard.querySelector('.price-tag').innerText;
+            
+            alert(`Sifariş qeydə alındı!\nID: ${userId}\nPaket: ${amount}\nQiymət: ${price}\n\nGlidox Shop-u seçdiyiniz üçün təşəkkürlər!`);
+        }
+    </script>
+</body>
+</html>
