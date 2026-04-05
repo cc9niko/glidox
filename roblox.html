@@ -40,7 +40,6 @@
             text-decoration: none; letter-spacing: 3px; text-transform: uppercase; 
         }
 
-        /* --- Hero Section --- */
         .game-hero {
             text-align: center;
             padding: 60px 20px;
@@ -50,31 +49,8 @@
         .game-hero h1 { font-family: 'Orbitron', sans-serif; font-size: 35px; letter-spacing: 3px; }
         .game-hero span { color: var(--roblox-silver); text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
-        /* --- Form & ID Input --- */
         .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        
-        .input-group {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        .input-group label { display: block; margin-bottom: 15px; font-family: 'Orbitron', sans-serif; color: var(--text-dim); }
-        .input-group input {
-            width: 100%; max-width: 400px;
-            padding: 15px;
-            background: #000;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 18px;
-            font-family: 'Orbitron', sans-serif;
-        }
 
-        /* --- Price Grid --- */
         .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         
         .price-card {
@@ -85,7 +61,6 @@
             text-align: center;
             transition: 0.3s;
             cursor: pointer;
-            position: relative;
         }
         .price-card:hover { border-color: var(--primary); transform: translateY(-5px); }
         .price-card.active { border-color: var(--primary); box-shadow: 0 0 20px rgba(255, 70, 85, 0.2); }
@@ -99,8 +74,52 @@
             text-decoration: none; text-align: center; border-radius: 8px;
             font-family: 'Orbitron', sans-serif; font-weight: bold;
             transition: 0.4s; box-shadow: 0 0 20px rgba(255, 70, 85, 0.3);
+            border: none; cursor: pointer;
         }
         .buy-now-btn:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(255, 70, 85, 0.5); }
+
+        /* MODAL STRUKTURU */
+        .modal {
+            display: none; 
+            position: fixed; z-index: 9999; 
+            left: 0; top: 0; width: 100%; height: 100%; 
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background-color: #161616;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid var(--primary);
+            position: relative;
+            animation: modalPop 0.4s ease-out;
+        }
+        @keyframes modalPop { from {opacity: 0; transform: translateY(-20px);} to {opacity: 1; transform: translateY(0);} }
+        
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #555; }
+        .close-modal:hover { color: #fff; }
+
+        .modal-h2 { font-family: 'Orbitron'; color: var(--primary); margin-bottom: 20px; font-size: 20px; }
+        .rules-box { text-align: left; margin: 25px 0; background: #000; padding: 20px; border-radius: 10px; border-left: 4px solid var(--primary); }
+        .rules-box p { margin-bottom: 12px; font-size: 14px; color: #ccc; }
+        
+        .support-btn {
+            display: block;
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            font-family: 'Orbitron';
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .support-btn:hover { filter: brightness(1.2); letter-spacing: 1px; }
 
         footer { text-align: center; padding: 40px; color: #555; font-size: 13px; }
     </style>
@@ -114,47 +133,58 @@
 
     <div class="game-hero">
         <h1>ROBLOX <span>ROBUX</span></h1>
-        <p style="color: #888; margin-top: 10px;">Sürətli və təhlükəsiz Robux yükləməsi</p>
+        <p style="color: #888; margin-top: 10px;">İstədiyiniz paketi seçin və təlimatı izləyin</p>
     </div>
 
     <div class="container">
-        <div class="input-group">
-            <label>ROBLOX İSTİFADƏÇİ ADI (NICKNAME)</label>
-            <input type="text" placeholder="Məs: Player123" id="roblox-user">
-        </div>
-
         <div class="price-grid">
-            <div class="price-card" onclick="selectCard(this)">
+            <div class="price-card" onclick="selectCard(this, '300 Robux')">
                 <span class="robux-amount">300 Robux</span>
                 <span class="price-tag">7.00 AZN</span>
             </div>
-            <div class="price-card" onclick="selectCard(this)">
+            <div class="price-card" onclick="selectCard(this, '400 Robux')">
                 <span class="robux-amount">400 Robux</span>
                 <span class="price-tag">9.00 AZN</span>
             </div>
-            <div class="price-card" onclick="selectCard(this)">
+            <div class="price-card" onclick="selectCard(this, '500 Robux')">
                 <span class="robux-amount">500 Robux</span>
                 <span class="price-tag">10.00 AZN</span>
             </div>
-            <div class="price-card" onclick="selectCard(this)">
+            <div class="price-card" onclick="selectCard(this, '600 Robux')">
                 <span class="robux-amount">600 Robux</span>
                 <span class="price-tag">12.00 AZN</span>
             </div>
-            <div class="price-card" onclick="selectCard(this)">
+            <div class="price-card" onclick="selectCard(this, '800 Robux')">
                 <span class="robux-amount">800 Robux</span>
                 <span class="price-tag">16.00 AZN</span>
             </div>
-            <div class="price-card" onclick="selectCard(this)">
+            <div class="price-card" onclick="selectCard(this, '2000 Robux')">
                 <span class="robux-amount">2000 Robux</span>
                 <span class="price-tag">43.00 AZN</span>
             </div>
-            <div class="price-card" onclick="selectCard(this)">
+            <div class="price-card" onclick="selectCard(this, '4500 Robux')">
                 <span class="robux-amount">4500 Robux</span>
                 <span class="price-tag">87.50 AZN</span>
             </div>
         </div>
 
-        <a href="#" class="buy-now-btn" onclick="order()">SİFARİŞİ TAMAMLA</a>
+        <button class="buy-now-btn" onclick="openModal()">SİFARİŞİ TAMAMLA</button>
+    </div>
+
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 class="modal-h2">ROBUX SİFARİŞ QAYDASI</h2>
+            
+            <div class="rules-box">
+                <p>📦 <b>Seçilən:</b> <span id="modal-pkg" style="color: #fff; font-weight: bold;">Seçilməyib</span></p>
+                <p>💬 Dəstək xidmətinə nə qədər Robux alacağınızı bildirin.</p>
+                <p>👤 Roblox istifadəçi adınızı (Nickname) qeyd edin.</p>
+                <p>🧾 Ödəniş etdikdən sonra çekin şəklini göndərin.</p>
+            </div>
+
+            <a href="destek.html" class="support-btn">Dəstək xidmətinə keç</a>
+        </div>
     </div>
 
     <footer>&copy; 2026 GLIDOX SHOP - Bütün hüquqlar qorunur</footer>
@@ -162,28 +192,31 @@
     <script>
         window.addEventListener("DOMContentLoaded", () => document.body.classList.add("loaded"));
 
-        function selectCard(element) {
+        let selectedPackage = "";
+
+        function selectCard(element, name) {
             document.querySelectorAll('.price-card').forEach(card => card.classList.remove('active'));
             element.classList.add('active');
+            selectedPackage = name;
         }
 
-        function order() {
-            const user = document.getElementById('roblox-user').value;
-            const selectedCard = document.querySelector('.price-card.active');
-            
-            if(!user) {
-                alert("Zəhmət olmasa istifadəçi adınızı daxil edin!");
+        function openModal() {
+            if(!selectedPackage) {
+                alert("Zəhmət olmasa bir paket seçin!");
                 return;
             }
-            if(!selectedCard) {
-                alert("Zəhmət olmasa paket seçin!");
-                return;
+            document.getElementById('modal-pkg').innerText = selectedPackage;
+            document.getElementById('rulesModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('rulesModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('rulesModal')) {
+                closeModal();
             }
-            
-            const amount = selectedCard.querySelector('.robux-amount').innerText;
-            const price = selectedCard.querySelector('.price-tag').innerText;
-            
-            alert(`Sifarişiniz qəbul edildi!\nİstifadəçi: ${user}\nPaket: ${amount}\nQiymət: ${price}\n\nYaxın zamanda sizinlə əlaqə saxlanılacaq.`);
         }
     </script>
 </body>
