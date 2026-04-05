@@ -6,125 +6,150 @@
     <title>Glidox Shop | Canlı Dəstək</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff4655; --bg-dark: #0a0a0a; --card-bg: #161616; --text-dim: #a0a0a0; }
+        :root { --primary: #ff4655; --bg-dark: #0a0a0a; --card-bg: #161616; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-dark); color: #fff; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
 
         /* Giriş Ekranı */
-        #login-screen { background: var(--card-bg); padding: 40px; border-radius: 15px; text-align: center; border: 1px solid #222; width: 90%; max-width: 400px; }
-        .input-field { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; text-align: center; }
-        .start-btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; }
+        #login-screen { background: var(--card-bg); padding: 40px; border-radius: 15px; text-align: center; border: 1px solid #222; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        #login-screen h2 { font-family: 'Orbitron'; margin-bottom: 25px; color: var(--primary); }
+        .input-field { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; text-align: center; outline: none; }
+        .start-btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .start-btn:hover { opacity: 0.8; transform: translateY(-2px); }
 
         /* Chat Ekranı */
         #chat-screen { display: none; width: 100%; height: 100vh; flex-direction: column; background: var(--bg-dark); }
         .chat-header { padding: 20px 8%; background: #111; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
         .chat-header h3 { font-family: 'Orbitron'; font-size: 16px; color: var(--primary); }
-        .messages-area { flex-grow: 1; padding: 30px 8%; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .messages-area { flex-grow: 1; padding: 30px 8%; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-image: radial-gradient(#1a1a1a 1px, transparent 1px); background-size: 30px 30px; }
         
-        .msg { padding: 12px 18px; border-radius: 12px; font-size: 14px; max-width: 75%; line-height: 1.5; position: relative; }
+        .msg { padding: 12px 18px; border-radius: 12px; font-size: 14px; max-width: 75%; line-height: 1.5; word-wrap: break-word; }
+        .msg img { max-width: 100%; border-radius: 8px; margin-top: 8px; display: block; border: 1px solid #333; }
         .msg.admin { background: #222; align-self: flex-start; border-bottom-left-radius: 2px; color: #00d9ff; border: 1px solid #333; }
         .msg.me { background: var(--primary); align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        .input-area { padding: 25px 8%; background: #111; border-top: 1px solid #222; display: flex; gap: 15px; }
-        #userInput { flex-grow: 1; background: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 8px; color: #fff; outline: none; }
-        .send-btn { background: var(--primary); border: none; padding: 0 30px; border-radius: 8px; color: #fff; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
+        /* Input Area */
+        .input-area { padding: 20px 8%; background: #111; border-top: 1px solid #222; display: flex; gap: 12px; align-items: center; }
+        #userInput { flex-grow: 1; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 8px; color: #fff; outline: none; }
+        
+        .file-label { background: #333; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 20px; transition: 0.3s; }
+        .file-label:hover { background: #444; }
+        #fileInput { display: none; }
+        
+        .send-btn { background: var(--primary); border: none; padding: 12px 25px; border-radius: 8px; color: #fff; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h2>DƏSTƏK <span>XİDMƏTİ</span></h2>
+        <h2>GLIDOX <span>DƏSTƏK</span></h2>
         <input type="text" id="userNameInput" class="input-field" placeholder="Adınız (Məs: Polad)">
-        <button class="start-btn" onclick="startChat()">ÇATA BAŞLA</button>
+        <button class="start-btn" onclick="startChat()">QOŞUL</button>
     </div>
 
     <div id="chat-screen">
         <div class="chat-header">
-            <h3 id="display-name">İstifadəçi</h3>
-            <a href="index.html" style="color:#fff; text-decoration:none; font-size:12px; font-family:'Orbitron'">SAYTA QAYIT</a>
+            <h3 id="display-name">@İstifadəçi</h3>
+            <a href="index.html" style="color:#fff; text-decoration:none; font-size:12px; font-family:'Orbitron'; border:1px solid #333; padding:5px 10px; border-radius:5px;">ÇIXIŞ</a>
         </div>
         <div class="messages-area" id="msgBox">
-            <div class="msg admin">Sistem: Salam! Adminlə əlaqə üçün mesaj yazın.</div>
+            <div class="msg admin">Sistem: Salam! Adminlə əlaqə üçün mesaj yazın və ya şəkil göndərin.</div>
         </div>
         <div class="input-area">
-            <input type="text" id="userInput" placeholder="Mesajınızı yazın..." onkeypress="if(event.key==='Enter') send()">
-            <button class="send-btn" onclick="send()">GÖNDƏR</button>
+            <label class="file-label" title="Şəkil göndər">
+                📷 <input type="file" id="fileInput" accept="image/*" onchange="sendImage()">
+            </label>
+            <input type="text" id="userInput" placeholder="Mesajınızı yazın..." onkeypress="if(event.key==='Enter') sendText()">
+            <button class="send-btn" onclick="sendText()">GÖNDƏR</button>
         </div>
     </div>
 
     <script>
-        // --- AYARLAR ---
-        const botToken = "8660633070:AAGRi8IM5z56NVW-SeuDapOsjxxPuJ0WdnM"; 
+        const botToken = "8660633070:AAGRi8IM5z56NVW-SeuDapOsjxxPuJ0WdnM";
         const chatId = "5994876779";
-        
         let clientName = "";
         let lastUpdateId = 0;
 
         function startChat() {
-            const nameInput = document.getElementById('userNameInput');
-            if (nameInput.value.trim() === "") return alert("Adınızı daxil edin!");
-            
-            clientName = nameInput.value.trim();
+            const name = document.getElementById('userNameInput').value.trim();
+            if (!name) return alert("Zəhmət olmasa adınızı daxil edin!");
+            clientName = name;
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('chat-screen').style.display = 'flex';
             document.getElementById('display-name').innerText = "@" + clientName;
-
-            // Admin cavablarını yoxlamağa başla
-            setInterval(checkAdminMessages, 3000); 
+            
+            // Hər 3 saniyədən bir yeni mesajları yoxla
+            setInterval(checkUpdates, 3000);
         }
 
-        function send() {
+        function addMessage(content, type) {
+            const box = document.getElementById('msgBox');
+            const div = document.createElement('div');
+            div.className = "msg " + type;
+            div.innerHTML = content;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // Mətn Mesajı Göndər
+        function sendText() {
             const input = document.getElementById('userInput');
-            const box = document.getElementById('msgBox');
-            if(input.value.trim() === "") return;
-
-            // Müştəri mesajını ekranda göstər
-            const div = document.createElement('div');
-            div.className = "msg me";
-            div.innerText = input.value;
-            box.appendChild(div);
-
-            // Telegrama göndər
-            const text = `👤 @${clientName} yazır:\n💬 ${input.value}`;
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`);
-
+            const val = input.value.trim();
+            if(!val) return;
+            
+            addMessage(val, "me");
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent("👤 @" + clientName + ": " + val)}`);
             input.value = "";
-            box.scrollTop = box.scrollHeight;
         }
 
-        async function checkAdminMessages() {
+        // Şəkil Göndər
+        function sendImage() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("chat_id", chatId);
+            formData.append("photo", file);
+            formData.append("caption", "🖼️ Şəkil gəldi: @" + clientName);
+
+            addMessage(`<img src="${URL.createObjectURL(file)}">`, "me");
+            fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, { method: "POST", body: formData });
+            fileInput.value = "";
+        }
+
+        // Telegramdan gələn cavabları tut
+        async function checkUpdates() {
             try {
-                const response = await fetch(`https://api.telegram.org/bot${botToken}/getUpdates?offset=${lastUpdateId + 1}`);
-                const data = await response.json();
-
-                if (data.result && data.result.length > 0) {
-                    data.result.forEach(update => {
+                const res = await fetch(`https://api.telegram.org/bot${botToken}/getUpdates?offset=${lastUpdateId + 1}`);
+                const data = await res.json();
+                if (data.result) {
+                    for (const update of data.result) {
                         lastUpdateId = update.update_id;
-                        
-                        if (update.message && update.message.text) {
-                            const msgText = update.message.text;
-                            const targetTag = "@" + clientName;
+                        const msg = update.message;
+                        if (!msg) continue;
 
-                            // Əgər admin "@Polad salam" yazıbsa
-                            if (msgText.startsWith(targetTag)) {
-                                const cleanMsg = msgText.replace(targetTag, "").trim();
-                                displayAdminMsg(cleanMsg);
-                            }
+                        const tag = "@" + clientName;
+
+                        // Admin Şəkil göndərəndə
+                        if (msg.photo && msg.caption && msg.caption.includes(tag)) {
+                            const fileId = msg.photo[msg.photo.length - 1].file_id;
+                            const fileRes = await fetch(`https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`);
+                            const fileData = await fileRes.json();
+                            const imgPath = fileData.result.file_path;
+                            const finalUrl = `https://api.telegram.org/file/bot${botToken}/${imgPath}`;
+                            
+                            const textPart = msg.caption.replace(tag, "").trim();
+                            addMessage(`<img src="${finalUrl}">${textPart}`, "admin");
+                        } 
+                        // Admin Mətn yazanda
+                        else if (msg.text && msg.text.startsWith(tag)) {
+                            const cleanMsg = msg.text.replace(tag, "").trim();
+                            addMessage(cleanMsg, "admin");
                         }
-                    });
+                    }
                 }
-            } catch (error) {
-                console.error("Xəta baş verdi:", error);
-            }
-        }
-
-        function displayAdminMsg(text) {
-            const box = document.getElementById('msgBox');
-            const div = document.createElement('div');
-            div.className = "msg admin";
-            div.innerText = "Admin: " + text;
-            box.appendChild(div);
-            box.scrollTop = box.scrollHeight;
+            } catch (e) { console.error("Xəta:", e); }
         }
     </script>
 </body>
