@@ -7,7 +7,17 @@
     <style>
         /* Ümumi Stil */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: #0f0f0f; color: #ffffff; scroll-behavior: smooth; }
+        
+        /* Smooth keçid üçün başlanğıc vəziyyəti */
+        body { 
+            background-color: #0f0f0f; 
+            color: #ffffff; 
+            scroll-behavior: smooth; 
+            opacity: 0; 
+            transition: opacity 0.6s ease-in-out; 
+        }
+        
+        body.loaded { opacity: 1; }
 
         /* Naviqasiya Paneli */
         header { 
@@ -63,7 +73,7 @@
         .buy-btn { 
             background-color: #ff4655; color: #fff; padding: 12px; 
             text-decoration: none; font-weight: bold; border-radius: 8px; 
-            transition: 0.3s; border: 2px solid #ff4655;
+            transition: 0.3s; border: 2px solid #ff4655; cursor: pointer;
         }
         .buy-btn:hover { background-color: transparent; color: #ff4655; }
 
@@ -105,17 +115,14 @@
                         <h3>UC Satışı</h3>
                         <p>ID ilə anında yükləmə. Ən sərfəli qiymətlər.</p>
                     </div>
-                    <a href="pubg.html" class="buy-btn">UC Al</a>
+                    <a href="pubg.html" class="buy-btn transition-link">UC Al</a>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-img ff-bg">Free Fire</div>
                 <div class="card-content">
-                    <div>
-                        <h3>Elmas Satışı</h3>
-                        <p>Sürətli və təhlükəsiz FF Elmas yükləməsi.</p>
-                    </div>
+                    <div><h3>Elmas Satışı</h3><p>Sürətli və təhlükəsiz FF Elmas yükləməsi.</p></div>
                     <a href="#" class="buy-btn" style="opacity: 0.6; pointer-events: none;">Tezliklə</a>
                 </div>
             </div>
@@ -123,10 +130,7 @@
             <div class="card">
                 <div class="card-img roblox-bg">Roblox</div>
                 <div class="card-content">
-                    <div>
-                        <h3>Robux Satışı</h3>
-                        <p>Hesabınıza sürətli Robux köçürülməsi.</p>
-                    </div>
+                    <div><h3>Robux Satışı</h3><p>Hesabınıza sürətli Robux köçürülməsi.</p></div>
                     <a href="#" class="buy-btn" style="opacity: 0.6; pointer-events: none;">Tezliklə</a>
                 </div>
             </div>
@@ -134,10 +138,7 @@
             <div class="card">
                 <div class="card-img val-bg">Valorant</div>
                 <div class="card-content">
-                    <div>
-                        <h3>VP Satışı</h3>
-                        <p>Valorant Points (VP) kodları anında təslim.</p>
-                    </div>
+                    <div><h3>VP Satışı</h3><p>Valorant Points (VP) kodları anında təslim.</p></div>
                     <a href="#" class="buy-btn" style="opacity: 0.6; pointer-events: none;">Tezliklə</a>
                 </div>
             </div>
@@ -148,6 +149,27 @@
     <footer>
         <p>&copy; 2026 Glidox Shop - Bütün hüquqlar qorunur.</p>
     </footer>
+
+    <script>
+        // Səhifə tam yüklənəndə görünür olması üçün
+        window.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.add("loaded");
+        });
+
+        // Smooth keçid məntiqi
+        document.querySelectorAll('.transition-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Anidən keçidi dayandır
+                const targetUrl = this.getAttribute('href');
+                
+                document.body.style.opacity = '0'; // Səhifəni qaralt
+                
+                setTimeout(() => {
+                    window.location.href = targetUrl; // 0.6 saniyə sonra keçid et
+                }, 600);
+            });
+        });
+    </script>
 
 </body>
 </html>
