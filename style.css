@@ -1,0 +1,241 @@
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary: #ff4655;       /* Valorant Red */
+    --secondary: #f2a900;     /* PUBG Gold */
+    --bg-dark: #0a0a0a;
+    --card-bg: #161616;
+    --text-main: #ffffff;
+    --text-dim: #a0a0a0;
+    --glow: rgba(255, 70, 85, 0.3);
+}
+
+/* --- Təməl Tənzimləmələr --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* --- Header & Nav --- */
+header {
+    background: rgba(22, 22, 22, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 70, 85, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+    text-decoration: none;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--glow);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+nav ul li a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--primary);
+    text-shadow: 0 0 8px var(--glow);
+}
+
+/* --- Hero Section --- */
+.hero {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+    position: relative;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.hero h1 span {
+    color: var(--primary);
+    background: linear-gradient(to right, #ff4655, #ff8a93);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    color: var(--text-dim);
+    font-size: 18px;
+    max-width: 600px;
+}
+
+/* --- Grid & Cards --- */
+.container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 70, 85, 0.05));
+    pointer-events: none;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--primary);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 70, 85, 0.1);
+}
+
+.card-img {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    background: #222;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-content {
+    padding: 25px;
+    text-align: center;
+}
+
+/* --- Buttons --- */
+.buy-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.buy-btn:hover {
+    background: #fff;
+    color: var(--primary);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* --- PUBG Specific Styles --- */
+.id-input-box {
+    background: var(--card-bg);
+    border: 1px solid var(--secondary);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 0 20px rgba(242, 169, 0, 0.05);
+}
+
+.id-input-box input {
+    background: #000;
+    border: 1px solid #333;
+    color: var(--secondary);
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.uc-amount {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    color: var(--secondary);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    header { padding: 15px 5%; flex-direction: column; gap: 15px; }
+    .hero h1 { font-size: 2.5rem; }
+}
+
+/* --- Footer --- */
+footer {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
