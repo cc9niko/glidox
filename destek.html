@@ -19,6 +19,7 @@
             color: #fff; 
             font-family: 'Poppins', sans-serif; 
             display: flex; justify-content: center; align-items: center; height: 100vh;
+            overflow: hidden;
         }
 
         /* --- Giriş Ekranı --- */
@@ -28,99 +29,180 @@
             border-radius: 15px;
             text-align: center;
             border: 1px solid #222;
-            width: 350px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        #login-screen h2 { font-family: 'Orbitron'; margin-bottom: 25px; font-size: 20px; }
-        .user-select-btn {
-            display: block; width: 100%; padding: 15px; margin-bottom: 10px;
-            background: #222; border: 1px solid #333; color: white;
-            border-radius: 8px; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s;
+        #login-screen h2 { font-family: 'Orbitron'; margin-bottom: 25px; font-size: 22px; color: var(--primary); }
+        
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 8px;
+            outline: none;
+            font-family: 'Poppins';
+            text-align: center;
+            transition: 0.3s;
         }
-        .user-select-btn:hover { border-color: var(--primary); background: #2a2a2a; }
+        .input-field:focus { border-color: var(--primary); }
+
+        .start-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron';
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+        .start-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 70, 85, 0.4); }
 
         /* --- Chat Ekranı (Gizli) --- */
         #chat-screen {
             display: none;
-            width: 100%; max-width: 500px; height: 80vh;
-            background: var(--card-bg); border-radius: 15px;
-            flex-direction: column; border: 1px solid #222;
+            width: 100%; height: 100vh;
+            background: var(--bg-dark);
+            flex-direction: column;
         }
 
         .chat-header {
-            padding: 20px; background: #111; border-bottom: 1px solid #222;
+            padding: 20px 8%;
+            background: #111;
+            border-bottom: 1px solid #222;
             display: flex; justify-content: space-between; align-items: center;
-            border-radius: 15px 15px 0 0;
         }
-        .chat-header h3 { font-family: 'Orbitron'; font-size: 14px; }
+        .chat-header h3 { font-family: 'Orbitron'; font-size: 16px; color: var(--primary); }
+        .back-link { color: #fff; text-decoration: none; font-size: 12px; font-family: 'Orbitron'; border: 1px solid #333; padding: 5px 15px; border-radius: 5px; }
 
         .messages-area {
-            flex-grow: 1; padding: 20px; overflow-y: auto;
-            display: flex; flex-direction: column; gap: 10px;
+            flex-grow: 1;
+            padding: 30px 8%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+            background-size: 30px 30px;
         }
-        .msg { padding: 10px 15px; border-radius: 10px; font-size: 14px; max-width: 80%; }
-        .msg.admin { background: #333; align-self: flex-start; }
-        .msg.me { background: var(--primary); align-self: flex-end; }
+        .msg { padding: 12px 18px; border-radius: 12px; font-size: 14px; max-width: 75%; line-height: 1.5; }
+        .msg.admin { background: #222; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg.me { background: var(--primary); align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        .input-area { padding: 20px; display: flex; gap: 10px; background: #111; border-radius: 0 0 15px 15px; }
-        input { flex-grow: 1; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 5px; color: #fff; outline: none; }
-        .send-btn { background: var(--primary); border: none; padding: 0 20px; border-radius: 5px; color: #fff; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
+        .input-area {
+            padding: 25px 8%;
+            background: #111;
+            border-top: 1px solid #222;
+            display: flex;
+            gap: 15px;
+        }
+        #userInput {
+            flex-grow: 1;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+        }
+        .send-btn {
+            background: var(--primary);
+            border: none;
+            padding: 0 30px;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .send-btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h2>Kimsən?</h2>
-        <button class="user-select-btn" onclick="startChat('Niko')">Mən Niko-yam</button>
-        <button class="user-select-btn" onclick="startChat('Eli')">Mən Əli-yəm</button>
-        <p style="font-size: 12px; color: var(--text-dim); margin-top: 20px;">Səhifəyə daxil olmaq üçün adını seç.</p>
+        <h2>DƏSTƏK <span>XİDMƏTİ</span></h2>
+        <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 20px;">Zəhmət olmasa adınızı daxil edin</p>
+        <input type="text" id="userNameInput" class="input-field" placeholder="Adınız və Soyadınız" onkeypress="handleLoginKey(event)">
+        <button class="start-btn" onclick="startChat()">ÇATA BAŞLA</button>
     </div>
 
     <div id="chat-screen">
         <div class="chat-header">
-            <h3 id="user-title">Xoş gəldin</h3>
-            <a href="index.html" style="color: var(--primary); text-decoration: none; font-size: 12px;">ÇIXIŞ</a>
+            <h3 id="display-name">Müştəri: Daxil olunur...</h3>
+            <a href="index.html" class="back-link">SAYTA QAYIT</a>
         </div>
         <div class="messages-area" id="msgBox">
-            <div class="msg admin">Salam! Adminlə əlaqə üçün mesaj yazın.</div>
+            <div class="msg admin">Salam! Glidox Shop dəstək xidmətinə xoş gəlmisiniz. Sizin üçün nə edə bilərik?</div>
         </div>
         <div class="input-area">
-            <input type="text" id="userInput" placeholder="Mesajınızı yazın...">
+            <input type="text" id="userInput" placeholder="Mesajınızı bura yazın..." onkeypress="handleChatKey(event)">
             <button class="send-btn" onclick="send()">GÖNDƏR</button>
         </div>
     </div>
 
     <script>
-        let currentUser = "";
+        let clientName = "";
 
-        function startChat(name) {
-            currentUser = name;
+        // Giriş funksiyası
+        function startChat() {
+            const nameInput = document.getElementById('userNameInput');
+            if (nameInput.value.trim() === "") {
+                alert("Zəhmət olmasa adınızı daxil edin!");
+                return;
+            }
+            clientName = nameInput.value.trim();
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('chat-screen').style.display = 'flex';
-            document.getElementById('user-title').innerText = "Müştəri: " + name;
+            document.getElementById('display-name').innerText = "İstifadəçi: " + clientName;
         }
 
+        // Mesaj göndərmə funksiyası
         function send() {
             const input = document.getElementById('userInput');
             const box = document.getElementById('msgBox');
 
             if(input.value.trim() !== "") {
-                // Səhifədə mesajı göstər
+                // Səhifədə göstər
                 const div = document.createElement('div');
                 div.className = "msg me";
                 div.innerText = input.value;
                 box.appendChild(div);
 
-                // TELEGRAMA GÖNDƏRMƏ MƏNTİQİ
-                const botToken = "BOT_TOKENINI_BURA_YAZ";
-                const chatId = "SENIN_CHAT_ID_BURA_YAZ";
-                const text = `🔔 YENİ MESAJ\n👤 Kimdən: ${currentUser}\n💬 Mesaj: ${input.value}`;
+                // --- TELEGRAMA GÖNDƏRMƏ (Backend hissəsi) ---
+                // Buranı öz məlumatlarınla doldurmalısan
+                const botToken = "8660633070:AAGRi8IM5z56NVW-SeuDapOsjxxPuJ0WdnM"; 
+                const chatId = "5994876779";
+                const text = `🚀 YENİ MESAJ\n👤 Ad: ${clientName}\n💬 Mesaj: ${input.value}`;
 
-                fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`);
+                fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`)
+                .catch(err => console.log("Telegrama göndərilmədi (Token yoxdur)"));
 
                 input.value = "";
                 box.scrollTop = box.scrollHeight;
+
+                // Süni cavab (Opsional)
+                setTimeout(() => {
+                    const reply = document.createElement('div');
+                    reply.className = "msg admin";
+                    reply.innerText = "Mesajınız alındı. Operatorumuz qısa zamanda cavab verəcək.";
+                    box.appendChild(reply);
+                    box.scrollTop = box.scrollHeight;
+                }, 1500);
             }
         }
+
+        // Enter düyməsi ilə idarəetmə
+        function handleLoginKey(e) { if (e.key === 'Enter') startChat(); }
+        function handleChatKey(e) { if (e.key === 'Enter') send(); }
     </script>
 </body>
 </html>
