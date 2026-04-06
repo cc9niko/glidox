@@ -40,7 +40,8 @@
         }
 
         nav ul { list-style: none; display: flex; gap: 25px; }
-        nav ul li a { color: #fff; text-decoration: none; font-size: 12px; font-family: 'Orbitron'; }
+        nav ul li a { color: #fff; text-decoration: none; font-size: 12px; font-family: 'Orbitron'; transition: 0.3s; }
+        nav ul li a:hover { color: var(--primary); }
 
         .container {
             max-width: 1200px;
@@ -79,7 +80,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: 0.5s;
         }
+
+        .game-card:hover .game-img { transform: scale(1.05); }
 
         .game-info {
             padding: 20px;
@@ -93,7 +97,8 @@
         .game-info h3 {
             font-family: 'Orbitron', sans-serif;
             font-size: 16px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
         }
 
         .badge {
@@ -108,7 +113,7 @@
             align-self: center;
         }
 
-        footer { text-align: center; padding: 40px; color: #444; font-size: 12px; }
+        footer { text-align: center; padding: 40px; color: #444; font-size: 12px; border-top: 1px solid #111; margin-top: 40px; }
     </style>
 </head>
 <body class="loaded">
@@ -176,6 +181,16 @@
                 </div>
             </a>
 
+            <a href="deltaforce.html" class="game-card">
+                <div class="img-container">
+                    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2507950/192e49c1f0a1a2e1ec524fbbeb041af29de0a4e8/capsule_616x353.jpg?t=1772768205" class="game-img">
+                </div>
+                <div class="game-info">
+                    <h3>DELTA FORCE</h3>
+                    <span class="badge">Coin Paketləri</span>
+                </div>
+            </a>
+
             <a href="weplay.html" class="game-card">
                 <div class="img-container">
                     <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2023/08/91/64dba95d8fc8b_com.wejoy.weplay.png" class="game-img" style="object-fit: contain; background: #FFF13D; padding: 15px;">
@@ -201,5 +216,10 @@
 
     <footer>&copy; 2026 GLIDOX SHOP - Bütün hüquqlar qorunur</footer>
 
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.add("loaded");
+        });
+    </script>
 </body>
 </html>
