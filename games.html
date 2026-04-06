@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glidox Shop | Oyunlar və Xidmətlər</title>
+    <title>Glidox Shop | Oyunlar və Xidmətlər - Chromium</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff4655;
             --bg-dark: #0a0a0a;
-            --card-bg: #161616;
-            --transition: 0.4s ease;
+            --card-bg: #111111;
+            --transition: 0.3s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,40 +20,34 @@
             color: #ffffff;
             font-family: 'Poppins', sans-serif;
             opacity: 0;
-            transition: opacity 0.6s ease-in-out;
+            transition: opacity 0.5s ease;
+            font-size: 13px;
         }
 
         body.loaded { opacity: 1; }
 
         header {
-            background-color: rgba(22, 22, 22, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 8%;
+            background-color: #0d0d0d;
+            padding: 10px 10%;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255, 70, 85, 0.2);
+            border-bottom: 1px solid #222;
             position: sticky; top: 0; z-index: 1000;
         }
 
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 24px; font-weight: bold; color: var(--primary);
-            text-decoration: none; letter-spacing: 3px; text-transform: uppercase;
+            font-size: 22px; font-weight: bold; color: var(--primary);
+            text-decoration: none; letter-spacing: 2px; text-transform: uppercase;
         }
+
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul li a { color: #fff; text-decoration: none; font-family: 'Poppins'; text-transform: uppercase; font-size: 11px; }
 
         .container {
-            max-width: 1200px;
-            margin: 50px auto;
+            max-width: 1100px;
+            margin: 40px auto;
             padding: 0 20px;
         }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            margin-bottom: 50px;
-            font-size: 28px;
-            letter-spacing: 2px;
-        }
-        .section-title span { color: var(--primary); }
 
         .games-grid {
             display: grid;
@@ -63,103 +57,90 @@
 
         .game-card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             border: 1px solid #222;
-            transition: var(--transition);
             text-decoration: none;
             color: white;
-            display: block;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
-        .game-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(255, 70, 85, 0.2);
-        }
+        .game-card:hover { transform: translateY(-3px); border-color: var(--primary); }
 
+        /* Şəkillərin ölçüsünü sabitləmək üçün konteyner */
         .img-container {
             width: 100%;
             height: 200px;
             overflow: hidden;
-            background: #111; /* Şəkil yüklənənə qədər qara fon */
+            background-color: #000; /* Şəkil yüklənmədikdə qara fon */
         }
 
         .game-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
+            object-fit: cover; /* Şəkli qutunun içinə yerləşdirir */
+            transition: var(--transition);
         }
 
-        .game-card:hover .game-img {
-            transform: scale(1.1);
-        }
+        .game-card:hover .game-img { transform: scale(1.05); }
 
         .game-info {
-            padding: 20px;
+            padding: 15px;
             text-align: center;
+            flex-grow: 1; /* Mətni aşağıya doğru genişləndirir */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .game-info h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-bottom: 5px;
             text-transform: uppercase;
         }
 
         .game-info p {
-            font-size: 13px;
-            color: #aaa;
-            margin-bottom: 15px;
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 10px;
         }
 
         .badge {
             display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 10px;
             font-weight: bold;
-            background: rgba(255, 70, 85, 0.1);
             color: var(--primary);
             border: 1px solid var(--primary);
+            align-self: center;
         }
 
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #555;
-            font-size: 13px;
-            margin-top: 50px;
-        }
+        footer { text-align: center; padding: 30px; color: #444; font-size: 11px; border-top: 1px solid #222; margin-top: 40px; }
 
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-family: 'Orbitron';
-            font-size: 13px;
-            margin-left: 20px;
-        }
     </style>
 </head>
-<body>
+<body class="loaded">
 
     <header>
-        <a href="index.html" class="logo">Glidox</a>
+        <a href="index.html" class="logo">GLIDOX</a>
         <nav>
-            <a href="index.html">ANA SƏHİFƏ</a>
-            <a href="destek.html">DƏSTƏK</a>
+            <ul>
+                <li><a href="index.html">ANA SƏHİFƏ</a></li>
+                <li><a href="destek.html">DƏSTƏK</a></li>
+            </ul>
         </nav>
     </header>
 
     <div class="container">
-        <h2 class="section-title">MAĞAZA <span>MENU</span></h2>
-
         <div class="games-grid">
             
             <a href="pubg.html" class="game-card">
                 <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop" alt="PUBG" class="game-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU2HFapnOWqtN4uzRUHXkdVWir06EQ6DJ64QCPg_oqXarptw3k6xsSdcoHCDoUow3B0mWXovDleFYB1zJwsvcVVYqivokdYKBHf7Hoj_k&s=10" alt="PUBG" class="game-img">
                 </div>
                 <div class="game-info">
                     <h3>PUBG MOBILE</h3>
@@ -168,31 +149,20 @@
                 </div>
             </a>
 
-            <a href="valorantTR.html" class="game-card">
+            <a href="freefire.html" class="game-card">
                 <div class="img-container">
-                    <img src="https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/blt3f00417770f8a09f/639798d197607711200155a5/VALORANT_ANNOUNCEMENT_STILL.jpg" alt="Valorant TR" class="game-img">
+                    <img src="https://a-static.besthdwallpaper.com/mission-landscape-map-garena-free-fire-video-game-wallpaper-2400x1350-73457_50.jpg" alt="Free Fire" class="game-img">
                 </div>
                 <div class="game-info">
-                    <h3>VALORANT TR</h3>
-                    <p>Türkiyə regionu üçün VP</p>
-                    <span class="badge">Ən Ucuz Qiymət</span>
-                </div>
-            </a>
-
-            <a href="valorantEU.html" class="game-card">
-                <div class="img-container">
-                    <img src="https://wallpapercave.com/wp/wp6134375.jpg" alt="Valorant EU" class="game-img">
-                </div>
-                <div class="game-info">
-                    <h3>VALORANT EU</h3>
-                    <p>Avropa regionu üçün VP</p>
-                    <span class="badge">Riot ID ilə</span>
+                    <h3>FREE FIRE</h3>
+                    <p>Almaz (Diamond) yükləmələri</p>
+                    <span class="badge">Sürətli</span>
                 </div>
             </a>
 
             <a href="roblox.html" class="game-card">
                 <div class="img-container">
-                    <img src="https://images.rbxcdn.com/f047719602e9a2636a0f7c234a946522.jpg" alt="Roblox" class="game-img">
+                    <img src="https://images.tynker.com/blog/wp-content/uploads/20250401220809/robloxxjpg-1.jpg" alt="Roblox" class="game-img">
                 </div>
                 <div class="game-info">
                     <h3>ROBLOX</h3>
@@ -201,25 +171,14 @@
                 </div>
             </a>
 
-            <a href="weplay.html" class="game-card">
+            <a href="valorant.html" class="game-card">
                 <div class="img-container">
-                    <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2023/08/91/64dba95d8fc8b_com.wejoy.weplay.png" alt="WePlay" class="game-img">
+                    <img src="https://www.riotgames.com/darkroom/1440/8d5c497da1c2eeec8cffa99b01abc64b:5329ca773963a5b739e98e715957ab39/ps-f2p-val-console-launch-16x9.jpg" alt="Valorant" class="game-img">
                 </div>
                 <div class="game-info">
-                    <h3>WEPLAY</h3>
-                    <p>VIP Abunəlik və Jetonlar</p>
-                    <span class="badge">Anında Aktiv</span>
-                </div>
-            </a>
-
-            <a href="discord.html" class="game-card">
-                <div class="img-container">
-                    <img src="https://gamemakerstoolkit.com/wp-content/uploads/2024/01/perk-discord.jpg" alt="Discord" class="game-img">
-                </div>
-                <div class="game-info">
-                    <h3>DISCORD NITRO</h3>
-                    <p>Nitro və Basic abunəlikləri</p>
-                    <span class="badge">Hədiyyə / Giriş</span>
+                    <h3>VALORANT</h3>
+                    <p>VP yükləmələri və paketlər</p>
+                    <span class="badge">Riot ID ilə</span>
                 </div>
             </a>
 
@@ -228,10 +187,5 @@
 
     <footer>&copy; 2026 GLIDOX SHOP - Bütün hüquqlar qorunur</footer>
 
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            document.body.classList.add("loaded");
-        });
-    </script>
 </body>
 </html>
