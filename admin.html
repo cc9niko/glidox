@@ -87,7 +87,7 @@
             <div id="product-editor" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:15px;">
                 <p style="color:#555">Zəhmət olmasa yuxarıdan bir oyun seçin...</p>
             </div>
-            <button class="btn-save" style="margin-top:20px; background:var(--blue); color:white; width: 250px;" onclick="addCategory()">+ Yeni Oyun Əlavə Et</button>
+            <button class="btn-save" style="margin-top:20px; background:var(--blue); color:white; width: 250px;" onclick="addNewCategoryManual()">+ Yeni Oyun Əlavə Et</button>
         </section>
 
         <section id="promo" class="section">
@@ -131,7 +131,7 @@
         import { getDatabase, ref, onValue, set, push, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSy...",
+            apiKey: "AIzaSy...", // Buranı öz apiKey-inlə dəyişməyi unutma
             databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "glidoxshop",
         };
@@ -139,7 +139,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // BÜTÜN OYUNLARIN SİYAHISI (12 ƏDƏD)
         const cats = [
             "roblox", "pubg", "steambalans", "mlbb", 
             "valorantTR", "valorantEU", "applebalans", 
@@ -163,15 +162,12 @@
 
         window.loadPrices = (game, btn) => {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
             const editor = document.getElementById('product-editor');
             
             onValue(ref(db, 'prices/' + game), (snap) => {
                 editor.innerHTML = "";
                 const data = snap.val() || {};
-                if(Object.keys(data).length === 0) {
-                    editor.innerHTML = `<p style="color:orange">Bu oyun üçün hələ qiymət yoxdur. "+" düyməsi ilə əlavə edin.</p>`;
-                }
                 Object.keys(data).forEach(key => {
                     editor.innerHTML += `
                         <div class="stat-card" style="border-left:2px solid #333">
@@ -204,6 +200,21 @@
             }
         };
 
+        // DUYURU SİSTEMİ (SƏHV BURADA İDİ - ƏLAVƏ OLUNDU)
+        window.saveAnn = () => {
+            const txt = document.getElementById('ann-text').value;
+            const stat = document.getElementById('ann-status').value;
+            
+            set(ref(db, 'announcement'), {
+                text: txt,
+                status: stat
+            }).then(() => {
+                alert("📢 Duyuru uğurla yeniləndi!");
+            }).catch((error) => {
+                alert("Xəta: " + error.message);
+            });
+        };
+
         window.addToBlacklist = () => {
             const val = document.getElementById('bl-input').value;
             if(val) push(ref(db, 'blacklist'), { data: val, date: new Date().toLocaleString() });
@@ -229,7 +240,7 @@
         });
 
         initCats();
-        loadPrices('roblox', document.querySelector('.cat-btn'));
+        loadPrices('roblox', null);
     </script>
 </body>
 </html>
