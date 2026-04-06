@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glidox Shop | Mobile Legends Almaz Satışı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #a164ff; /* MLBB Bənövşəyi */
+            --accent: #ffd700; /* Qızılı */
+            --bg-dark: #0a0a0b;
+            --card-bg: #16161d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: #ffffff; 
+            font-family: 'Poppins', sans-serif;
+            opacity: 0; 
+            transition: opacity 0.6s ease; 
+        }
+        
+        body.loaded { opacity: 1; }
+
+        header { 
+            background-color: rgba(13, 13, 18, 0.95); 
+            padding: 15px 8%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid var(--primary); 
+            position: sticky; top: 0; z-index: 1000; 
+        }
+        .logo { 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px; font-weight: bold; color: var(--primary); 
+            text-decoration: none; letter-spacing: 2px;
+        }
+
+        .game-hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://gwent.ign.com/styles/xlarge/public/2021-08/Mobile-Legends-Bang-Bang.jpg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent);
+            margin: 30px 0 15px;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 15px; 
+        }
+        
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #2a2a3a;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .card.active { border-color: var(--accent); background: rgba(161, 100, 255, 0.1); }
+
+        .diamonds { font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; color: var(--primary); }
+        .price { font-size: 18px; font-weight: 600; color: #fff; }
+
+        .buy-btn {
+            display: block; width: 100%; max-width: 300px; margin: 50px auto;
+            padding: 18px; background: var(--primary); color: #fff;
+            text-decoration: none; text-align: center; border-radius: 5px;
+            font-family: 'Orbitron', sans-serif; font-weight: bold;
+            border: none; cursor: pointer; transition: 0.3s;
+        }
+        .buy-btn:hover { background: #8a4dff; box-shadow: 0 0 15px var(--primary); }
+
+        /* MODAL */
+        .modal {
+            display: none; position: fixed; z-index: 9999; 
+            left: 0; top: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); align-items: center; justify-content: center;
+        }
+        .m-content {
+            background: #1a1a24; padding: 35px; border-radius: 12px;
+            max-width: 400px; width: 90%; text-align: center; border: 1px solid var(--primary);
+        }
+        
+        footer { text-align: center; padding: 40px; color: #444; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">GLIDOX</a>
+        <a href="games.html" style="color: #fff; text-decoration: none; font-size: 12px;">← GERİ</a>
+    </header>
+
+    <div class="game-hero">
+        <h1 style="font-family: 'Orbitron';">MOBILE LEGENDS</h1>
+        <p style="color: var(--accent);">Həftəlik Abunəlik və Almazlar</p>
+    </div>
+
+    <div class="container">
+        
+        <h3 class="section-title">Xüsusi Paketlər</h3>
+        <div class="grid">
+            <div class="card" onclick="select(this, 'Həftəlik Abunəlik')">
+                <span class="diamonds">WEEKLY PASS</span>
+                <span class="price">4.00 AZN</span>
+            </div>
+            <div class="card" onclick="select(this, 'Twilight Pass')">
+                <span class="diamonds">TWILIGHT PASS</span>
+                <span class="price">21.50 AZN</span>
+            </div>
+        </div>
+
+        <h3 class="section-title">Almaz Paketləri</h3>
+        <div class="grid">
+            <div class="card" onclick="select(this, '5 Elmas')"><span class="diamonds">5 💎</span><span class="price">0.30 AZN</span></div>
+            <div class="card" onclick="select(this, '12 Elmas')"><span class="diamonds">12 💎</span><span class="price">0.60 AZN</span></div>
+            <div class="card" onclick="select(this, '19 Elmas')"><span class="diamonds">19 💎</span><span class="price">0.80 AZN</span></div>
+            <div class="card" onclick="select(this, '28 Elmas')"><span class="diamonds">28 💎</span><span class="price">1.10 AZN</span></div>
+            <div class="card" onclick="select(this, '44 Elmas')"><span class="diamonds">44 💎</span><span class="price">2.00 AZN</span></div>
+            <div class="card" onclick="select(this, '59 Elmas')"><span class="diamonds">59 💎</span><span class="price">2.30 AZN</span></div>
+            <div class="card" onclick="select(this, '85 Elmas')"><span class="diamonds">85 💎</span><span class="price">3.20 AZN</span></div>
+            <div class="card" onclick="select(this, '170 Elmas')"><span class="diamonds">170 💎</span><span class="price">6.00 AZN</span></div>
+            <div class="card" onclick="select(this, '240 Elmas')"><span class="diamonds">240 💎</span><span class="price">8.00 AZN</span></div>
+            <div class="card" onclick="select(this, '296 Elmas')"><span class="diamonds">296 💎</span><span class="price">10.00 AZN</span></div>
+            <div class="card" onclick="select(this, '408 Elmas')"><span class="diamonds">408 💎</span><span class="price">13.50 AZN</span></div>
+            <div class="card" onclick="select(this, '568 Elmas')"><span class="diamonds">568 💎</span><span class="price">18.00 AZN</span></div>
+            <div class="card" onclick="select(this, '875 Elmas')"><span class="diamonds">875 💎</span><span class="price">27.50 AZN</span></div>
+            <div class="card" onclick="select(this, '2010 Elmas')"><span class="diamonds">2010 💎</span><span class="price">59.50 AZN</span></div>
+        </div>
+
+        <button class="buy-btn" onclick="openM()">SİFARİŞ VER</button>
+    </div>
+
+    <div id="mlModal" class="modal">
+        <div class="m-content">
+            <h2 style="font-family: 'Orbitron'; color: var(--primary);">SİFARİŞ</h2>
+            <p style="margin: 20px 0;">Seçilən: <b id="sel">Yoxdur</b></p>
+            <p style="font-size: 13px; color: #888; margin-bottom: 25px;">Yükləmə üçün MLBB ID və Server ID tələb olunur.</p>
+            <a href="destek.html" class="buy-btn" style="display:inline-block; width:100%;">ÖDƏNİŞƏ KEÇ</a>
+            <p onclick="closeM()" style="margin-top: 15px; cursor: pointer; color: #555;">Bağla</p>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 GLIDOX SHOP</footer>
+
+    <script>
+        window.onload = () => document.body.classList.add('loaded');
+        let selected = "";
+        function select(el, val) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            selected = val;
+        }
+        function openM() {
+            if(!selected) return alert("Paket seçin!");
+            document.getElementById('sel').innerText = selected;
+            document.getElementById('mlModal').style.display = 'flex';
+        }
+        function closeM() { document.getElementById('mlModal').style.display = 'none'; }
+    </script>
+</body>
+</html>
