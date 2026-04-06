@@ -50,7 +50,7 @@
 
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
 
@@ -62,13 +62,15 @@
             text-decoration: none;
             color: white;
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
-        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 5px 20px rgba(255, 70, 85, 0.2); }
 
         .img-container {
             width: 100%;
-            height: 200px;
+            height: 180px;
             overflow: hidden;
             background: #000;
         }
@@ -82,23 +84,28 @@
         .game-info {
             padding: 20px;
             text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .game-info h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 10px;
         }
 
         .badge {
             display: inline-block;
-            padding: 5px 15px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: var(--primary);
             border: 1px solid var(--primary);
             background: rgba(255, 70, 85, 0.05);
+            align-self: center;
         }
 
         footer { text-align: center; padding: 40px; color: #444; font-size: 12px; }
@@ -125,7 +132,27 @@
                 </div>
                 <div class="game-info">
                     <h3>PUBG MOBILE</h3>
-                    <span class="badge">Sürətli Çatdırılma</span>
+                    <span class="badge">UC Paketləri</span>
+                </div>
+            </a>
+
+            <a href="valorantTR.html" class="game-card">
+                <div class="img-container">
+                    <img src="https://www.riotgames.com/darkroom/1440/8d5c497da1c2eeec8cffa99b01abc64b:5329ca773963a5b739e98e715957ab39/ps-f2p-val-console-launch-16x9.jpg" class="game-img">
+                </div>
+                <div class="game-info">
+                    <h3>VALORANT TR</h3>
+                    <span class="badge">Türkiyə Regionu</span>
+                </div>
+            </a>
+
+            <a href="valorantEU.html" class="game-card">
+                <div class="img-container">
+                    <img src="https://www.riotgames.com/darkroom/1440/8d5c497da1c2eeec8cffa99b01abc64b:5329ca773963a5b739e98e715957ab39/ps-f2p-val-console-launch-16x9.jpg" class="game-img" style="filter: hue-rotate(45deg);">
+                </div>
+                <div class="game-info">
+                    <h3>VALORANT EU</h3>
+                    <span class="badge">Avropa Regionu</span>
                 </div>
             </a>
 
@@ -149,19 +176,9 @@
                 </div>
             </a>
 
-            <a href="valorant.html" class="game-card">
-                <div class="img-container">
-                    <img src="https://www.riotgames.com/darkroom/1440/8d5c497da1c2eeec8cffa99b01abc64b:5329ca773963a5b739e98e715957ab39/ps-f2p-val-console-launch-16x9.jpg" class="game-img">
-                </div>
-                <div class="game-info">
-                    <h3>VALORANT</h3>
-                    <span class="badge">VP Paketləri</span>
-                </div>
-            </a>
-
             <a href="weplay.html" class="game-card">
                 <div class="img-container">
-                    <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2023/08/91/64dba95d8fc8b_com.wejoy.weplay.png" class="game-img" style="object-fit: contain; background: #FFF13D; padding: 10px;">
+                    <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2023/08/91/64dba95d8fc8b_com.wejoy.weplay.png" class="game-img" style="object-fit: contain; background: #FFF13D; padding: 15px;">
                 </div>
                 <div class="game-info">
                     <h3>WEPLAY</h3>
