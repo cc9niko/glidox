@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glidox Shop | Discord Nitro Satışı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5865F2; /* Discord Bənövşəyisi */
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --text-dim: #a0a0a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: #ffffff; 
+            font-family: 'Poppins', sans-serif;
+            opacity: 0; 
+            transition: opacity 0.6s ease-in-out; 
+        }
+        
+        body.loaded { opacity: 1; }
+
+        header { 
+            background-color: rgba(22, 22, 22, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 15px 8%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid rgba(88, 101, 242, 0.3); 
+            position: sticky; top: 0; z-index: 1000; 
+        }
+        .logo { 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px; font-weight: bold; color: var(--primary); 
+            text-decoration: none; letter-spacing: 3px; text-transform: uppercase; 
+        }
+
+        /* --- Hero Section --- */
+        .game-hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://gamemakerstoolkit.com/wp-content/uploads/2024/01/perk-discord.jpg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid var(--primary);
+        }
+        .game-hero h1 { font-family: 'Orbitron', sans-serif; font-size: 35px; letter-spacing: 3px; }
+        .game-hero span { color: var(--primary); text-shadow: 0 0 15px rgba(88, 101, 242, 0.5); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        
+        .price-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .price-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .price-card.active { border-color: var(--primary); box-shadow: 0 0 20px rgba(88, 101, 242, 0.3); background: rgba(88, 101, 242, 0.05); }
+
+        .item-amount { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: bold; display: block; margin-bottom: 10px; }
+        .price-tag { color: var(--primary); font-weight: 600; font-size: 22px; }
+
+        .buy-now-btn {
+            display: block; width: 100%; max-width: 300px; margin: 50px auto;
+            padding: 18px; background: var(--primary); color: #fff;
+            text-decoration: none; text-align: center; border-radius: 8px;
+            font-family: 'Orbitron', sans-serif; font-weight: bold;
+            transition: 0.4s; box-shadow: 0 0 20px rgba(88, 101, 242, 0.3);
+            border: 1px solid var(--primary); cursor: pointer;
+        }
+        .buy-now-btn:hover { background: transparent; color: var(--primary); transform: scale(1.05); }
+
+        /* MODAL STILI */
+        .modal {
+            display: none; 
+            position: fixed; z-index: 9999; 
+            left: 0; top: 0; width: 100%; height: 100%; 
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background-color: #161616;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid var(--primary);
+            position: relative;
+            animation: modalFade 0.4s ease-out;
+        }
+        @keyframes modalFade { from {opacity: 0; transform: scale(0.95);} to {opacity: 1; transform: scale(1);} }
+        
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #555; }
+        .close-modal:hover { color: #fff; }
+
+        .modal-h2 { font-family: 'Orbitron'; color: var(--primary); margin-bottom: 20px; }
+        .rules-list { text-align: left; margin: 25px 0; background: #000; padding: 20px; border-radius: 8px; border-left: 3px solid var(--primary); }
+        .rules-list p { margin-bottom: 12px; font-size: 14px; color: #ddd; line-height: 1.6; }
+
+        .support-btn {
+            display: block;
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            font-family: 'Orbitron';
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .support-btn:hover { filter: brightness(1.2); letter-spacing: 1px; }
+
+        footer { text-align: center; padding: 40px; color: #555; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Glidox</a>
+        <nav><a href="games.html" style="color: #fff; text-decoration: none; font-family: 'Orbitron'; font-size: 13px;">← GERİ</a></nav>
+    </header>
+
+    <div class="game-hero">
+        <h1>DISCORD <span>NITRO</span></h1>
+        <p style="color: #ccc; margin-top: 10px;">Nitro və Basic paketlərini sərfəli qiymətə əldə et</p>
+    </div>
+
+    <div class="container">
+        <div class="price-grid">
+            <div class="price-card" onclick="selectCard(this, 'Nitro Basic (1 Aylıq)')">
+                <span class="item-amount">Nitro Basic (1 Aylıq)</span>
+                <span class="price-tag">6.00 AZN</span>
+            </div>
+            <div class="price-card" onclick="selectCard(this, 'Nitro (1 Aylıq)')">
+                <span class="item-amount">Nitro (1 Aylıq)</span>
+                <span class="price-tag">18.00 AZN</span>
+            </div>
+
+            <div class="price-card" onclick="selectCard(this, 'Nitro Basic (1 İllik)')">
+                <span class="item-amount">Nitro Basic (1 İllik)</span>
+                <span class="price-tag">50.00 AZN</span>
+            </div>
+            <div class="price-card" onclick="selectCard(this, 'Nitro (1 İllik)')">
+                <span class="item-amount">Nitro (1 İllik)</span>
+                <span class="price-tag">169.00 AZN</span>
+            </div>
+        </div>
+
+        <button class="buy-now-btn" onclick="openModal()">SİFARİŞİ TAMAMLA</button>
+    </div>
+
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 class="modal-h2">NITRO SİFARİŞİ</h2>
+            
+            <div class="rules-list">
+                <p>🛒 <b>Seçilən:</b> <span id="modal-pkg" style="color: var(--primary); font-weight: bold;">Seçilməyib</span></p>
+                <p>💬 Dəstək xidmətinə seçdiyiniz Nitro növünü bildirin.</p>
+                <p>📧 Discord hesabınızın giriş məlumatlarını və ya hədiyyə linki tələbinizi qeyd edin.</p>
+                <p>🧾 Ödəniş etdikdən sonra qəbzin şəklini göndərin.</p>
+            </div>
+
+            <a href="destek.html" class="support-btn">Dəstək xidmətinə keç</a>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 GLIDOX SHOP - Bütün hüquqlar qorunur</footer>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => document.body.classList.add("loaded"));
+
+        let selectedNitro = "";
+
+        function selectCard(element, name) {
+            document.querySelectorAll('.price-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+            selectedNitro = name;
+        }
+
+        function openModal() {
+            if(!selectedNitro) {
+                alert("Zəhmət olmasa bir paket seçin!");
+                return;
+            }
+            document.getElementById('modal-pkg').innerText = selectedNitro;
+            document.getElementById('rulesModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('rulesModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('rulesModal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
