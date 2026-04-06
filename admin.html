@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glidox | Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #ff4655; --bg: #0a0a0a; --card: #161616; }
+        body { background: var(--bg); color: white; font-family: 'Poppins', sans-serif; padding: 40px 20px; }
+        .admin-container { max-width: 600px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 15px; border: 1px solid #222; }
+        h1 { font-family: 'Orbitron'; color: var(--primary); text-align: center; margin-bottom: 30px; font-size: 22px; }
+        
+        .price-row { 
+            display: flex; align-items: center; justify-content: space-between; 
+            margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; 
+        }
+        label { font-size: 14px; font-weight: 600; }
+        
+        .input-group { display: flex; gap: 10px; }
+        input { 
+            background: #000; border: 1px solid #333; color: white; 
+            padding: 8px 12px; border-radius: 5px; width: 80px; text-align: center; 
+        }
+        input:focus { border-color: var(--primary); outline: none; }
+
+        button { 
+            background: var(--primary); color: white; border: none; 
+            padding: 8px 15px; border-radius: 5px; cursor: pointer; 
+            font-family: 'Orbitron'; font-size: 10px; transition: 0.3s;
+        }
+        button:hover { opacity: 0.8; transform: scale(1.05); }
+        
+        .status-msg { text-align: center; font-size: 12px; margin-top: 20px; color: #44ff44; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-container">
+        <h1>GLIDOX ADMİN PANEL</h1>
+        
+        <div id="price-list">
+            <div class="price-row">
+                <label>300 Robux (AZN)</label>
+                <div class="input-group">
+                    <input type="text" id="inp-rbx_300" placeholder="0.00">
+                    <button onclick="updatePrice('rbx_300')">Yadda Saxla</button>
+                </div>
+            </div>
+
+            <div class="price-row">
+                <label>800 Robux (AZN)</label>
+                <div class="input-group">
+                    <input type="text" id="inp-rbx_800" placeholder="0.00">
+                    <button onclick="updatePrice('rbx_800')">Yadda Saxla</button>
+                </div>
+            </div>
+
+            <div class="price-row">
+                <label>2000 Robux (AZN)</label>
+                <div class="input-group">
+                    <input type="text" id="inp-rbx_2000" placeholder="0.00">
+                    <button onclick="updatePrice('rbx_2000')">Yadda Saxla</button>
+                </div>
+            </div>
+            
+            </div>
+
+        <p id="status" class="status-msg">Qiymət uğurla yeniləndi! ✅</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8",
+            authDomain: "glidoxshop.firebaseapp.com",
+            projectId: "glidoxshop",
+            databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
+            storageBucket: "glidoxshop.firebasestorage.app",
+            messagingSenderId: "123258254071",
+            appId: "1:123258254071:web:ae147159986886134a59f2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Qiyməti Yeniləmə Funksiyası
+        window.updatePrice = function(itemKey) {
+            const newValue = document.getElementById('inp-' + itemKey).value;
+            
+            if(newValue === "") {
+                alert("Zəhmət olmasa qiymət daxil edin!");
+                return;
+            }
+
+            set(ref(db, 'prices/roblox/' + itemKey), newValue)
+            .then(() => {
+                const status = document.getElementById('status');
+                status.style.display = 'block';
+                setTimeout(() => { status.style.display = 'none'; }, 2000);
+            })
+            .catch((error) => {
+                alert("Xəta baş verdi: " + error.message);
+            });
+        };
+
+        // Mövcud qiymətləri xanalara avtomatik doldurmaq (isteğe bağlı)
+        const keys = ['rbx_300', 'rbx_800', 'rbx_2000'];
+        keys.forEach(key => {
+            get(ref(db, 'prices/roblox/' + key)).then((snapshot) => {
+                if(snapshot.exists()) {
+                    document.getElementById('inp-' + key).value = snapshot.val();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
