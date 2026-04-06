@@ -87,7 +87,6 @@
         }
         .buy-btn:hover { background: #8a4dff; box-shadow: 0 0 15px var(--primary); }
 
-        /* MODAL */
         .modal {
             display: none; position: fixed; z-index: 9999; 
             left: 0; top: 0; width: 100%; height: 100%; 
@@ -114,35 +113,34 @@
     </div>
 
     <div class="container">
-        
         <h3 class="section-title">Xüsusi Paketlər</h3>
         <div class="grid">
-            <div class="card" onclick="select(this, 'Həftəlik Abunəlik')">
+            <div class="card" onclick="select(this, 'Weekly Pass')">
                 <span class="diamonds">WEEKLY PASS</span>
-                <span class="price">4.00 AZN</span>
+                <span class="price" id="price-weekly">... AZN</span>
             </div>
             <div class="card" onclick="select(this, 'Twilight Pass')">
                 <span class="diamonds">TWILIGHT PASS</span>
-                <span class="price">21.50 AZN</span>
+                <span class="price" id="price-twilight">... AZN</span>
             </div>
         </div>
 
         <h3 class="section-title">Almaz Paketləri</h3>
         <div class="grid">
-            <div class="card" onclick="select(this, '5 Elmas')"><span class="diamonds">5 💎</span><span class="price">0.30 AZN</span></div>
-            <div class="card" onclick="select(this, '12 Elmas')"><span class="diamonds">12 💎</span><span class="price">0.60 AZN</span></div>
-            <div class="card" onclick="select(this, '19 Elmas')"><span class="diamonds">19 💎</span><span class="price">0.80 AZN</span></div>
-            <div class="card" onclick="select(this, '28 Elmas')"><span class="diamonds">28 💎</span><span class="price">1.10 AZN</span></div>
-            <div class="card" onclick="select(this, '44 Elmas')"><span class="diamonds">44 💎</span><span class="price">2.00 AZN</span></div>
-            <div class="card" onclick="select(this, '59 Elmas')"><span class="diamonds">59 💎</span><span class="price">2.30 AZN</span></div>
-            <div class="card" onclick="select(this, '85 Elmas')"><span class="diamonds">85 💎</span><span class="price">3.20 AZN</span></div>
-            <div class="card" onclick="select(this, '170 Elmas')"><span class="diamonds">170 💎</span><span class="price">6.00 AZN</span></div>
-            <div class="card" onclick="select(this, '240 Elmas')"><span class="diamonds">240 💎</span><span class="price">8.00 AZN</span></div>
-            <div class="card" onclick="select(this, '296 Elmas')"><span class="diamonds">296 💎</span><span class="price">10.00 AZN</span></div>
-            <div class="card" onclick="select(this, '408 Elmas')"><span class="diamonds">408 💎</span><span class="price">13.50 AZN</span></div>
-            <div class="card" onclick="select(this, '568 Elmas')"><span class="diamonds">568 💎</span><span class="price">18.00 AZN</span></div>
-            <div class="card" onclick="select(this, '875 Elmas')"><span class="diamonds">875 💎</span><span class="price">27.50 AZN</span></div>
-            <div class="card" onclick="select(this, '2010 Elmas')"><span class="diamonds">2010 💎</span><span class="price">59.50 AZN</span></div>
+            <div class="card" onclick="select(this, '5 Elmas')"><span class="diamonds">5 💎</span><span class="price" id="price-5">... AZN</span></div>
+            <div class="card" onclick="select(this, '12 Elmas')"><span class="diamonds">12 💎</span><span class="price" id="price-12">... AZN</span></div>
+            <div class="card" onclick="select(this, '19 Elmas')"><span class="diamonds">19 💎</span><span class="price" id="price-19">... AZN</span></div>
+            <div class="card" onclick="select(this, '28 Elmas')"><span class="diamonds">28 💎</span><span class="price" id="price-28">... AZN</span></div>
+            <div class="card" onclick="select(this, '44 Elmas')"><span class="diamonds">44 💎</span><span class="price" id="price-44">... AZN</span></div>
+            <div class="card" onclick="select(this, '59 Elmas')"><span class="diamonds">59 💎</span><span class="price" id="price-59">... AZN</span></div>
+            <div class="card" onclick="select(this, '85 Elmas')"><span class="diamonds">85 💎</span><span class="price" id="price-85">... AZN</span></div>
+            <div class="card" onclick="select(this, '170 Elmas')"><span class="diamonds">170 💎</span><span class="price" id="price-170">... AZN</span></div>
+            <div class="card" onclick="select(this, '240 Elmas')"><span class="diamonds">240 💎</span><span class="price" id="price-240">... AZN</span></div>
+            <div class="card" onclick="select(this, '296 Elmas')"><span class="diamonds">296 💎</span><span class="price" id="price-296">... AZN</span></div>
+            <div class="card" onclick="select(this, '408 Elmas')"><span class="diamonds">408 💎</span><span class="price" id="price-408">... AZN</span></div>
+            <div class="card" onclick="select(this, '568 Elmas')"><span class="diamonds">568 💎</span><span class="price" id="price-568">... AZN</span></div>
+            <div class="card" onclick="select(this, '875 Elmas')"><span class="diamonds">875 💎</span><span class="price" id="price-875">... AZN</span></div>
+            <div class="card" onclick="select(this, '2010 Elmas')"><span class="diamonds">2010 💎</span><span class="price" id="price-2010">... AZN</span></div>
         </div>
 
         <button class="buy-btn" onclick="openM()">SİFARİŞ VER</button>
@@ -159,6 +157,49 @@
     </div>
 
     <footer>&copy; 2026 GLIDOX SHOP</footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Firebase konfiqurasiyanız (Öz məlumatlarınızı daxil edin)
+        const firebaseConfig = {
+            apiKey: "AIzaSy...",
+            databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "glidoxshop",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Dinamik olaraq hər paket üçün Firebase-dən qiymətləri çəkirik
+        // Firebase-də 'prices/mlbb/' yolundakı açarlarla (keys) eyni olmalıdır
+        const items = [
+            { id: 'price-weekly', key: 'Weekly_Pass' },
+            { id: 'price-twilight', key: 'Twilight_Pass' },
+            { id: 'price-5', key: '5_Diamonds' },
+            { id: 'price-12', key: '12_Diamonds' },
+            { id: 'price-19', key: '19_Diamonds' },
+            { id: 'price-28', key: '28_Diamonds' },
+            { id: 'price-44', key: '44_Diamonds' },
+            { id: 'price-59', key: '59_Diamonds' },
+            { id: 'price-85', key: '85_Diamonds' },
+            { id: 'price-170', key: '170_Diamonds' },
+            { id: 'price-240', key: '240_Diamonds' },
+            { id: 'price-296', key: '296_Diamonds' },
+            { id: 'price-408', key: '408_Diamonds' },
+            { id: 'price-568', key: '568_Diamonds' },
+            { id: 'price-875', key: '875_Diamonds' },
+            { id: 'price-2010', key: '2010_Diamonds' }
+        ];
+
+        items.forEach(item => {
+            onValue(ref(db, 'prices/mlbb/' + item.key), (snap) => {
+                const val = snap.exists() ? snap.val() : "N/A";
+                document.getElementById(item.id).innerText = val + " AZN";
+            });
+        });
+    </script>
 
     <script>
         window.onload = () => document.body.classList.add('loaded');
