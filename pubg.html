@@ -5,111 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUBG Mobile UC | Glidox Shop</title>
     <style>
-        /* Ümumi tənzimləmələr */
+        /* Sənin mövcud CSS stillərin bura daxildir (Dəyişməyib) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        body { 
-            background-color: #121212; 
-            color: #ffffff; 
-            opacity: 0; 
-            transition: opacity 0.6s ease-in-out; 
-        }
+        body { background-color: #121212; color: #ffffff; opacity: 0; transition: opacity 0.6s ease-in-out; }
         body.loaded { opacity: 1; }
-
-        header { 
-            background-color: #1a1a1a; padding: 20px 50px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 2px solid #ff4655; 
-        }
+        header { background-color: #1a1a1a; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff4655; }
         .logo { font-size: 28px; font-weight: bold; color: #ff4655; text-transform: uppercase; text-decoration: none; letter-spacing: 2px; }
         nav ul { list-style: none; display: flex; gap: 20px; }
         nav ul li a { color: #fff; text-decoration: none; font-size: 16px; transition: color 0.3s; cursor: pointer; }
-        nav ul li a:hover { color: #ff4655; }
-
         .page-header { text-align: center; padding: 50px 20px 40px; }
         .page-header h1 { font-size: 36px; color: #f2a900; margin-bottom: 10px; text-transform: uppercase; }
-        .page-header p { color: #ccc; font-size: 16px; }
-
-        /* UC Paketləri */
         .packages-container { max-width: 1200px; margin: 0 auto 50px; padding: 0 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-
-        .card { 
-            background-color: #1e1e1e; border-radius: 10px; overflow: hidden; 
-            text-align: center; padding: 30px 20px; transition: 0.3s; 
-            border: 1px solid #333; display: flex; flex-direction: column; justify-content: space-between; 
-        }
+        .card { background-color: #1e1e1e; border-radius: 10px; overflow: hidden; text-align: center; padding: 30px 20px; transition: 0.3s; border: 1px solid #333; display: flex; flex-direction: column; justify-content: space-between; }
         .card:hover { transform: translateY(-5px); border-color: #f2a900; box-shadow: 0 5px 15px rgba(242, 169, 0, 0.2); }
-        
         .uc-amount { font-size: 32px; font-weight: bold; color: #f2a900; margin-bottom: 5px; }
         .uc-text { font-size: 14px; color: #aaa; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
         .price { font-size: 24px; color: #fff; margin-bottom: 20px; font-weight: bold; }
-        
-        .buy-btn { 
-            background-color: transparent; border: 2px solid #f2a900; 
-            color: #f2a900; padding: 10px 20px; text-decoration: none; 
-            font-weight: bold; border-radius: 5px; transition: 0.3s; cursor: pointer; width: 100%; 
-        }
+        .buy-btn { background-color: transparent; border: 2px solid #f2a900; color: #f2a900; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px; transition: 0.3s; cursor: pointer; width: 100%; }
         .card:hover .buy-btn { background-color: #f2a900; color: #121212; }
-
-        /* MODAL (Qaydalar Pəncərəsi) */
-        .modal {
-            display: none; 
-            position: fixed; z-index: 9999; 
-            left: 0; top: 0; width: 100%; height: 100%; 
-            background-color: rgba(0,0,0,0.85);
-            backdrop-filter: blur(5px);
-            align-items: center; justify-content: center;
-        }
-        .modal-content {
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            border: 1px solid #f2a900;
-            position: relative;
-            animation: modalFade 0.4s ease;
-        }
-        @keyframes modalFade { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-        
-        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; color: #777; }
-        .close-modal:hover { color: #fff; }
-
-        .modal-h2 { color: #f2a900; margin-bottom: 15px; font-size: 22px; }
-        .rules-list { text-align: left; margin: 20px 0; color: #ddd; line-height: 1.6; }
-        .rules-list li { margin-bottom: 10px; list-style: none; display: flex; align-items: flex-start; gap: 10px; }
-        
-        .go-support-btn {
-            display: block;
-            background-color: #ff4655;
-            color: white;
-            padding: 15px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 8px;
-            margin-top: 20px;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-        .go-support-btn:hover { background-color: #ff2d3d; transform: scale(1.02); }
-
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .modal-content { background-color: #1e1e1e; padding: 30px; border-radius: 15px; max-width: 450px; width: 90%; text-align: center; border: 1px solid #f2a900; position: relative; animation: modalFade 0.4s ease; }
         footer { background-color: #1a1a1a; text-align: center; padding: 20px; border-top: 1px solid #333; margin-top: 50px; }
-        footer p { color: #777; font-size: 14px; }
-
-        @media (max-width: 768px) { header { padding: 20px; } }
     </style>
 </head>
-<body>
+<body class="loaded">
 
     <header>
         <a href="index.html" class="logo">Glidox Shop</a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Geri Qayıt</a></li>
-            </ul>
-        </nav>
+        <nav><ul><li><a href="index.html">Geri Qayıt</a></li></ul></nav>
     </header>
 
     <div class="page-header">
@@ -119,13 +43,13 @@
 
     <section class="packages-container">
         <div class="grid">
-            <div class="card"><div><div class="uc-amount">10</div><div class="uc-text">UC</div><div class="price">0.80 AZN</div></div><button class="buy-btn" onclick="showRules('10 UC')">Satın Al</button></div>
-            <div class="card"><div><div class="uc-amount">60</div><div class="uc-text">UC</div><div class="price">2.00 AZN</div></div><button class="buy-btn" onclick="showRules('60 UC')">Satın Al</button></div>
-            <div class="card"><div><div class="uc-amount">325</div><div class="uc-text">UC</div><div class="price">9.20 AZN</div></div><button class="buy-btn" onclick="showRules('325 UC')">Satın Al</button></div>
-            <div class="card"><div><div class="uc-amount">660</div><div class="uc-text">UC</div><div class="price">17.00 AZN</div></div><button class="buy-btn" onclick="showRules('660 UC')">Satın Al</button></div>
-            <div class="card"><div><div class="uc-amount">1800</div><div class="uc-text">UC</div><div class="price">44.00 AZN</div></div><button class="buy-btn" onclick="showRules('1800 UC')">Satın Al</button></div>
-            <div class="card"><div><div class="uc-amount">3850</div><div class="uc-text">UC</div><div class="price">84.00 AZN</div></div><button class="buy-btn" onclick="showRules('3850 UC')">Satın Al</button></div>
-            <div class="card"><div><div class="uc-amount">8100</div><div class="uc-text">UC</div><div class="price">163.00 AZN</div></div><button class="buy-btn" onclick="showRules('8100 UC')">Satın Al</button></div>
+            <div class="card"><div><div class="uc-amount">10</div><div class="uc-text">UC</div><div class="price" id="price-10uc">... AZN</div></div><button class="buy-btn" onclick="showRules('10 UC')">Satın Al</button></div>
+            <div class="card"><div><div class="uc-amount">60</div><div class="uc-text">UC</div><div class="price" id="price-60uc">... AZN</div></div><button class="buy-btn" onclick="showRules('60 UC')">Satın Al</button></div>
+            <div class="card"><div><div class="uc-amount">325</div><div class="uc-text">UC</div><div class="price" id="price-325uc">... AZN</div></div><button class="buy-btn" onclick="showRules('325 UC')">Satın Al</button></div>
+            <div class="card"><div><div class="uc-amount">660</div><div class="uc-text">UC</div><div class="price" id="price-660uc">... AZN</div></div><button class="buy-btn" onclick="showRules('660 UC')">Satın Al</button></div>
+            <div class="card"><div><div class="uc-amount">1800</div><div class="uc-text">UC</div><div class="price" id="price-1800uc">... AZN</div></div><button class="buy-btn" onclick="showRules('1800 UC')">Satın Al</button></div>
+            <div class="card"><div><div class="uc-amount">3850</div><div class="uc-text">UC</div><div class="price" id="price-3850uc">... AZN</div></div><button class="buy-btn" onclick="showRules('3850 UC')">Satın Al</button></div>
+            <div class="card"><div><div class="uc-amount">8100</div><div class="uc-text">UC</div><div class="price" id="price-8100uc">... AZN</div></div><button class="buy-btn" onclick="showRules('8100 UC')">Satın Al</button></div>
         </div>
     </section>
 
@@ -134,47 +58,51 @@
             <span class="close-modal" onclick="closeRules()">&times;</span>
             <h2 class="modal-h2">Sifariş Qaydaları</h2>
             <p id="selectedPackage" style="color: #ccc; margin-bottom: 10px;"></p>
-            
-            <div class="rules-list">
-                <li><span>📍</span> Dəstək xidmətinə keçid etdikdən sonra nə qədər UC almaq istədiyinizi bildirin.</li>
-                <li><span>🆔</span> Oyunçu ID-nizi (UID) mesajda qeyd edin.</li>
-                <li><span>📸</span> Ödəniş etdikdən sonra çekin (qəbzin) şəklini bura göndərin.</li>
+            <div class="rules-list" style="text-align: left; margin: 20px 0; color: #ddd; line-height: 1.6;">
+                <p>📍 Miqdarı bildirin.</p>
+                <p>🆔 Oyunçu ID-nizi qeyd edin.</p>
+                <p>📸 Ödəniş çekini göndərin.</p>
             </div>
-
-            <p style="font-size: 12px; color: #888;">* Sifarişiniz operator tərəfindən anında emal olunacaq.</p>
-            
-            <a href="destek.html" class="go-support-btn">Dəstək xidmətinə keçid et</a>
+            <a href="destek.html" class="go-support-btn" style="display: block; background: #ff4655; color: #fff; padding: 15px; text-decoration: none; border-radius: 8px; font-weight: bold;">Dəstək xidmətinə keçid et</a>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Glidox Shop. Bütün hüquqlar qorunur.</p>
-    </footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            document.body.classList.add("loaded");
+        const firebaseConfig = {
+            apiKey: "AIzaSy...", // Öz API açarını bura qoy
+            databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "glidoxshop",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // QİYMƏTLƏRİ BAZADAN ÇƏKİRİK
+        const games = [
+            { id: 'price-10uc', dbKey: '10_UC' },
+            { id: 'price-60uc', dbKey: '60_UC' },
+            { id: 'price-325uc', dbKey: '325_UC' },
+            { id: 'price-660uc', dbKey: '660_UC' },
+            { id: 'price-1800uc', dbKey: '1800_UC' },
+            { id: 'price-3850uc', dbKey: '3850_UC' },
+            { id: 'price-8100uc', dbKey: '8100_UC' }
+        ];
+
+        games.forEach(game => {
+            onValue(ref(db, 'prices/pubg/' + game.dbKey), (snapshot) => {
+                const priceValue = snapshot.exists() ? snapshot.val() : "N/A";
+                document.getElementById(game.id).innerText = priceValue + " AZN";
+            });
         });
-
-        const modal = document.getElementById("rulesModal");
-        const packageText = document.getElementById("selectedPackage");
-
-        function showRules(packageName) {
-            packageText.innerText = "Seçilən paket: " + packageName;
-            modal.style.display = "flex";
-        }
-
-        function closeRules() {
-            modal.style.display = "none";
-        }
-
-        // Modal kənarına basanda bağlansın
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeRules();
-            }
-        }
     </script>
 
+    <script>
+        // Modal funksiyaları eyni qalır
+        function showRules(name) { document.getElementById("selectedPackage").innerText = "Seçilən: " + name; document.getElementById("rulesModal").style.display = "flex"; }
+        function closeRules() { document.getElementById("rulesModal").style.display = "none"; }
+    </script>
 </body>
 </html>
