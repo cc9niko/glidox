@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glidox Shop | Steam Balans Artımı</title>
+    <title>Steam Wallet | Glidox Shop</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -80,6 +80,7 @@
         }
         .action-btn:hover { filter: brightness(1.2); letter-spacing: 1px; }
 
+        /* MODAL */
         .modal {
             display: none; position: fixed; z-index: 9999; 
             left: 0; top: 0; width: 100%; height: 100%; 
@@ -93,7 +94,7 @@
         footer { text-align: center; padding: 50px; color: #4e5a66; font-size: 12px; }
     </style>
 </head>
-<body>
+<body class="loaded">
 
     <header>
         <a href="index.html" class="logo">GLIDOX</a>
@@ -146,7 +147,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // ÖZ FIREBASE KONFİQURASİYANIZI BURAYA QOYUN
+        // ÖZ FIREBASE KONFİQURASİYANIZ (Admin Panelindəki ilə eyni olmalıdır)
         const firebaseConfig = {
             apiKey: "AIzaSy...", 
             databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
@@ -156,7 +157,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Qiymətləri bazadan oxuyuruq
+        // Qiymətləri çəkmək üçün massiv
         const items = [
             { id: 'price-5usd', key: '5_USD' },
             { id: 'price-10usd', key: '10_USD' },
@@ -164,15 +165,15 @@
         ];
 
         items.forEach(item => {
+            // Admin Paneldəki 'STEAM' bölməsinin bazadakı yolu 'prices/steambalans/' olmalıdır
             onValue(ref(db, 'prices/steambalans/' + item.key), (snapshot) => {
-                const val = snapshot.exists() ? snapshot.val() : "N/A";
+                const val = snapshot.exists() ? snapshot.val() : "Səhv";
                 document.getElementById(item.id).innerText = val + " AZN";
             });
         });
     </script>
 
     <script>
-        window.onload = () => document.body.classList.add('loaded');
         let sel = "";
         function pick(el, val) {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
