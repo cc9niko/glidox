@@ -78,7 +78,6 @@
         }
         .buy-now-btn:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(255, 70, 85, 0.5); }
 
-        /* MODAL STRUKTURU */
         .modal {
             display: none; 
             position: fixed; z-index: 9999; 
@@ -140,31 +139,31 @@
         <div class="price-grid">
             <div class="price-card" onclick="selectCard(this, '300 Robux')">
                 <span class="robux-amount">300 Robux</span>
-                <span class="price-tag">7.00 AZN</span>
+                <span class="price-tag" id="price-rbx-300">... AZN</span>
             </div>
             <div class="price-card" onclick="selectCard(this, '400 Robux')">
                 <span class="robux-amount">400 Robux</span>
-                <span class="price-tag">9.00 AZN</span>
+                <span class="price-tag" id="price-rbx-400">... AZN</span>
             </div>
             <div class="price-card" onclick="selectCard(this, '500 Robux')">
                 <span class="robux-amount">500 Robux</span>
-                <span class="price-tag">10.00 AZN</span>
+                <span class="price-tag" id="price-rbx-500">... AZN</span>
             </div>
             <div class="price-card" onclick="selectCard(this, '600 Robux')">
                 <span class="robux-amount">600 Robux</span>
-                <span class="price-tag">12.00 AZN</span>
+                <span class="price-tag" id="price-rbx-600">... AZN</span>
             </div>
             <div class="price-card" onclick="selectCard(this, '800 Robux')">
                 <span class="robux-amount">800 Robux</span>
-                <span class="price-tag">16.00 AZN</span>
+                <span class="price-tag" id="price-rbx-800">... AZN</span>
             </div>
             <div class="price-card" onclick="selectCard(this, '2000 Robux')">
                 <span class="robux-amount">2000 Robux</span>
-                <span class="price-tag">43.00 AZN</span>
+                <span class="price-tag" id="price-rbx-2000">... AZN</span>
             </div>
             <div class="price-card" onclick="selectCard(this, '4500 Robux')">
                 <span class="robux-amount">4500 Robux</span>
-                <span class="price-tag">87.50 AZN</span>
+                <span class="price-tag" id="price-rbx-4500">... AZN</span>
             </div>
         </div>
 
@@ -189,9 +188,47 @@
 
     <footer>&copy; 2026 GLIDOX SHOP - Bütün hüquqlar qorunur</footer>
 
-    <script>
-        window.addEventListener("DOMContentLoaded", () => document.body.classList.add("loaded"));
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8",
+            authDomain: "glidoxshop.firebaseapp.com",
+            projectId: "glidoxshop",
+            databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
+            storageBucket: "glidoxshop.firebasestorage.app",
+            messagingSenderId: "123258254071",
+            appId: "1:123258254071:web:ae147159986886134a59f2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Qiymətləri bazadan çəkmək üçün funksiya
+        function loadPrice(dbPath, elementId) {
+            const priceRef = ref(db, 'prices/roblox/' + dbPath);
+            onValue(priceRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById(elementId).innerText = data + " AZN";
+                }
+            });
+        }
+
+        // Bütün paketləri yükləyirik
+        loadPrice('rbx_300', 'price-rbx-300');
+        loadPrice('rbx_400', 'price-rbx-400');
+        loadPrice('rbx_500', 'price-rbx-500');
+        loadPrice('rbx_600', 'price-rbx-600');
+        loadPrice('rbx_800', 'price-rbx-800');
+        loadPrice('rbx_2000', 'price-rbx-2000');
+        loadPrice('rbx_4500', 'price-rbx-4500');
+
+        window.addEventListener("DOMContentLoaded", () => document.body.classList.add("loaded"));
+    </script>
+
+    <script>
         let selectedPackage = "";
 
         function selectCard(element, name) {
