@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glidox Titan v70 | Full Control</title>
+    <title>Glidox Titan v70 | Bug Fix Edition</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -29,7 +29,6 @@
         .f-group { text-align: left; margin-top: 15px; }
         .f-group input { width: 100%; background: #000; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: #fff; margin-top: 5px; outline: none; }
         .btn-auth { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--primary); color: #000; font-weight: 900; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        .btn-auth:hover { opacity: 0.8; transform: translateY(-2px); }
 
         /* Layout */
         #titan-root { display: none; width: 100%; height: 100%; display: flex; }
@@ -42,71 +41,59 @@
         .nav-link.active { background: var(--primary); color: #000; }
         .owner-active .nav-link.active { background: var(--owner-gold); }
 
-        /* UI */
         .glass-panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 25px; padding: 25px; margin-bottom: 25px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 20px; border-radius: 20px; }
-        .stat-card p { font-size: 24px; font-weight: 900; color: #fff; margin-top: 10px; }
-
         input, select, textarea { width: 100%; background: #000; border: 1px solid #222; color: #fff; padding: 12px; border-radius: 10px; margin-bottom: 15px; outline: none; }
+        
         .view { display: none; }
         .view.active { display: block; }
-
-        /* Terminal */
-        .terminal { background: #000; border-radius: 15px; padding: 15px; height: 350px; overflow-y: auto; font-family: 'JetBrains Mono'; font-size: 11px; color: #00ff00; }
         #btn-logout { margin-top: auto; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,62,62,0.3); background: none; color: var(--danger); cursor: pointer; font-weight: 700; }
+        
+        .promo-item, .bl-item { background: #000; padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; border: 1px solid #111; }
     </style>
 </head>
 <body>
 
     <div id="gatekeeper">
         <div class="login-frame">
-            <h2 style="color:#fff; font-weight:900; letter-spacing: 2px;">TITAN SYSTEM</h2>
-            <p style="font-size: 10px; opacity: 0.5; margin-bottom: 20px;">V70 SECURE ACCESS</p>
+            <h2 style="color:#fff; font-weight:900;">TITAN v70</h2>
             <div class="f-group">
                 <input type="email" id="f-email" placeholder="Email">
             </div>
             <div class="f-group">
                 <input type="password" id="f-pass" placeholder="Şifrə">
             </div>
-            <button class="btn-auth" id="btn-login-trigger">AVTORİZASİYA</button>
-            <p id="auth-err" style="color:var(--danger); font-size:11px; margin-top:10px; font-weight: bold;"></p>
+            <button class="btn-auth" id="btn-login-trigger">GİRİŞ ET</button>
+            <p id="auth-err" style="color:var(--danger); font-size:11px; margin-top:10px;"></p>
         </div>
     </div>
 
     <div id="titan-root">
         <aside>
-            <h3 style="color:#fff; margin-bottom:30px; padding-left:10px;"><i class="fa-solid fa-shield-virus" style="color:var(--primary)"></i> GLIDOX</h3>
-            <div class="nav-link active" data-target="pg-dash"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+            <h3 style="color:#fff; margin-bottom:30px; padding-left:10px;"><i class="fa-solid fa-bolt" style="color:var(--primary)"></i> GLIDOX</h3>
+            <div class="nav-link active" data-target="pg-dash"><i class="fa-solid fa-house"></i> Dashboard</div>
             <div class="nav-link" data-target="pg-prices"><i class="fa-solid fa-tags"></i> Qiymətlər</div>
             <div class="nav-link" data-target="pg-ann"><i class="fa-solid fa-bullhorn"></i> Duyurular</div>
             <div class="nav-link" data-target="pg-promo"><i class="fa-solid fa-ticket"></i> Promokodlar</div>
-            <div class="nav-link" data-target="pg-blist"><i class="fa-solid fa-user-lock"></i> Blacklist</div>
+            <div class="nav-link" data-target="pg-blist"><i class="fa-solid fa-user-slash"></i> Blacklist</div>
             
             <div id="owner-only-nav" style="display:none;">
-                <hr style="opacity:0.05; margin: 15px 0;">
-                <div class="nav-link" data-target="pg-logs" style="color:var(--owner-gold)"><i class="fa-solid fa-terminal"></i> Sistem Loqları</div>
+                <div class="nav-link" data-target="pg-logs" style="color:var(--owner-gold)"><i class="fa-solid fa-database"></i> Sistem Loqları</div>
             </div>
 
-            <button id="btn-logout">SİSTEMDƏN ÇIXIŞ</button>
+            <button id="btn-logout">ÇIXIŞ</button>
         </aside>
 
         <main>
             <div id="pg-dash" class="view active">
-                <div class="stats-grid">
-                    <div class="stat-card"><h4>Ümumi Loqlar</h4><p id="stat-logs">0</p></div>
-                    <div class="stat-card"><h4>Bloklananlar</h4><p id="stat-bl">0</p></div>
-                    <div class="stat-card"><h4>Vəzifəniz</h4><p id="stat-role" style="color:var(--primary)">Yüklənir...</p></div>
-                </div>
                 <div class="glass-panel">
-                    <h3>Sistem Analitikası</h3>
-                    <canvas id="mainChart" height="100"></canvas>
+                    <h2 id="welcome-msg" style="color:#fff;">Xoş gəldiniz!</h2>
+                    <p id="role-text">Status: Yüklənir...</p>
                 </div>
             </div>
 
             <div id="pg-prices" class="view">
                 <div class="glass-panel">
-                    <h3>Qiymət İdarəetməsi</h3>
+                    <h3>Qiymət Redaktoru (12 Oyun)</h3>
                     <select id="game-select">
                         <option value="">Oyun seçin...</option>
                         <option value="roblox">Roblox</option>
@@ -129,18 +116,18 @@
 
             <div id="pg-ann" class="view">
                 <div class="glass-panel">
-                    <h3>Yeni Duyuru</h3>
-                    <textarea id="ann-text" rows="5" placeholder="Müştərilər üçün mesaj..."></textarea>
-                    <button class="btn-auth" id="btn-save-ann">YAYIMLA</button>
+                    <h3>Duyuru Sistemi</h3>
+                    <textarea id="ann-text" rows="5" placeholder="Mesajı bura yazın..."></textarea>
+                    <button class="btn-auth" id="btn-save-ann">SAYTDA GÖSTƏR</button>
                 </div>
             </div>
 
             <div id="pg-promo" class="view">
                 <div class="glass-panel">
-                    <h3>Promokod Yarat</h3>
-                    <input type="text" id="promo-name" placeholder="KOD ADI (Məs: YENIYIL)">
-                    <input type="number" id="promo-val" placeholder="Endirim Miqdarı (Məs: 5)">
-                    <button class="btn-auth" id="btn-add-promo">KODU ƏLAVƏ ET</button>
+                    <h3>Promokod Paneli</h3>
+                    <input type="text" id="promo-name" placeholder="KOD (Məs: GLIDOX10)">
+                    <input type="number" id="promo-val" placeholder="Endirim (AZN)">
+                    <button class="btn-auth" id="btn-add-promo">KODU YARAT</button>
                     <div id="promo-list" style="margin-top:20px;"></div>
                 </div>
             </div>
@@ -149,7 +136,7 @@
                 <div class="glass-panel">
                     <h3>Blacklist Control</h3>
                     <div style="display:flex; gap:10px;">
-                        <input type="text" id="bl-input" placeholder="UID və ya Email" style="margin:0">
+                        <input type="text" id="bl-input" placeholder="UID/Email" style="margin:0">
                         <button id="btn-add-bl" style="background:var(--danger); border:none; padding:0 20px; border-radius:10px; color:#fff; font-weight:900; cursor:pointer;">BLOKLA</button>
                     </div>
                     <div id="bl-list" style="margin-top:20px;"></div>
@@ -158,9 +145,8 @@
 
             <div id="pg-logs" class="view">
                 <div class="glass-panel">
-                    <button id="btn-clear-logs" style="float:right; background:var(--danger); border:none; color:#fff; padding:8px 15px; border-radius:10px; font-size:10px; cursor:pointer;">TƏMİZLƏ</button>
-                    <h3>Root Terminal</h3>
-                    <div class="terminal" id="log-terminal" style="margin-top:15px;"></div>
+                    <h3>Root Logs</h3>
+                    <div id="log-terminal" style="height:300px; overflow-y:auto; font-family:monospace; font-size:12px;"></div>
                 </div>
             </div>
         </main>
@@ -186,59 +172,52 @@
 
         setPersistence(auth, browserSessionPersistence);
 
-        // LOGIN ENGINE
         document.getElementById('btn-login-trigger').onclick = () => {
             const e = document.getElementById('f-email').value;
             const p = document.getElementById('f-pass').value;
-            if(!e || !p) return;
-            signInWithEmailAndPassword(auth, e, p).catch(err => {
-                document.getElementById('auth-err').innerText = "Giriş rədd edildi!";
-            });
+            signInWithEmailAndPassword(auth, e, p).catch(err => { document.getElementById('auth-err').innerText = "Giriş rədd edildi!"; });
         };
 
         onAuthStateChanged(auth, (user) => {
-            if(user) {
-                const isOwner = user.uid === OWNER_UID;
-                const isAdmin = ADMINS.includes(user.uid);
-
-                if(isOwner || isAdmin) {
-                    document.getElementById('gatekeeper').style.display = 'none';
-                    document.getElementById('titan-root').style.display = 'flex';
-                    setupApp(user, isOwner);
-                } else {
-                    signOut(auth);
-                    alert("İcazəsiz Giriş!");
-                }
-            } else {
-                document.getElementById('gatekeeper').style.display = 'flex';
-                document.getElementById('titan-root').style.display = 'none';
+            if(user && (user.uid === OWNER_UID || ADMINS.includes(user.uid))) {
+                document.getElementById('gatekeeper').style.display = 'none';
+                document.getElementById('titan-root').style.display = 'flex';
+                initPanel(user);
+            } else if(user) {
+                signOut(auth);
             }
         });
 
-        function setupApp(user, isOwner) {
+        function initPanel(user) {
+            const isOwner = user.uid === OWNER_UID;
+            document.getElementById('role-text').innerText = isOwner ? "Status: OWNER" : "Status: ADMIN";
             if(isOwner) {
                 document.body.classList.add('owner-active');
                 document.getElementById('owner-only-nav').style.display = 'block';
-                document.getElementById('stat-role').innerText = "OWNER";
-                document.getElementById('stat-role').style.color = "var(--owner-gold)";
-            } else {
-                document.getElementById('stat-role').innerText = "ADMIN";
             }
 
-            // Qiymət seçimi
+            // DUYURU FIX
+            document.getElementById('btn-save-ann').onclick = () => {
+                const msg = document.getElementById('ann-text').value;
+                update(ref(db, 'announcement'), { message: msg, time: new Date().toLocaleString() })
+                .then(() => alert("Duyuru yeniləndi!"));
+            };
+
+            // QIYMETLER FIX
             document.getElementById('game-select').onchange = (e) => {
-                const game = e.target.value;
+                const g = e.target.value;
                 const fields = document.getElementById('price-fields');
                 const btn = document.getElementById('btn-save-prices');
                 fields.innerHTML = "";
-                if(!game) { btn.style.display="none"; return; }
+                if(!g) { btn.style.display="none"; return; }
                 btn.style.display="block";
-                onValue(ref(db, `prices/${game}`), s => {
-                    const d = s.val() || {p1:0, p2:0, p3:0};
+                
+                onValue(ref(db, `prices/${g}`), (s) => {
+                    const d = s.val() || {p1:"0", p2:"0", p3:"0"};
                     fields.innerHTML = `
-                        <p style="font-size:12px; margin-bottom:5px;">Paket 1:</p><input id="p1" value="${d.p1}">
-                        <p style="font-size:12px; margin-bottom:5px;">Paket 2:</p><input id="p2" value="${d.p2}">
-                        <p style="font-size:12px; margin-bottom:5px;">Paket 3:</p><input id="p3" value="${d.p3}">
+                        Paket 1: <input id="p1" value="${d.p1}">
+                        Paket 2: <input id="p2" value="${d.p2}">
+                        Paket 3: <input id="p3" value="${d.p3}">
                     `;
                 }, {onlyOnce: true});
             };
@@ -249,36 +228,24 @@
                     p1: document.getElementById('p1').value,
                     p2: document.getElementById('p2').value,
                     p3: document.getElementById('p3').value
-                }).then(() => {
-                    alert("Yadda saxlanıldı!");
-                    writeLog(user.email, `${g} qiymətlərini dəyişdi`);
-                });
+                }).then(() => alert("Qiymətlər yadda saxlanıldı!"));
             };
 
-            // Duyuru
-            document.getElementById('btn-save-ann').onclick = () => {
-                set(ref(db, 'announcement'), { message: document.getElementById('ann-text').value, time: new Date().toLocaleString() });
-            };
-
-            // Promokodlar
+            // PROMOKODLAR
             document.getElementById('btn-add-promo').onclick = () => {
-                const name = document.getElementById('promo-name').value;
-                const val = document.getElementById('promo-val').value;
-                if(name && val) set(ref(db, `promocodes/${name}`), { value: val });
+                const n = document.getElementById('promo-name').value;
+                const v = document.getElementById('promo-val').value;
+                if(n && v) update(ref(db, `promocodes/${n}`), { value: v });
             };
-            
             onValue(ref(db, 'promocodes'), s => {
                 const list = document.getElementById('promo-list');
                 list.innerHTML = "";
                 s.forEach(c => {
-                    list.innerHTML += `<div style="background:#000; padding:10px; border-radius:10px; margin-bottom:5px; display:flex; justify-content:space-between;">
-                        <span>${c.key} (-${c.val().value} AZN)</span>
-                        <button onclick="window.delPromo('${c.key}')" style="color:red; background:none; border:none; cursor:pointer;">SİL</button>
-                    </div>`;
+                    list.innerHTML += `<div class="promo-item"><span>${c.key} (-${c.val().value} AZN)</span><button onclick="window.delPromo('${c.key}')" style="color:red; background:none; border:none; cursor:pointer;">SİL</button></div>`;
                 });
             });
 
-            // Blacklist
+            // BLACKLIST
             document.getElementById('btn-add-bl').onclick = () => {
                 const v = document.getElementById('bl-input').value;
                 if(v) push(ref(db, 'blacklist'), { target: v });
@@ -287,45 +254,25 @@
                 const list = document.getElementById('bl-list');
                 list.innerHTML = "";
                 s.forEach(c => {
-                    list.innerHTML += `<div style="background:#000; padding:10px; border-radius:10px; margin-bottom:5px; display:flex; justify-content:space-between;">
-                        <span>${c.val().target}</span>
-                        <button onclick="window.delBL('${c.key}')" style="color:red; background:none; border:none; cursor:pointer;">SİL</button>
-                    </div>`;
+                    list.innerHTML += `<div class="bl-item"><span>${c.val().target}</span><button onclick="window.delBL('${c.key}')" style="color:red; background:none; border:none; cursor:pointer;">SİL</button></div>`;
                 });
             });
 
-            // Logs
+            // LOGS (Owner Only)
             if(isOwner) {
                 onValue(ref(db, 'logs'), s => {
                     const term = document.getElementById('log-terminal');
                     term.innerHTML = "";
-                    s.forEach(c => {
-                        const l = c.val();
-                        term.innerHTML += `<div style="margin-bottom:4px;">> [${l.time}] ${l.user}: ${l.action}</div>`;
-                    });
-                    term.scrollTop = term.scrollHeight;
+                    s.forEach(c => { term.innerHTML += `<div>[${c.val().time}] ${c.val().user}: ${c.val().action}</div>`; });
                 });
             }
-
-            loadStats();
-            initChart();
         }
 
-        window.delPromo = (key) => remove(ref(db, `promocodes/${key}`));
-        window.delBL = (key) => remove(ref(db, `blacklist/${key}`));
-
-        function writeLog(email, action) {
-            push(ref(db, 'logs'), { user: email, action: action, time: new Date().toLocaleString() });
-        }
-
-        function loadStats() {
-            onValue(ref(db, 'logs'), s => document.getElementById('stat-logs').innerText = s.size || 0);
-            onValue(ref(db, 'blacklist'), s => document.getElementById('stat-bl').innerText = s.size || 0);
-        }
+        window.delPromo = (k) => remove(ref(db, `promocodes/${k}`));
+        window.delBL = (k) => remove(ref(db, `blacklist/${k}`));
 
         document.getElementById('btn-logout').onclick = () => signOut(auth).then(() => location.reload());
 
-        // Nav Logic
         document.querySelectorAll('.nav-link').forEach(link => {
             link.onclick = () => {
                 document.querySelectorAll('.nav-link, .view').forEach(el => el.classList.remove('active'));
@@ -333,18 +280,6 @@
                 document.getElementById(link.dataset.target).classList.add('active');
             };
         });
-
-        function initChart() {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['00:00', '08:00', '16:00', '24:00'],
-                    datasets: [{ label: 'Trafik', data: [2, 10, 5, 18], borderColor: '#00f2ff', tension: 0.4 }]
-                },
-                options: { plugins: { legend: false }, scales: { y: { display: false } } }
-            });
-        }
     </script>
 </body>
 </html>
