@@ -3,176 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Glidox Pro v7.5 | Admin Console</title>
+    <title>Glidox Ultimate v8.0 | Management System</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { 
             --primary: #ff4655; 
             --bg: #050505; 
-            --card: #0e0e0e; 
+            --card: #0c0c0c; 
             --text: #ffffff; 
             --green: #00ff88; 
             --gold: #ffd700; 
-            --accent: #1f1f1f;
-            --danger: #ff2e2e;
+            --accent: #1a1a1a;
+            --danger: #ff3333;
+            --admin-color: #00bfff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* Auth Screen */
-        #auth-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .auth-card { background: #0a0a0a; padding: 40px 30px; border: 1px solid var(--primary); border-radius: 25px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 60px rgba(255, 70, 85, 0.15); }
+        /* Login Layer */
+        #auth-screen { position: fixed; inset: 0; background: radial-gradient(circle, #111 0%, #000 100%); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; transition: 0.5s; }
+        .auth-card { background: #080808; padding: 40px 30px; border: 1px solid var(--accent); border-radius: 30px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 0 80px rgba(0,0,0,1); }
+        .auth-card h1 { font-family: 'Orbitron'; color: var(--primary); font-size: 24px; margin-bottom: 30px; letter-spacing: 5px; }
 
         /* Header */
-        header { background: #000; border-bottom: 1px solid var(--accent); padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-        .logo { font-family: 'Orbitron'; font-size: 18px; color: var(--primary); letter-spacing: 3px; font-weight: 700; }
-        .status-badge { background: rgba(0, 255, 136, 0.1); color: var(--green); padding: 6px 15px; border-radius: 50px; font-size: 10px; font-family: 'Orbitron'; border: 1px solid var(--green); }
+        header { background: #000; border-bottom: 1px solid var(--accent); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Orbitron'; font-size: 14px; color: var(--primary); letter-spacing: 2px; }
+        .user-status { font-size: 10px; font-weight: bold; padding: 5px 12px; border-radius: 5px; text-transform: uppercase; }
+        .role-owner { background: rgba(255, 215, 0, 0.1); color: var(--gold); border: 1px solid var(--gold); }
+        .role-admin { background: rgba(0, 191, 255, 0.1); color: var(--admin-color); border: 1px solid var(--admin-color); }
 
-        /* Navigation - Mobil Dostu */
-        nav { background: #080808; border-bottom: 1px solid var(--accent); display: flex; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
+        /* Navbar */
+        nav { background: #070707; display: flex; overflow-x: auto; border-bottom: 1px solid var(--accent); scrollbar-width: none; }
         nav::-webkit-scrollbar { display: none; }
-        .nav-link { padding: 20px 25px; color: #777; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; border-bottom: 3px solid transparent; transition: 0.3s; white-space: nowrap; }
-        .nav-link.active { color: var(--primary); border-bottom-color: var(--primary); background: rgba(255, 70, 85, 0.05); }
+        .nav-link { padding: 18px 22px; color: #555; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; white-space: nowrap; border-bottom: 3px solid transparent; transition: 0.3s; }
+        .nav-link.active { color: var(--text); border-bottom-color: var(--primary); background: linear-gradient(to top, rgba(255, 70, 85, 0.1), transparent); }
 
-        /* Main Area */
-        main { flex: 1; overflow-y: auto; padding: 25px; scroll-behavior: smooth; }
-        .section { display: none; max-width: 1200px; margin: 0 auto; padding-bottom: 50px; }
-        .section.active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Main Context */
+        main { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
+        .section { display: none; max-width: 1200px; margin: 0 auto; animation: fadeInUp 0.4s ease-out; }
+        .section.active { display: block; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards & Grid */
-        .card { background: var(--card); border: 1px solid var(--accent); padding: 25px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        /* UI Cards */
+        .card { background: var(--card); border: 1px solid var(--accent); padding: 25px; border-radius: 20px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+
+        /* Forms */
+        label { display: block; font-size: 10px; color: #555; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #222; padding: 16px; color: #fff; border-radius: 12px; font-size: 14px; outline: none; transition: 0.3s; margin-bottom: 10px; }
+        input:focus { border-color: var(--primary); background: #040404; }
         
-        label { display: block; font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; letter-spacing: 1px; }
-        input, select, textarea { width: 100%; background: #000; border: 1px solid var(--accent); padding: 18px; color: #fff; border-radius: 15px; outline: none; font-size: 15px; transition: 0.3s; margin-bottom: 10px; }
-        input:focus { border-color: var(--primary); }
-        
-        .btn { background: var(--primary); color: #fff; border: none; padding: 18px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; font-family: 'Orbitron'; font-size: 13px; transition: 0.3s; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(255, 70, 85, 0.2); }
-        .btn:active { transform: scale(0.96); opacity: 0.9; }
+        .btn { background: var(--primary); color: #fff; border: none; padding: 18px; border-radius: 12px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; transition: 0.3s; width: 100%; }
+        .btn:active { transform: scale(0.97); }
+        .btn-danger { background: var(--danger); }
+        .btn-outline { background: transparent; border: 1px solid #333; color: #888; }
 
-        /* Game Chips */
-        .game-bar { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 20px; margin-bottom: 10px; }
-        .game-chip { padding: 14px 28px; background: var(--card); border-radius: 50px; font-size: 11px; cursor: pointer; border: 1px solid var(--accent); color: #888; font-family: 'Orbitron'; white-space: nowrap; transition: 0.3s; }
-        .game-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 8px 20px rgba(255, 70, 85, 0.3); }
+        /* Logs */
+        .log-screen { background: #000; border: 1px solid #111; border-radius: 15px; height: 400px; overflow-y: auto; padding: 15px; font-family: monospace; font-size: 12px; }
+        .log-line { padding: 8px 0; border-bottom: 1px solid #080808; line-height: 1.5; }
+        .log-time { color: #444; margin-right: 8px; }
+        .log-admin { color: var(--primary); font-weight: bold; }
+        .log-owner { color: var(--gold); font-weight: bold; }
 
-        /* Log Screen */
-        .log-container { background: #000; border: 1px solid var(--accent); border-radius: 20px; height: 500px; overflow-y: auto; padding: 15px; font-family: 'Courier New', monospace; font-size: 13px; }
-        .log-row { padding: 12px; border-bottom: 1px solid #0d0d0d; animation: fadeIn 0.3s ease; }
-        .log-time { color: #555; font-size: 11px; margin-right: 10px; }
-        .log-user { color: var(--gold); font-weight: 700; margin-right: 10px; }
-        .log-msg { color: var(--green); }
-
-        /* Mobile Fixes */
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
             header { padding: 15px; }
-            .logo { font-size: 14px; }
-            nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid var(--accent); border-bottom: none; z-index: 999; }
-            .nav-link { flex: 1; text-align: center; padding: 15px 5px; font-size: 9px; border-bottom: none; border-top: 3px solid transparent; }
-            .nav-link.active { border-top-color: var(--primary); }
-            main { padding: 15px; padding-bottom: 100px; }
-            .card { padding: 20px; }
+            nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: #000; border-top: 1px solid var(--accent); border-bottom: none; }
+            .nav-link { flex: 1; text-align: center; padding: 15px 5px; font-size: 9px; }
+            main { padding-bottom: 100px; }
             .grid { grid-template-columns: 1fr; }
-            input, .btn { padding: 16px; font-size: 14px; }
         }
+
+        /* Access Control Classes */
+        .owner-only { display: none; }
     </style>
 </head>
 <body>
 
     <div id="auth-screen">
         <div class="auth-card">
-            <h1 style="font-family:'Orbitron'; color:var(--primary); margin-bottom:10px;">GLIDOX V7.5</h1>
-            <p style="color:#555; font-size:12px; margin-bottom:30px; font-weight:600;">ADMINISTRATION ACCESS</p>
-            <input type="text" id="adm-name" placeholder="Adınız">
-            <input type="password" id="adm-pass" placeholder="Məxfi Şifrə">
-            <button class="btn" onclick="login()">SİSTEMƏ DAXİL OL</button>
+            <h1>GLIDOX CORE</h1>
+            <input type="text" id="login-name" placeholder="Adınız">
+            <input type="password" id="login-pass" placeholder="Məxfi Şifrə">
+            <button class="btn" onclick="handleLogin()">GİRİŞ ET</button>
         </div>
     </div>
 
     <header>
-        <div class="logo">GLIDOX SHOP PRO</div>
-        <div class="status-badge" id="role-badge">OFFLINE</div>
+        <div class="logo">GLIDOX V8.0</div>
+        <div id="role-display" class="user-status">YÜKLƏNİR...</div>
     </header>
 
     <nav>
-        <div class="nav-link active" onclick="tab('dash', event)">📊 Dash</div>
-        <div class="nav-link" onclick="tab('prices', event)">💎 Qiymət</div>
-        <div class="nav-link" onclick="tab('promo', event)">🎟️ Promo</div>
-        <div class="nav-link" onclick="tab('ann', event)">📢 Duyuru</div>
-        <div class="nav-link" onclick="tab('bl', event)">🚫 Blacklist</div>
-        <div class="nav-link" id="nav-logs" onclick="tab('logs', event)">📜 Loqlar</div>
+        <div class="nav-link active" onclick="switchTab('dash', event)">📊 Dash</div>
+        <div class="nav-link" onclick="switchTab('prices', event)">💎 Qiymətlər</div>
+        <div class="nav-link" onclick="switchTab('promo', event)">🎟️ Promo</div>
+        <div class="nav-link" onclick="switchTab('ann', event)">📢 Duyuru</div>
+        <div class="nav-link" onclick="switchTab('bl', event)">🚫 Blacklist</div>
+        <div class="nav-link owner-only" id="logs-tab" onclick="switchTab('logs', event)">📜 Loqlar</div>
     </nav>
 
     <main>
         <section id="dash" class="section active">
-            <div class="card" style="border-left: 5px solid var(--primary);">
-                <h2 style="font-family:'Orbitron'; font-size:20px;">Xoş gəldin, <span id="welcome-name" style="color:var(--primary)">Admin</span></h2>
-                <p style="color:#666; font-size:13px; margin-top:5px;">Sistem hazırda aktivdir və bütün qorumalar işləyir.</p>
+            <div class="card">
+                <h2 style="font-family:'Orbitron'; font-size:18px;">Salam, <span id="display-name" style="color:var(--primary)">...</span></h2>
+                <p style="color:#555; font-size:12px; margin-top:5px;">Səlahiyyət səviyyənizə uyğun panel yükləndi.</p>
             </div>
             <div class="grid">
-                <div class="card">
-                    <label>Sessiya Statusu</label>
-                    <h3 style="color:var(--green)">TƏSDİQLƏNDİ</h3>
-                </div>
-                <div class="card">
-                    <label>Baza Təhlükəsizliyi</label>
-                    <h3 style="color:var(--gold)">V7.5 ENCRYPTED</h3>
-                </div>
+                <div class="card"><label>Sistem Statusu</label><h3 style="color:var(--green)">ONLİNE</h3></div>
+                <div class="card"><label>Giriş Vaxtı</label><h3 id="time-display" style="font-size:14px;">--:--</h3></div>
             </div>
         </section>
 
         <section id="prices" class="section">
-            <div class="game-bar" id="game-chips"></div>
-            <div id="price-grid" class="grid"></div>
+            <div id="game-selector" style="display:flex; overflow-x:auto; gap:10px; margin-bottom:20px; padding-bottom:10px;"></div>
+            <div id="price-list" class="grid"></div>
         </section>
 
         <section id="promo" class="section">
             <div class="card">
                 <label>Yeni Promokod</label>
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="p-name" placeholder="KOD">
-                    <input type="number" id="p-val" placeholder="%" style="width:100px">
+                    <input type="text" id="promo-code" placeholder="KOD">
+                    <input type="number" id="promo-perc" placeholder="%" style="width:100px">
                 </div>
-                <button class="btn" onclick="savePromo()">PROMONU AKTİV ET</button>
+                <button class="btn" onclick="actionPromo()">YARAT</button>
             </div>
-            <div id="promo-list" class="grid"></div>
+            <div id="promo-display" class="grid"></div>
         </section>
 
         <section id="ann" class="section">
             <div class="card">
-                <label>Saytda Görünən Mesaj</label>
-                <textarea id="ann-text" rows="6" placeholder="Müştərilər üçün bildiriş..."></textarea>
-                <label>Görünüş Statusu</label>
-                <select id="ann-status">
-                    <option value="active">AKTİV (GÖRSƏNSİN)</option>
-                    <option value="inactive">DEAKTİV (GİZLİ)</option>
+                <label>Sayt Bildirişi</label>
+                <textarea id="ann-msg" rows="5" placeholder="Bura yazılan mesaj saytın yuxarısında görünəcək..."></textarea>
+                <label>Status</label>
+                <select id="ann-stat">
+                    <option value="active">AKTİV</option>
+                    <option value="inactive">DEAKTİV</option>
                 </select>
-                <button class="btn" style="margin-top:15px;" onclick="saveAnn()">DUYURUNU YENİLƏ</button>
+                <button class="btn" onclick="actionAnn()">DUYURUNU YENİLƏ</button>
             </div>
         </section>
 
         <section id="bl" class="section">
             <div class="card">
-                <label>İstifadəçi ID / IP Blokla</label>
-                <input type="text" id="bl-input" placeholder="ID və ya IP daxil edin">
-                <button class="btn" style="background:var(--danger)" onclick="saveBL()">QARA SİYAHIYA AT</button>
+                <label>Qara Siyahı (ID və ya IP)</label>
+                <input type="text" id="bl-val" placeholder="0.0.0.0">
+                <button class="btn btn-danger" onclick="actionBL()">BLOKLA</button>
             </div>
-            <div id="bl-list" class="grid"></div>
+            <div id="bl-display" class="grid"></div>
         </section>
 
         <section id="logs" class="section">
-            <div class="log-container" id="log-content">Loqlar yüklənir...</div>
-            <button class="btn" style="margin-top:15px; background:#222; font-size:10px;" onclick="clearLogs()">BÜTÜN LOQLARI TƏMİZLƏ</button>
+            <div class="log-screen" id="log-content"></div>
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="actionClearLogs()">BÜTÜN LOQLARI SİL</button>
         </section>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, get, onValue, push, remove, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, set, get, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // CONFIG (Sənin məlumatların)
         const firebaseConfig = {
             apiKey: "IzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8", 
             databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
@@ -183,198 +175,160 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        let currentUser = "";
-        let authKey = "";
-        const gamesList = ["roblox", "pubg", "mlbb", "valorantTR", "valorantEU", "steambalans", "applebalans", "freefire", "discord", "weplay", "standoff", "deltaforce"];
+        let user = { name: "", role: "", pass: "" };
+        const games = ["roblox", "pubg", "mlbb", "valorantTR", "valorantEU", "steambalans", "applebalans", "freefire", "discord", "weplay", "standoff", "deltaforce"];
 
-        // --- GİRİŞ SİSTEMİ ---
-        window.login = async () => {
-            const name = document.getElementById('adm-name').value;
-            const pass = document.getElementById('adm-pass').value;
-
-            if(!name || !pass) return alert("Bütün xanaları doldurun!");
+        // LOGIN ENGINE
+        window.handleLogin = async () => {
+            const n = document.getElementById('login-name').value;
+            const p = document.getElementById('login-pass').value;
 
             try {
-                // Şifrənin düzlüyünü prices üzərindən deyil, birbaşa şifrə daxil edərək yoxlayırıq
-                // Əgər Rules səhvdirsə, get(ref(db, 'prices')) error verəcək
-                const testRef = ref(db, 'prices/roblox');
-                const snap = await get(testRef);
-
-                // Əgər bura çatdıqsa, deməli icazə var (Firebase Rules keçdi)
-                authKey = pass;
-                currentUser = name;
-
-                document.getElementById('auth-screen').style.display = 'none';
-                document.getElementById('welcome-name').innerText = name;
-                document.getElementById('role-badge').innerText = "AUTHORIZED";
+                // Şifrə yoxlama (Security bölməsi bağlı olduğu üçün qiymət yazmağı test edirik)
+                const checkRef = ref(db, 'prices/roblox/auth_test');
+                await set(checkRef, { val: "test", auth: p });
                 
-                initApp();
-                logAction("Sistemə giriş etdi.");
-            } catch (error) {
-                alert("Giriş qadağandır! Şifrə yanlış ola bilər və ya Rules bölməsini yeniləməmisiniz.");
-                console.error(error);
+                // Şifrə düzdürsə bura keçir
+                user.name = n;
+                user.pass = p;
+                
+                // Rolu təyin etmək üçün manual şifrə yoxlanışı (Owner vs Admin)
+                // QEYD: Owner şifrənizi Firebase Console-da security bölməsində nə qoymusunuzsa, aşağıdakı müqayisədə istifadə edin.
+                // Məsələn, əgər owner şifrəniz "9988"dirsə, bura yazın:
+                if(p === "SİZİN_HƏQİQİ_OWNER_ŞİFRƏNİZ") user.role = "owner";
+                else user.role = "admin";
+
+                setupUI();
+                log("Sistemə giriş etdi");
+            } catch (e) {
+                alert("Xəta: Giriş rədd edildi! (Şifrə yanlışdır və ya Rules köhnədir)");
             }
         };
 
-        // --- NAVİQASİYA ---
-        window.tab = (id, event) => {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(event) event.currentTarget.classList.add('active');
-        };
+        function setupUI() {
+            document.getElementById('auth-screen').style.opacity = "0";
+            setTimeout(() => document.getElementById('auth-screen').remove(), 500);
+            
+            document.getElementById('display-name').innerText = user.name;
+            const badge = document.getElementById('role-display');
+            badge.innerText = user.role;
+            badge.className = `user-status role-${user.role}`;
 
-        // --- LOG SİSTEMİ ---
-        function logAction(msg) {
-            if(!authKey) return;
-            const newLogRef = push(ref(db, 'logs'));
-            set(newLogRef, {
-                admin: currentUser,
-                action: msg,
-                time: new Date().toLocaleString('az-AZ'),
-                auth: authKey // Qaydalar üçün vacibdir
+            if(user.role === 'owner') {
+                document.querySelectorAll('.owner-only').forEach(el => el.style.display = 'block');
+            }
+
+            document.getElementById('time-display').innerText = new Date().toLocaleTimeString();
+            initCore();
+        }
+
+        // CORE ACTIONS
+        function log(msg) {
+            push(ref(db, 'logs'), {
+                u: user.name,
+                r: user.role,
+                a: msg,
+                t: new Date().toLocaleString('az-AZ'),
+                auth: user.pass
             });
         }
 
-        // --- APPLİKASİYA BAŞLATMA ---
-        function initApp() {
-            // Oyun Çipləri
-            const chipBox = document.getElementById('game-chips');
-            chipBox.innerHTML = gamesList.map((g, i) => 
-                `<div class="game-chip ${i===0?'active':''}" onclick="loadPrices('${g}', event)">${g.toUpperCase()}</div>`
-            ).join('');
-            loadPrices(gamesList[0]);
+        function initCore() {
+            // Price Chips
+            const chipContainer = document.getElementById('game-selector');
+            chipContainer.innerHTML = games.map(g => `<div class="game-chip" style="padding:10px 20px; background:#111; border-radius:50px; cursor:pointer; font-size:10px; border:1px solid #222;" onclick="loadPrices('${g}')">${g.toUpperCase()}</div>`).join('');
+            loadPrices('roblox');
 
-            // Promokodlar
+            // Promos
             onValue(ref(db, 'promocodes'), snap => {
-                const container = document.getElementById('promo-list');
-                container.innerHTML = "";
-                snap.forEach(child => {
-                    const data = child.val();
-                    container.innerHTML += `
-                        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                            <div><b>${child.key}</b> <span style="color:var(--green); margin-left:10px;">-${data.percent}%</span></div>
-                            <button class="btn" style="width:auto; padding:8px 15px; margin:0; background:#333; font-size:10px;" onclick="delPromo('${child.key}')">SİL</button>
-                        </div>`;
+                const box = document.getElementById('promo-display'); box.innerHTML = "";
+                snap.forEach(p => {
+                    box.innerHTML += `<div class="card" style="display:flex; justify-content:space-between;"><b>${p.key}</b> <span>${p.val().percent}% <button onclick="delItem('promocodes/${p.key}')" style="background:none; border:none; color:red; margin-left:10px;">X</button></span></div>`;
                 });
             });
 
             // Blacklist
             onValue(ref(db, 'blacklist'), snap => {
-                const container = document.getElementById('bl-list');
-                container.innerHTML = "";
-                snap.forEach(child => {
-                    container.innerHTML += `
-                        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                            <div style="font-size:13px; color:var(--danger)">ID: ${child.val().d}</div>
-                            <button class="btn" style="width:auto; padding:8px 15px; margin:0; background:#333; font-size:10px;" onclick="delBL('${child.key}')">QALDIR</button>
-                        </div>`;
+                const box = document.getElementById('bl-display'); box.innerHTML = "";
+                snap.forEach(b => {
+                    box.innerHTML += `<div class="card" style="display:flex; justify-content:space-between;"><span>${b.val().d}</span> <button onclick="delItem('blacklist/${b.key}')" style="background:none; border:none; color:red;">SİL</button></div>`;
                 });
             });
 
-            // Loqlar (Hər kəs görə bilsin deyə query-ni sadələşdirdik, amma Rules-da qorunur)
+            // Logs
             onValue(ref(db, 'logs'), snap => {
-                const box = document.getElementById('log-content');
-                box.innerHTML = "";
-                const logs = [];
-                snap.forEach(child => { logs.push(child.val()); });
-                logs.reverse().forEach(d => {
-                    box.innerHTML += `
-                        <div class="log-row">
-                            <span class="log-time">${d.time}</span>
-                            <span class="log-user">${d.admin}</span>
-                            <span class="log-msg">${d.action}</span>
-                        </div>`;
+                const box = document.getElementById('log-content'); box.innerHTML = "";
+                const data = [];
+                snap.forEach(l => data.push(l.val()));
+                data.reverse().forEach(d => {
+                    box.innerHTML += `<div class="log-line"><span class="log-time">[${d.t}]</span> <span class="log-${d.r}">${d.u}</span>: ${d.a}</div>`;
                 });
             });
         }
 
-        // --- ƏMƏLİYYATLAR ---
-
-        window.loadPrices = (game, event) => {
-            if(event) {
-                document.querySelectorAll('.game-chip').forEach(c => c.classList.remove('active'));
-                event.currentTarget.classList.add('active');
-            }
+        window.loadPrices = (game) => {
             onValue(ref(db, `prices/${game}`), snap => {
-                const grid = document.getElementById('price-grid');
-                grid.innerHTML = "";
+                const list = document.getElementById('price-list'); list.innerHTML = "";
                 const data = snap.val() || {};
-                Object.keys(data).forEach(key => {
-                    if(key === 'auth') return;
-                    // Əgər data obyektdirsə içindəki val-ı götür, deyilsə birbaşa götür
-                    const currentVal = (typeof data[key] === 'object') ? data[key].val : data[key];
-                    grid.innerHTML += `
-                        <div class="card">
-                            <label>${key}</label>
-                            <input type="text" id="input-${game}-${key}" value="${currentVal}">
-                            <button class="btn" style="padding:10px; font-size:10px;" onclick="savePrice('${game}','${key}')">YADDA SAXLA</button>
-                        </div>`;
+                Object.keys(data).forEach(k => {
+                    if(k === 'auth_test' || k === 'auth') return;
+                    const val = (typeof data[k] === 'object') ? data[k].val : data[k];
+                    list.innerHTML += `<div class="card">
+                        <label>${k}</label>
+                        <input type="text" id="pr-${game}-${k}" value="${val}">
+                        <button class="btn" style="padding:10px;" onclick="updatePrice('${game}','${k}')">Yadda Saxla</button>
+                    </div>`;
                 });
             });
         };
 
-        window.savePrice = (game, key) => {
-            const newVal = document.getElementById(`input-${game}-${key}`).value;
-            set(ref(db, `prices/${game}/${key}`), {
-                val: newVal,
-                auth: authKey
-            }).then(() => {
-                logAction(`${game.toUpperCase()} (${key}) qiymətini ${newVal} etdi.`);
-                alert("Qiymət uğurla yeniləndi!");
-            }).catch(e => alert("Xəta: İcazəniz yoxdur!"));
-        };
-
-        window.savePromo = () => {
-            const name = document.getElementById('p-name').value;
-            const perc = document.getElementById('p-val').value;
-            if(!name || !perc) return;
-            set(ref(db, `promocodes/${name}`), {
-                percent: perc,
-                auth: authKey
-            }).then(() => {
-                logAction(`Yeni promo: ${name} (-${perc}%)`);
-                document.getElementById('p-name').value = "";
-                document.getElementById('p-val').value = "";
+        window.updatePrice = (g, k) => {
+            const v = document.getElementById(`pr-${g}-${k}`).value;
+            set(ref(db, `prices/${g}/${k}`), { val: v, auth: user.pass }).then(() => {
+                log(`${g} -> ${k} qiymətini ${v} etdi`);
+                alert("Yeniləndi!");
             });
         };
-        window.delPromo = (key) => {
-            if(confirm("Silmək istəyirsiz?")) {
-                remove(ref(db, `promocodes/${key}`)).then(() => logAction(`${key} promosunu sildi.`));
+
+        window.actionPromo = () => {
+            const c = document.getElementById('promo-code').value;
+            const p = document.getElementById('promo-perc').value;
+            set(ref(db, `promocodes/${c}`), { percent: p, auth: user.pass }).then(() => log(`Promo yaratdı: ${c}`));
+        };
+
+        window.actionAnn = () => {
+            const m = document.getElementById('ann-msg').value;
+            const s = document.getElementById('ann-stat').value;
+            set(ref(db, 'announcement'), { msg: m, stat: s, auth: user.pass }).then(() => {
+                log("Duyurunu yenilədi");
+                alert("Duyuru Yayındadır!");
+            });
+        };
+
+        window.actionBL = () => {
+            const v = document.getElementById('bl-val').value;
+            push(ref(db, 'blacklist'), { d: v, auth: user.pass }).then(() => log(`Blacklistə əlavə: ${v}`));
+        };
+
+        window.delItem = (path) => {
+            if(confirm("Silmək istəyirsən?")) {
+                remove(ref(db, path)).then(() => log(`Sildi: ${path}`));
             }
         };
 
-        window.saveAnn = () => {
-            const text = document.getElementById('ann-text').value;
-            const status = document.getElementById('ann-status').value;
-            set(ref(db, 'announcement'), {
-                text: text,
-                status: status,
-                auth: authKey
-            }).then(() => {
-                logAction("Duyurunu yenilədi.");
-                alert("Duyuru uğurla paylaşıldı!");
-            });
-        };
-
-        window.saveBL = () => {
-            const val = document.getElementById('bl-input').value;
-            if(!val) return;
-            push(ref(db, 'blacklist'), {
-                d: val,
-                auth: authKey
-            }).then(() => {
-                logAction(`${val} qara siyahıya salındı.`);
-                document.getElementById('bl-input').value = "";
-            });
-        };
-        window.delBL = (key) => remove(ref(db, `blacklist/${key}`));
-
-        window.clearLogs = () => {
-            if(confirm("BÜTÜN loqlar silinsin? Bu geri qaytarıla bilməz!")) {
-                set(ref(db, 'logs'), {}).then(() => alert("Loqlar təmizləndi."));
+        window.actionClearLogs = () => {
+            if(confirm("Bütün loqlar silinsin?")) {
+                set(ref(db, 'logs'), { empty: true, auth: user.pass });
             }
-        }
+        };
+
+        window.switchTab = (id, e) => {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            e.target.classList.add('active');
+        };
+
     </script>
 </body>
 </html>
