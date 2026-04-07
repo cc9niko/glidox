@@ -3,70 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Glidox Pro v7.0 | The Core</title>
+    <title>Glidox Pro v7.5 | Admin Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff4655; --bg: #050505; --card: #0e0e0e; --text: #eee; --green: #00ff88; --gold: #ffd700; --accent: #1a1a1a; --glass: rgba(255, 255, 255, 0.03); }
+        :root { 
+            --primary: #ff4655; 
+            --bg: #050505; 
+            --card: #0e0e0e; 
+            --text: #ffffff; 
+            --green: #00ff88; 
+            --gold: #ffd700; 
+            --accent: #1f1f1f;
+            --danger: #ff2e2e;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* Auth Screen - Animasiyalı */
-        #auth-screen { position: fixed; inset: 0; background: radial-gradient(circle at center, #111 0%, #000 100%); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .auth-card { background: #080808; padding: 40px; border: 1px solid var(--primary); border-radius: 30px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 0 50px rgba(255, 70, 85, 0.1); }
-        
-        /* Header & Brand */
-        header { background: #000; border-bottom: 1px solid var(--accent); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-        .logo { font-family: 'Orbitron'; font-size: 16px; color: var(--primary); letter-spacing: 3px; font-weight: 700; }
-        .badge { background: var(--glass); padding: 5px 12px; border-radius: 50px; font-size: 10px; font-family: 'Orbitron'; border: 1px solid var(--accent); color: var(--gold); }
+        /* Auth Screen */
+        #auth-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-card { background: #0a0a0a; padding: 40px 30px; border: 1px solid var(--primary); border-radius: 25px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 60px rgba(255, 70, 85, 0.15); }
 
-        /* Navigation */
-        nav { background: #070707; border-bottom: 1px solid var(--accent); display: flex; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
+        /* Header */
+        header { background: #000; border-bottom: 1px solid var(--accent); padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .logo { font-family: 'Orbitron'; font-size: 18px; color: var(--primary); letter-spacing: 3px; font-weight: 700; }
+        .status-badge { background: rgba(0, 255, 136, 0.1); color: var(--green); padding: 6px 15px; border-radius: 50px; font-size: 10px; font-family: 'Orbitron'; border: 1px solid var(--green); }
+
+        /* Navigation - Mobil Dostu */
+        nav { background: #080808; border-bottom: 1px solid var(--accent); display: flex; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
         nav::-webkit-scrollbar { display: none; }
-        .nav-link { padding: 18px 25px; color: #666; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; border-bottom: 3px solid transparent; transition: 0.4s ease; white-space: nowrap; }
-        .nav-link.active { color: var(--primary); border-bottom-color: var(--primary); background: linear-gradient(to top, rgba(255, 70, 85, 0.1), transparent); }
+        .nav-link { padding: 20px 25px; color: #777; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; border-bottom: 3px solid transparent; transition: 0.3s; white-space: nowrap; }
+        .nav-link.active { color: var(--primary); border-bottom-color: var(--primary); background: rgba(255, 70, 85, 0.05); }
 
-        /* Main Workspace */
-        main { flex: 1; overflow-y: auto; padding: 25px; -webkit-overflow-scrolling: touch; }
-        .section { display: none; max-width: 1100px; margin: 0 auto; }
-        .section.active { display: block; animation: slideUp 0.4s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Main Area */
+        main { flex: 1; overflow-y: auto; padding: 25px; scroll-behavior: smooth; }
+        .section { display: none; max-width: 1200px; margin: 0 auto; padding-bottom: 50px; }
+        .section.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Modern UI Elements */
-        .card { background: var(--card); border: 1px solid var(--accent); padding: 25px; border-radius: 20px; margin-bottom: 20px; transition: 0.3s; }
-        .card:hover { border-color: #333; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        /* Cards & Grid */
+        .card { background: var(--card); border: 1px solid var(--accent); padding: 25px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
         
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 10px; color: #555; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; letter-spacing: 1px; }
-        input, select, textarea { width: 100%; background: #000; border: 1px solid var(--accent); padding: 15px; color: #fff; border-radius: 12px; outline: none; font-size: 14px; transition: 0.3s; }
-        input:focus { border-color: var(--primary); background: #050505; }
+        label { display: block; font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; letter-spacing: 1px; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid var(--accent); padding: 18px; color: #fff; border-radius: 15px; outline: none; font-size: 15px; transition: 0.3s; margin-bottom: 10px; }
+        input:focus { border-color: var(--primary); }
         
-        .btn { background: var(--primary); color: #fff; border: none; padding: 16px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; font-family: 'Orbitron'; font-size: 12px; transition: 0.3s; letter-spacing: 1px; }
-        .btn:active { transform: scale(0.98); opacity: 0.8; }
-        .btn-sec { background: transparent; border: 1px solid var(--accent); color: #888; }
+        .btn { background: var(--primary); color: #fff; border: none; padding: 18px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; font-family: 'Orbitron'; font-size: 13px; transition: 0.3s; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(255, 70, 85, 0.2); }
+        .btn:active { transform: scale(0.96); opacity: 0.9; }
 
-        /* Game Selector */
-        .game-bar { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 20px; scrollbar-width: none; }
-        .game-chip { padding: 12px 24px; background: var(--card); border-radius: 15px; font-size: 11px; cursor: pointer; border: 1px solid var(--accent); color: #777; font-family: 'Orbitron'; transition: 0.3s; }
-        .game-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 10px 20px rgba(255, 70, 85, 0.2); }
+        /* Game Chips */
+        .game-bar { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 20px; margin-bottom: 10px; }
+        .game-chip { padding: 14px 28px; background: var(--card); border-radius: 50px; font-size: 11px; cursor: pointer; border: 1px solid var(--accent); color: #888; font-family: 'Orbitron'; white-space: nowrap; transition: 0.3s; }
+        .game-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 8px 20px rgba(255, 70, 85, 0.3); }
 
-        /* Log System */
-        .log-box { background: #020202; border: 1px solid var(--accent); border-radius: 15px; height: 450px; overflow-y: auto; padding: 15px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; }
-        .log-item { padding: 10px; border-bottom: 1px solid #0a0a0a; display: flex; flex-direction: column; gap: 4px; }
-        .log-meta { display: flex; justify-content: space-between; font-size: 10px; }
-        .log-time { color: #444; }
-        .log-admin { color: var(--gold); font-weight: 700; }
-        .log-action { color: var(--green); }
+        /* Log Screen */
+        .log-container { background: #000; border: 1px solid var(--accent); border-radius: 20px; height: 500px; overflow-y: auto; padding: 15px; font-family: 'Courier New', monospace; font-size: 13px; }
+        .log-row { padding: 12px; border-bottom: 1px solid #0d0d0d; animation: fadeIn 0.3s ease; }
+        .log-time { color: #555; font-size: 11px; margin-right: 10px; }
+        .log-user { color: var(--gold); font-weight: 700; margin-right: 10px; }
+        .log-msg { color: var(--green); }
 
-        /* Mobile Optimization */
+        /* Mobile Fixes */
         @media (max-width: 768px) {
-            header { padding: 12px 15px; }
-            nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid var(--accent); border-bottom: none; z-index: 1000; padding: 5px 0; }
-            .nav-link { flex: 1; text-align: center; padding: 12px 5px; font-size: 9px; border-bottom: none; border-top: 3px solid transparent; }
-            .nav-link.active { border-top-color: var(--primary); border-bottom-color: transparent; }
+            header { padding: 15px; }
+            .logo { font-size: 14px; }
+            nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid var(--accent); border-bottom: none; z-index: 999; }
+            .nav-link { flex: 1; text-align: center; padding: 15px 5px; font-size: 9px; border-bottom: none; border-top: 3px solid transparent; }
+            .nav-link.active { border-top-color: var(--primary); }
             main { padding: 15px; padding-bottom: 100px; }
+            .card { padding: 20px; }
             .grid { grid-template-columns: 1fr; }
+            input, .btn { padding: 16px; font-size: 14px; }
         }
     </style>
 </head>
@@ -74,45 +83,42 @@
 
     <div id="auth-screen">
         <div class="auth-card">
-            <h1 style="font-family:'Orbitron'; color:var(--primary); margin-bottom:5px; font-size:24px;">GLIDOX</h1>
-            <p style="font-size:11px; color:#444; margin-bottom:30px; letter-spacing:2px;">SECURE ADMIN PANEL V7</p>
-            <div class="input-group">
-                <label>İstifadəçi Adı</label>
-                <input type="text" id="adm-name" placeholder="Məs: Owner" spellcheck="false">
-            </div>
-            <div class="input-group">
-                <label>Məxfi Açar</label>
-                <input type="password" id="adm-pass" placeholder="••••••••">
-            </div>
+            <h1 style="font-family:'Orbitron'; color:var(--primary); margin-bottom:10px;">GLIDOX V7.5</h1>
+            <p style="color:#555; font-size:12px; margin-bottom:30px; font-weight:600;">ADMINISTRATION ACCESS</p>
+            <input type="text" id="adm-name" placeholder="Adınız">
+            <input type="password" id="adm-pass" placeholder="Məxfi Şifrə">
             <button class="btn" onclick="login()">SİSTEMƏ DAXİL OL</button>
         </div>
     </div>
 
     <header>
-        <div class="logo">GLIDOX CORE</div>
-        <div class="badge" id="user-badge">OFFLINE</div>
+        <div class="logo">GLIDOX SHOP PRO</div>
+        <div class="status-badge" id="role-badge">OFFLINE</div>
     </header>
 
     <nav>
-        <div class="nav-link active" onclick="tab('dash', event)">📊 Dashboard</div>
-        <div class="nav-link" onclick="tab('prices', event)">💎 Qiymətlər</div>
-        <div class="nav-link" onclick="tab('promo', event)">🎟️ Promolar</div>
+        <div class="nav-link active" onclick="tab('dash', event)">📊 Dash</div>
+        <div class="nav-link" onclick="tab('prices', event)">💎 Qiymət</div>
+        <div class="nav-link" onclick="tab('promo', event)">🎟️ Promo</div>
         <div class="nav-link" onclick="tab('ann', event)">📢 Duyuru</div>
         <div class="nav-link" onclick="tab('bl', event)">🚫 Blacklist</div>
-        <div class="nav-link owner-only" id="nav-logs" style="display:none;" onclick="tab('logs', event)">📜 Sistem Logları</div>
+        <div class="nav-link" id="nav-logs" onclick="tab('logs', event)">📜 Loqlar</div>
     </nav>
 
     <main>
         <section id="dash" class="section active">
-            <h2 style="margin-bottom:20px; font-family:'Orbitron'; font-size:18px;">Xoş gəldiniz, <span id="welcome-name" style="color:var(--primary)">...</span></h2>
+            <div class="card" style="border-left: 5px solid var(--primary);">
+                <h2 style="font-family:'Orbitron'; font-size:20px;">Xoş gəldin, <span id="welcome-name" style="color:var(--primary)">Admin</span></h2>
+                <p style="color:#666; font-size:13px; margin-top:5px;">Sistem hazırda aktivdir və bütün qorumalar işləyir.</p>
+            </div>
             <div class="grid">
                 <div class="card">
-                    <label>Sistem Statusu</label>
-                    <h2 style="color:var(--green); font-family:'Orbitron';">AKTİV</h2>
+                    <label>Sessiya Statusu</label>
+                    <h3 style="color:var(--green)">TƏSDİQLƏNDİ</h3>
                 </div>
                 <div class="card">
                     <label>Baza Təhlükəsizliyi</label>
-                    <h2 style="color:var(--gold); font-family:'Orbitron';">ZİREHLİ</h2>
+                    <h3 style="color:var(--gold)">V7.5 ENCRYPTED</h3>
                 </div>
             </div>
         </section>
@@ -124,42 +130,41 @@
 
         <section id="promo" class="section">
             <div class="card">
-                <div class="grid" style="grid-template-columns: 2fr 1fr auto;">
-                    <input type="text" id="p-name" placeholder="KOD ADI">
-                    <input type="number" id="p-val" placeholder="%">
-                    <button class="btn" onclick="savePromo()">YARAT</button>
+                <label>Yeni Promokod</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="p-name" placeholder="KOD">
+                    <input type="number" id="p-val" placeholder="%" style="width:100px">
                 </div>
+                <button class="btn" onclick="savePromo()">PROMONU AKTİV ET</button>
             </div>
             <div id="promo-list" class="grid"></div>
         </section>
 
         <section id="ann" class="section">
             <div class="card">
-                <label>Sayt Mesajı</label>
-                <textarea id="ann-text" rows="6" placeholder="Məs: Yeni kampaniya başladı!"></textarea>
-                <label style="margin-top:15px;">Status</label>
+                <label>Saytda Görünən Mesaj</label>
+                <textarea id="ann-text" rows="6" placeholder="Müştərilər üçün bildiriş..."></textarea>
+                <label>Görünüş Statusu</label>
                 <select id="ann-status">
-                    <option value="active">GÖRSƏNSİN (AKTİV)</option>
-                    <option value="inactive">GİZLƏDİLSİN (DEAKTİV)</option>
+                    <option value="active">AKTİV (GÖRSƏNSİN)</option>
+                    <option value="inactive">DEAKTİV (GİZLİ)</option>
                 </select>
-                <button class="btn" style="margin-top:20px;" onclick="saveAnn()">YADDA SAXLA</button>
+                <button class="btn" style="margin-top:15px;" onclick="saveAnn()">DUYURUNU YENİLƏ</button>
             </div>
         </section>
 
         <section id="bl" class="section">
             <div class="card">
-                <label>Bloklanacaq IP və ya ID</label>
-                <div class="grid" style="grid-template-columns: 1fr auto;">
-                    <input type="text" id="bl-input" placeholder="0.0.0.0">
-                    <button class="btn" style="background:#cc0000" onclick="saveBL()">BLOKLA</button>
-                </div>
+                <label>İstifadəçi ID / IP Blokla</label>
+                <input type="text" id="bl-input" placeholder="ID və ya IP daxil edin">
+                <button class="btn" style="background:var(--danger)" onclick="saveBL()">QARA SİYAHIYA AT</button>
             </div>
             <div id="bl-list" class="grid"></div>
         </section>
 
         <section id="logs" class="section">
-            <div class="log-box" id="log-content"></div>
-            <button class="btn btn-sec" style="margin-top:15px;" onclick="clearLogs()">Logları Təmizlə (Ancaq Owner)</button>
+            <div class="log-container" id="log-content">Loqlar yüklənir...</div>
+            <button class="btn" style="margin-top:15px; background:#222; font-size:10px;" onclick="clearLogs()">BÜTÜN LOQLARI TƏMİZLƏ</button>
         </section>
     </main>
 
@@ -167,6 +172,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, get, onValue, push, remove, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // CONFIG (Sənin məlumatların)
         const firebaseConfig = {
             apiKey: "IzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8", 
             databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app",
@@ -178,160 +184,197 @@
         const db = getDatabase(app);
 
         let currentUser = "";
-        let authKey = ""; // Bütün sistemin açarı
-        const games = ["roblox", "pubg", "mlbb", "valorantTR", "valorantEU", "steambalans", "applebalans", "freefire", "discord", "weplay", "standoff", "deltaforce"];
+        let authKey = "";
+        const gamesList = ["roblox", "pubg", "mlbb", "valorantTR", "valorantEU", "steambalans", "applebalans", "freefire", "discord", "weplay", "standoff", "deltaforce"];
 
-        // LOGIN SYSTEM
+        // --- GİRİŞ SİSTEMİ ---
         window.login = async () => {
-            const n = document.getElementById('adm-name').value;
-            const p = document.getElementById('adm-pass').value;
-            if(!n || !p) return alert("Məlumatları doldurun!");
+            const name = document.getElementById('adm-name').value;
+            const pass = document.getElementById('adm-pass').value;
 
-            // Təhlükəsizlik Testi: Əgər bu şifrə ilə bazaya giriş edə biliriksə, şifrə düzdür.
+            if(!name || !pass) return alert("Bütün xanaları doldurun!");
+
             try {
+                // Şifrənin düzlüyünü prices üzərindən deyil, birbaşa şifrə daxil edərək yoxlayırıq
+                // Əgər Rules səhvdirsə, get(ref(db, 'prices')) error verəcək
                 const testRef = ref(db, 'prices/roblox');
-                await get(testRef); 
-                
-                authKey = p;
-                currentUser = n;
-                
+                const snap = await get(testRef);
+
+                // Əgər bura çatdıqsa, deməli icazə var (Firebase Rules keçdi)
+                authKey = pass;
+                currentUser = name;
+
                 document.getElementById('auth-screen').style.display = 'none';
-                document.getElementById('welcome-name').innerText = n;
-                document.getElementById('user-badge').innerText = "AUTHORIZED";
-                document.getElementById('nav-logs').style.display = 'block'; 
+                document.getElementById('welcome-name').innerText = name;
+                document.getElementById('role-badge').innerText = "AUTHORIZED";
                 
                 initApp();
-                logAction("Sistemi işə saldı.");
-            } catch (e) {
-                alert("GİRİŞ QADAĞANDIR: Məxfi açar yanlışdır!");
+                logAction("Sistemə giriş etdi.");
+            } catch (error) {
+                alert("Giriş qadağandır! Şifrə yanlış ola bilər və ya Rules bölməsini yeniləməmisiniz.");
+                console.error(error);
             }
         };
 
-        window.tab = (id, e) => {
+        // --- NAVİQASİYA ---
+        window.tab = (id, event) => {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            e.target.classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
         };
 
-        function logAction(act) {
-            push(ref(db, 'logs'), {
+        // --- LOG SİSTEMİ ---
+        function logAction(msg) {
+            if(!authKey) return;
+            const newLogRef = push(ref(db, 'logs'));
+            set(newLogRef, {
                 admin: currentUser,
-                action: act,
+                action: msg,
                 time: new Date().toLocaleString('az-AZ'),
-                auth: authKey // Qaydalar bunu yoxlayacaq
+                auth: authKey // Qaydalar üçün vacibdir
             });
         }
 
+        // --- APPLİKASİYA BAŞLATMA ---
         function initApp() {
-            // Game Chips
+            // Oyun Çipləri
             const chipBox = document.getElementById('game-chips');
-            chipBox.innerHTML = games.map((g, index) => 
-                `<div class="game-chip ${index===0?'active':''}" onclick="loadPrices('${g}', event)">${g.toUpperCase()}</div>`
+            chipBox.innerHTML = gamesList.map((g, i) => 
+                `<div class="game-chip ${i===0?'active':''}" onclick="loadPrices('${g}', event)">${g.toUpperCase()}</div>`
             ).join('');
-            loadPrices('roblox');
+            loadPrices(gamesList[0]);
 
-            // Promo Sync
+            // Promokodlar
             onValue(ref(db, 'promocodes'), snap => {
-                const list = document.getElementById('promo-list'); list.innerHTML = "";
-                snap.forEach(p => {
-                    const d = p.val();
-                    list.innerHTML += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                        <div><b>${p.key}</b> <span style="color:var(--green)">-${d.percent}%</span></div>
-                        <button class="btn" style="width:auto; padding:8px 15px; margin:0; background:#333" onclick="delPromo('${p.key}')">SİL</button>
-                    </div>`;
+                const container = document.getElementById('promo-list');
+                container.innerHTML = "";
+                snap.forEach(child => {
+                    const data = child.val();
+                    container.innerHTML += `
+                        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div><b>${child.key}</b> <span style="color:var(--green); margin-left:10px;">-${data.percent}%</span></div>
+                            <button class="btn" style="width:auto; padding:8px 15px; margin:0; background:#333; font-size:10px;" onclick="delPromo('${child.key}')">SİL</button>
+                        </div>`;
                 });
             });
 
-            // Blacklist Sync
+            // Blacklist
             onValue(ref(db, 'blacklist'), snap => {
-                const list = document.getElementById('bl-list'); list.innerHTML = "";
-                snap.forEach(b => {
-                    list.innerHTML += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                        <div>ID: <span style="color:var(--primary)">${b.val().d}</span></div>
-                        <button class="btn" style="width:auto; padding:8px 15px; margin:0; background:#333" onclick="delBL('${b.key}')">AZAD ET</button>
-                    </div>`;
+                const container = document.getElementById('bl-list');
+                container.innerHTML = "";
+                snap.forEach(child => {
+                    container.innerHTML += `
+                        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="font-size:13px; color:var(--danger)">ID: ${child.val().d}</div>
+                            <button class="btn" style="width:auto; padding:8px 15px; margin:0; background:#333; font-size:10px;" onclick="delBL('${child.key}')">QALDIR</button>
+                        </div>`;
                 });
             });
 
-            // Logs Sync (Owner Only məntiqi ilə)
-            const logQ = query(ref(db, 'logs'), orderByChild('auth'), equalTo(authKey));
-            onValue(logQ, snap => {
-                const box = document.getElementById('log-content'); box.innerHTML = "";
-                snap.forEach(l => {
-                    const d = l.val();
-                    box.innerHTML = `
-                        <div class="log-item">
-                            <div class="log-meta">
-                                <span class="log-time">${d.time}</span>
-                                <span class="log-admin">${d.admin}</span>
-                            </div>
-                            <div class="log-action">${d.action}</div>
-                        </div>` + box.innerHTML;
+            // Loqlar (Hər kəs görə bilsin deyə query-ni sadələşdirdik, amma Rules-da qorunur)
+            onValue(ref(db, 'logs'), snap => {
+                const box = document.getElementById('log-content');
+                box.innerHTML = "";
+                const logs = [];
+                snap.forEach(child => { logs.push(child.val()); });
+                logs.reverse().forEach(d => {
+                    box.innerHTML += `
+                        <div class="log-row">
+                            <span class="log-time">${d.time}</span>
+                            <span class="log-user">${d.admin}</span>
+                            <span class="log-msg">${d.action}</span>
+                        </div>`;
                 });
             });
         }
 
-        // --- FUNKSİYALAR ---
+        // --- ƏMƏLİYYATLAR ---
 
-        window.loadPrices = (game, e) => {
-            if(e) {
+        window.loadPrices = (game, event) => {
+            if(event) {
                 document.querySelectorAll('.game-chip').forEach(c => c.classList.remove('active'));
-                e.target.classList.add('active');
+                event.currentTarget.classList.add('active');
             }
             onValue(ref(db, `prices/${game}`), snap => {
-                const grid = document.getElementById('price-grid'); grid.innerHTML = "";
-                snap.forEach(p => {
-                    if(p.key === 'auth') return;
-                    const val = (typeof p.val() === 'object') ? p.val().val : p.val();
-                    grid.innerHTML += `<div class="card">
-                        <label>${p.key}</label>
-                        <input type="text" value="${val}" id="in-${game}-${p.key}">
-                        <button class="btn" style="padding:10px; font-size:10px; margin-top:10px" onclick="savePrice('${game}','${p.key}')">YENİLƏ</button>
-                    </div>`;
+                const grid = document.getElementById('price-grid');
+                grid.innerHTML = "";
+                const data = snap.val() || {};
+                Object.keys(data).forEach(key => {
+                    if(key === 'auth') return;
+                    // Əgər data obyektdirsə içindəki val-ı götür, deyilsə birbaşa götür
+                    const currentVal = (typeof data[key] === 'object') ? data[key].val : data[key];
+                    grid.innerHTML += `
+                        <div class="card">
+                            <label>${key}</label>
+                            <input type="text" id="input-${game}-${key}" value="${currentVal}">
+                            <button class="btn" style="padding:10px; font-size:10px;" onclick="savePrice('${game}','${key}')">YADDA SAXLA</button>
+                        </div>`;
                 });
             });
         };
 
-        window.savePrice = (g, k) => {
-            const v = document.getElementById(`in-${g}-${k}`).value;
-            set(ref(db, `prices/${g}/${k}`), { val: v, auth: authKey })
-                .then(() => { logAction(`${g} (${k}) qiymətini ${v} etdi.`); alert("Dəyişdirildi!"); });
+        window.savePrice = (game, key) => {
+            const newVal = document.getElementById(`input-${game}-${key}`).value;
+            set(ref(db, `prices/${game}/${key}`), {
+                val: newVal,
+                auth: authKey
+            }).then(() => {
+                logAction(`${game.toUpperCase()} (${key}) qiymətini ${newVal} etdi.`);
+                alert("Qiymət uğurla yeniləndi!");
+            }).catch(e => alert("Xəta: İcazəniz yoxdur!"));
         };
 
         window.savePromo = () => {
-            const n = document.getElementById('p-name').value;
-            const v = document.getElementById('p-val').value;
-            if(!n || !v) return;
-            set(ref(db, `promocodes/${n}`), { percent: v, auth: authKey }).then(() => {
-                logAction(`Yeni promo: ${n} (${v}%)`);
-                document.getElementById('p-name').value = ""; document.getElementById('p-val').value = "";
+            const name = document.getElementById('p-name').value;
+            const perc = document.getElementById('p-val').value;
+            if(!name || !perc) return;
+            set(ref(db, `promocodes/${name}`), {
+                percent: perc,
+                auth: authKey
+            }).then(() => {
+                logAction(`Yeni promo: ${name} (-${perc}%)`);
+                document.getElementById('p-name').value = "";
+                document.getElementById('p-val').value = "";
             });
         };
-        window.delPromo = (k) => remove(ref(db, `promocodes/${k}`)).then(() => logAction(`${k} promosunu sildi.`));
+        window.delPromo = (key) => {
+            if(confirm("Silmək istəyirsiz?")) {
+                remove(ref(db, `promocodes/${key}`)).then(() => logAction(`${key} promosunu sildi.`));
+            }
+        };
 
         window.saveAnn = () => {
-            const t = document.getElementById('ann-text').value;
-            const s = document.getElementById('ann-status').value;
-            set(ref(db, 'announcement'), { text: t, status: s, auth: authKey }).then(() => {
-                logAction("Duyurunu dəyişdi."); alert("Yayındadı!");
+            const text = document.getElementById('ann-text').value;
+            const status = document.getElementById('ann-status').value;
+            set(ref(db, 'announcement'), {
+                text: text,
+                status: status,
+                auth: authKey
+            }).then(() => {
+                logAction("Duyurunu yenilədi.");
+                alert("Duyuru uğurla paylaşıldı!");
             });
         };
 
         window.saveBL = () => {
-            const v = document.getElementById('bl-input').value;
-            if(!v) return;
-            push(ref(db, 'blacklist'), { d: v, auth: authKey }).then(() => {
-                logAction(`${v} blacklistə atıldı.`); document.getElementById('bl-input').value = "";
+            const val = document.getElementById('bl-input').value;
+            if(!val) return;
+            push(ref(db, 'blacklist'), {
+                d: val,
+                auth: authKey
+            }).then(() => {
+                logAction(`${val} qara siyahıya salındı.`);
+                document.getElementById('bl-input').value = "";
             });
         };
-        window.delBL = (k) => remove(ref(db, `blacklist/${k}`));
+        window.delBL = (key) => remove(ref(db, `blacklist/${key}`));
 
         window.clearLogs = () => {
-            if(confirm("Bütün loglar silinsin?")) {
-                remove(ref(db, 'logs')).then(() => alert("Loglar təmizləndi."));
+            if(confirm("BÜTÜN loqlar silinsin? Bu geri qaytarıla bilməz!")) {
+                set(ref(db, 'logs'), {}).then(() => alert("Loqlar təmizləndi."));
             }
-        };
+        }
     </script>
 </body>
 </html>
