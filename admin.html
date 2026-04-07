@@ -40,7 +40,10 @@
         .glass-panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 25px; padding: 25px; margin-bottom: 25px; }
         input, select, textarea { width: 100%; background: #000; border: 1px solid #222; color: #fff; padding: 12px; border-radius: 10px; margin-bottom: 15px; outline: none; }
         
-        /* Qiymət Paketləri Dizaynı */
+        /* List Items */
+        .list-item { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); }
+        .btn-del { color: var(--danger); cursor: pointer; background: none; border: none; font-size: 18px; }
+
         .price-box { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; }
         .price-box label { flex: 1; color: #fff; font-size: 14px; font-weight: 600; }
         .price-box input { flex: 2; margin-bottom: 0; border-color: var(--border); }
@@ -82,7 +85,7 @@
         <main>
             <div id="pg-dash" class="view active">
                 <div class="glass-panel">
-                    <h2 id="welcome-msg" style="color:#fff;">Xoş gəldiniz!</h2>
+                    <h2 id="welcome-msg" style="color:#fff;">Sistem Aktivdir</h2>
                     <p id="role-text" style="color:var(--primary); font-weight: 900; margin-top: 5px;"></p>
                 </div>
             </div>
@@ -90,7 +93,6 @@
             <div id="pg-prices" class="view">
                 <div class="glass-panel">
                     <h3>Qiymət Redaktoru</h3>
-                    <p style="font-size: 12px; margin-bottom: 15px;">Bazadakı paketlər avtomatik yüklənir.</p>
                     <select id="game-select">
                         <option value="">Oyun seçin...</option>
                         <option value="roblox">Roblox</option>
@@ -100,28 +102,47 @@
                         <option value="valorant">Valorant</option>
                     </select>
                     <div id="price-fields-container"></div>
-                    <button class="btn-auth" id="btn-save-prices" style="display:none;">DƏYİŞİKLİKLƏRİ YADDA SAXLA</button>
+                    <button class="btn-auth" id="btn-save-prices" style="display:none;">YADDA SAXLA</button>
                 </div>
             </div>
 
             <div id="pg-ann" class="view">
                 <div class="glass-panel">
                     <h3>Duyuru Sistemi</h3>
-                    <textarea id="ann-text" rows="5" placeholder="Ana səhifədə görünəcək mesaj..."></textarea>
+                    <textarea id="ann-text" rows="5" placeholder="Mesajı yazın..."></textarea>
                     <button class="btn-auth" id="btn-save-ann">YAYIMLA</button>
                 </div>
             </div>
 
-            <div id="pg-promo" class="view">...</div>
-            <div id="pg-blist" class="view">...</div>
-            <div id="pg-logs" class="view">...</div>
+            <div id="pg-promo" class="view">
+                <div class="glass-panel">
+                    <h3>Yeni Promokod</h3>
+                    <input type="text" id="promo-code" placeholder="KOD (məs: YAY2026)">
+                    <input type="number" id="promo-percent" placeholder="Faiz (məs: 10)">
+                    <button class="btn-auth" id="btn-add-promo">ƏLAVƏ ET</button>
+                </div>
+                <div id="promo-list"></div>
+            </div>
+
+            <div id="pg-blist" class="view">
+                <div class="glass-panel">
+                    <h3>Blacklist (Qara Siyahı)</h3>
+                    <input type="text" id="bl-user" placeholder="İstifadəçi ID və ya Email">
+                    <button class="btn-auth" id="btn-add-bl">BLOKLA</button>
+                </div>
+                <div id="bl-list"></div>
+            </div>
+
+            <div id="pg-logs" class="view">
+                <div class="glass-panel"><h3>Sistem Loqları</h3><div id="logs-list"></div></div>
+            </div>
         </main>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, update, push, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, update, push, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8",
@@ -155,63 +176,86 @@
         function initPanel(user) {
             const isOwner = user.uid === OWNER_UID;
             document.getElementById('role-text').innerText = isOwner ? "YETKİ: OWNER" : "YETKİ: ADMIN";
-            if(isOwner) {
-                document.body.classList.add('owner-active');
-                document.getElementById('owner-only-nav').style.display = 'block';
-            }
+            if(isOwner) document.getElementById('owner-only-nav').style.display = 'block';
 
-            // DUYURU FIX
-            document.getElementById('btn-save-ann').onclick = () => {
-                const msg = document.getElementById('ann-text').value;
-                update(ref(db, 'announcement'), { message: msg, time: new Date().toLocaleString() })
-                .then(() => alert("Duyuru yeniləndi!"));
-            };
-
-            // QIYMETLER FIX (DİNAMİK VERSİYA)
+            // QİYMETLER (RULES FIX: prices/ qovluğu daxilində)
             document.getElementById('game-select').onchange = (e) => {
                 const game = e.target.value;
                 const container = document.getElementById('price-fields-container');
                 const btn = document.getElementById('btn-save-prices');
-                
-                container.innerHTML = "Yüklənir...";
                 if(!game) { container.innerHTML = ""; btn.style.display="none"; return; }
                 btn.style.display="block";
-
-                // Diqqət: "prices/roblox" deyil, birbaşa "roblox"
-                onValue(ref(db, game), (snap) => {
+                
+                onValue(ref(db, `prices/${game}`), (snap) => {
                     const data = snap.val();
                     container.innerHTML = "";
-                    if(!data) { container.innerHTML = "Bazada bu oyun üçün paket tapılmadı."; return; }
-
-                    // Bazadakı bütün paketləri (rbx_400, 10_USD və s.) avtomatik çıxarır
+                    if(!data) { container.innerHTML = "Bazadə paket yoxdur. Yeni paket yaradın."; return; }
                     Object.keys(data).forEach(key => {
-                        container.innerHTML += `
-                            <div class="price-box">
-                                <label>${key.replace('_', ' ')}</label>
-                                <input type="text" class="p-input" data-key="${key}" value="${data[key]}">
-                            </div>
-                        `;
+                        container.innerHTML += `<div class="price-box"><label>${key}</label><input type="text" class="p-input" data-key="${key}" value="${data[key]}"></div>`;
                     });
                 }, {onlyOnce: true});
             };
 
             document.getElementById('btn-save-prices').onclick = () => {
                 const game = document.getElementById('game-select').value;
-                const inputs = document.querySelectorAll('.p-input');
-                let updateData = {};
-                
-                inputs.forEach(inp => {
-                    updateData[inp.dataset.key] = inp.value;
-                });
-
-                update(ref(db, game), updateData).then(() => {
-                    alert("Qiymətlər uğurla yadda saxlanıldı!");
-                });
+                let updates = {};
+                document.querySelectorAll('.p-input').forEach(i => updates[i.dataset.key] = i.value);
+                update(ref(db, `prices/${game}`), updates).then(() => alert("Yadda saxlanıldı!"));
             };
+
+            // DUYURULAR
+            document.getElementById('btn-save-ann').onclick = () => {
+                update(ref(db, 'announcement'), { message: document.getElementById('ann-text').value, last_update: new Date().toLocaleString() })
+                .then(() => alert("Duyuru yayımlandı!"));
+            };
+
+            // PROMOKODLAR
+            document.getElementById('btn-add-promo').onclick = () => {
+                const code = document.getElementById('promo-code').value;
+                const perc = document.getElementById('promo-percent').value;
+                if(!code || !perc) return;
+                set(ref(db, `promocodes/${code}`), { percent: perc }).then(() => alert("Kod əlavə edildi!"));
+            };
+
+            onValue(ref(db, 'promocodes'), (snap) => {
+                const list = document.getElementById('promo-list');
+                list.innerHTML = "";
+                snap.forEach(child => {
+                    list.innerHTML += `<div class="list-item"><span>${child.key} (-${child.val().percent}%)</span><button class="btn-del" onclick="window.delData('promocodes/${child.key}')">×</button></div>`;
+                });
+            });
+
+            // BLACKLIST
+            document.getElementById('btn-add-bl').onclick = () => {
+                const userVal = document.getElementById('bl-user').value;
+                if(!userVal) return;
+                set(ref(db, `blacklist/${userVal.replace('.', '_')}`), { status: "banned" }).then(() => alert("Bloklandı!"));
+            };
+
+            onValue(ref(db, 'blacklist'), (snap) => {
+                const list = document.getElementById('bl-list');
+                list.innerHTML = "";
+                snap.forEach(child => {
+                    list.innerHTML += `<div class="list-item"><span>${child.key}</span><button class="btn-del" onclick="window.delData('blacklist/${child.key}')">×</button></div>`;
+                });
+            });
+
+            // LOQLAR (Yalnız Owner)
+            if(isOwner) {
+                onValue(ref(db, 'logs'), (snap) => {
+                    const list = document.getElementById('logs-list');
+                    list.innerHTML = "";
+                    snap.forEach(child => {
+                        const l = child.val();
+                        list.innerHTML = `<div style="font-size:12px; border-bottom:1px solid #111; padding:5px;">[${l.time}] ${l.user}: ${l.action}</div>` + list.innerHTML;
+                    });
+                });
+            }
+
+            window.delData = (path) => { if(confirm("Silinsin?")) remove(ref(db, path)); };
         }
 
         document.getElementById('btn-logout').onclick = () => signOut(auth).then(() => location.reload());
-
         document.querySelectorAll('.nav-link').forEach(link => {
             link.onclick = () => {
                 document.querySelectorAll('.nav-link, .view').forEach(el => el.classList.remove('active'));
