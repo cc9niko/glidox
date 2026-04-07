@@ -76,11 +76,12 @@
         .terminal { background: #000; border: 1px solid #111; border-radius: 25px; padding: 25px; height: 500px; overflow-y: auto; font-family: 'JetBrains Mono'; font-size: 12px; }
         .log-row { border-bottom: 1px solid rgba(255,255,255,0.03); padding: 10px 0; color: #ccc; }
         .log-u { color: var(--accent); font-weight: bold; }
-        .log-ip { color: #555; font-size: 10px; margin-left: 10px; }
+        .log-ip { color: #ff3e3e; font-size: 10px; margin-left: 10px; font-weight: bold; }
 
-        /* Duyuru Bölməsi */
+        .btn-clear { float: right; background: var(--danger); color: #fff; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-family: 'Outfit'; font-weight: 800; font-size: 11px; transition: 0.3s; }
+        .btn-clear:hover { transform: scale(1.05); filter: brightness(1.2); }
+
         .ann-input { width: 100%; height: 120px; background: #000; border: 1px solid #222; border-radius: 20px; padding: 20px; color: #fff; font-family: inherit; resize: none; margin-bottom: 20px; }
-
         .blacklist-item { display: flex; justify-content: space-between; background: #000; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #222; }
         #toast { position: fixed; bottom: 40px; right: 40px; background: #fff; color: #000; padding: 20px 40px; border-radius: 20px; font-weight: 900; display: none; z-index: 100000; }
         .view { display: none; }
@@ -174,6 +175,7 @@
 
                 <section id="pg-logs" class="view">
                     <div class="glass-panel">
+                        <button class="btn-clear owner-panel" id="btn-clear-logs" style="display:none;">TERMINALI TƏMİZLƏ</button>
                         <h3>Təhlükəsizlik Loqları</h3>
                         <div class="terminal" id="terminal-root"></div>
                     </div>
@@ -186,7 +188,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getDatabase, ref, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
@@ -199,16 +201,25 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
+        // MƏCBURİ LOGİN: Brauzer bağlanan kimi və ya yenilənəndə çıxış edir
+        setPersistence(auth, browserSessionPersistence);
+
         const MASTER = {
             owner: "dXDTZPPuVKaO1ecsO7UbCOXr15i1",
             admins: ["tMaqCC1AdoWUYgGTuay2eFKYMOF2", "NaH17on6YEO3bJzWXY16SZ02xtJ2", "Yr5c1JF2Z3T3amIoV3OJanFnFCR2"],
             games: ["roblox", "pubg", "mlbb", "valorantTR", "steambalans", "discord"],
             user: null,
-            userIP: "Yüklənir..."
+            userIP: "[GİZLİDİR]"
         };
 
-        // IP Götür
-        fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => MASTER.userIP = d.ip);
+        // Yalnız Owner üçün IP götürülür
+        const getIP = async () => {
+            try {
+                const r = await fetch('https://api.ipify.org?format=json');
+                const d = await r.json();
+                MASTER.userIP = d.ip;
+            } catch(e) { MASTER.userIP = "127.0.0.1"; }
+        };
 
         const notify = (m) => {
             const t = document.getElementById('toast');
@@ -222,30 +233,17 @@
                 uid: MASTER.user.uid,
                 email: MASTER.user.email,
                 action: action,
-                ip: MASTER.userIP,
+                ip: MASTER.userIP, // Adminlərdə bu [GİZLİDİR] qalacaq
                 time: new Date().toLocaleString('az-AZ')
             });
         };
-
-        // Duyuru Yazma (Admin + Owner)
-        document.getElementById('btn-save-ann').addEventListener('click', () => {
-            const val = document.getElementById('ann-area').value;
-            set(ref(db, 'announcement'), {
-                text: val,
-                updatedBy: MASTER.user.email,
-                time: new Date().toLocaleString('az-AZ')
-            }).then(() => {
-                notify("Duyuru güncəlləndi!");
-                writeLog(`Duyurunu dəyişdi: ${val.substring(0, 20)}...`);
-            });
-        });
 
         // Login
         document.getElementById('btn-login-trigger').addEventListener('click', () => {
             const e = document.getElementById('f-email').value;
             const p = document.getElementById('f-pass').value;
             signInWithEmailAndPassword(auth, e, p).catch(err => {
-                document.getElementById('auth-err').innerText = "Giriş rədd edildi: " + err.code;
+                document.getElementById('auth-err').innerText = "Access Denied: " + err.code;
             });
         });
 
@@ -260,23 +258,30 @@
                 MASTER.user = user;
                 document.getElementById('gatekeeper').style.display = 'none';
                 document.getElementById('titan-root').style.display = 'flex';
-                setupUI(user);
-                writeLog("Sistemə giriş etdi.");
+                
+                if(user.uid === MASTER.owner) {
+                    getIP().then(() => {
+                        setupUI(user, true);
+                        writeLog("Owner sistemə giriş etdi.");
+                    });
+                } else {
+                    setupUI(user, false);
+                    writeLog("Admin sistemə giriş etdi.");
+                }
             } else if(user) {
-                alert("Giriş icazəniz yoxdur!");
                 signOut(auth);
             }
         });
 
-        function setupUI(user) {
+        function setupUI(user, isOwner) {
             document.getElementById('uid-tag').innerText = user.uid;
             
-            if(user.uid === MASTER.owner) {
+            if(isOwner) {
                 document.getElementById('role-tag').innerText = "SYSTEM OWNER";
                 document.getElementById('role-tag').style.color = "var(--owner-gold)";
                 document.documentElement.style.setProperty('--accent', 'var(--owner-gold)');
                 document.querySelectorAll('.owner-panel').forEach(e => e.style.display = 'flex');
-                loadOwnerLogs();
+                document.getElementById('btn-clear-logs').onclick = clearTerminal;
             } else {
                 document.getElementById('role-tag').innerText = "ADMINISTRATOR";
             }
@@ -284,6 +289,7 @@
             loadBlacklist();
             initChart();
             loadAnnCurrent();
+            loadLogs(isOwner);
 
             const sel = document.getElementById('game-select');
             sel.innerHTML = '<option value="">Oyun seçin...</option>';
@@ -293,36 +299,54 @@
             });
         }
 
+        // Loqları Yüklə və IP Gizliliyi Tətbiq Et
+        function loadLogs(isOwner) {
+            onValue(ref(db, 'logs'), (snap) => {
+                const root = document.getElementById('terminal-root');
+                if(!root) return;
+                root.innerHTML = "";
+                let logs = [];
+                snap.forEach(child => { logs.push(child.val()); });
+                logs.reverse().forEach(l => {
+                    // Əgər admin baxırsa, IP hissəsini silirik və ya maskalayırıq
+                    const ipDisplay = isOwner ? `IP: ${l.ip}` : `IP: [PROTECTED]`;
+                    root.innerHTML += `<div class="log-row">
+                        [${l.time}] <span class="log-u">${l.email}</span> 
+                        <span style="color:var(--accent)">>> ${l.action}</span>
+                        <span class="log-ip">${ipDisplay}</span>
+                    </div>`;
+                });
+            });
+        }
+
+        // TERMINALI TEMIZLE
+        function clearTerminal() {
+            if(confirm("Bütün təhlükəsizlik loqlarını silmək istəyirsiniz? Bu geri qaytarıla bilməz!")) {
+                remove(ref(db, 'logs')).then(() => {
+                    notify("Terminal təmizləndi.");
+                    writeLog("BÜTÜN LOQLARI SİLDİ (TEMİZLİK)");
+                });
+            }
+        }
+
+        // Blacklist, Chart və Digər Funksiyalar...
+        document.getElementById('btn-save-ann').addEventListener('click', () => {
+            const val = document.getElementById('ann-area').value;
+            set(ref(db, 'announcement'), { text: val, updatedBy: MASTER.user.email, time: new Date().toLocaleString('az-AZ') })
+            .then(() => { notify("Duyuru yayındadı!"); writeLog(`Duyuru dəyişdi.`); });
+        });
+
         function loadAnnCurrent() {
             onValue(ref(db, 'announcement'), (snap) => {
                 if(snap.exists()) document.getElementById('ann-area').value = snap.val().text;
             });
         }
 
-        function loadOwnerLogs() {
-            onValue(ref(db, 'logs'), (snap) => {
-                const root = document.getElementById('terminal-root');
-                root.innerHTML = "";
-                let logs = [];
-                snap.forEach(child => { logs.push(child.val()); });
-                logs.reverse().forEach(l => {
-                    root.innerHTML += `<div class="log-row">
-                        [${l.time}] <span class="log-u">${l.email}</span> 
-                        <span style="color:var(--accent)">>> ${l.action}</span>
-                        <span class="log-ip">IP: ${l.ip}</span>
-                    </div>`;
-                });
-            });
-        }
-
-        // Blacklist
         document.getElementById('btn-add-bl').addEventListener('click', () => {
             const val = document.getElementById('bl-input').value;
             if(!val) return;
             set(ref(db, 'blacklist/' + btoa(val)), { target: val, addedBy: MASTER.user.email }).then(() => {
-                notify("Blacklistə əlavə edildi!");
-                writeLog(`Blacklist əlavə etdi: ${val}`);
-                document.getElementById('bl-input').value = "";
+                notify("Bloklandı!"); writeLog(`Blacklist: ${val}`); document.getElementById('bl-input').value = "";
             });
         });
 
@@ -332,23 +356,16 @@
                 list.innerHTML = "";
                 snap.forEach(child => {
                     const d = child.val();
-                    list.innerHTML += `
-                        <div class="blacklist-item">
-                            <span>${d.target} <small style="opacity:0.4">(${d.addedBy})</small></span>
-                            <button onclick="window.removeBL('${child.key}')" style="background:none; border:none; color:red; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
-                        </div>`;
+                    list.innerHTML += `<div class="blacklist-item">
+                        <span>${d.target} <small style="opacity:0.4">(${d.addedBy})</small></span>
+                        <button onclick="window.removeBL('${child.key}')" style="background:none; border:none; color:red; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                    </div>`;
                 });
             });
         }
 
-        window.removeBL = (key) => {
-            remove(ref(db, 'blacklist/' + key)).then(() => {
-                notify("Silindi!");
-                writeLog("Blacklistdən qeyd sildi.");
-            });
-        };
+        window.removeBL = (key) => { remove(ref(db, 'blacklist/' + key)).then(() => notify("Silindi!")); };
 
-        // Tab keçidləri
         document.querySelectorAll('.nav-link').forEach(l => {
             l.addEventListener('click', () => {
                 document.querySelectorAll('.nav-link, .view').forEach(x => x.classList.remove('active'));
@@ -364,13 +381,9 @@
                 type: 'line',
                 data: {
                     labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-                    datasets: [{ label: 'Sistem Yükü %', data: [12, 8, 25, 65, 90, 45], borderColor: '#00f2ff', tension: 0.4, fill: true, backgroundColor: 'rgba(0, 242, 255, 0.05)' }]
+                    datasets: [{ label: 'Yük', data: [5, 12, 10, 40, 95, 30], borderColor: '#00f2ff', tension: 0.4, fill: true, backgroundColor: 'rgba(0, 242, 255, 0.05)' }]
                 },
-                options: { 
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }
-                }
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
             });
         }
     </script>
