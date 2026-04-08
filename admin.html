@@ -1,517 +1,533 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XERON V8 | PROFESSIONAL ADMIN</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="dynamic-title">Xenor Enterprise Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <style>
-        :root {
-            --bg-dark: #070708;
-            --bg-sidebar: #0f0f12;
-            --bg-card: #15151a;
-            --bg-input: #1c1c24;
-            --primary: #3b82f6;
-            --primary-glow: rgba(59, 130, 246, 0.4);
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --text-main: #f4f4f5;
-            --text-muted: #71717a;
-            --border: rgba(255, 255, 255, 0.05);
-            --radius-lg: 16px;
-            --radius-md: 12px;
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    <style>
+        :root {
+            --bg-ultra: #020204; 
+            --bg-panel: #0a0a0f; 
+            --primary: #00f2ff;
+            --owner-gold: #ffaa00; 
+            --danger: #ff3e3e; 
+            --border: rgba(255, 255, 255, 0.05);
+            --sidebar-w: 260px;
+            --glass: rgba(255, 255, 255, 0.02);
+        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--bg-ultra); 
+            color: #888b94; 
+            font-family: 'Outfit', sans-serif; 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+        }
 
-        body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; }
+        /* --- GİRİŞ EKRANI --- */
+        #gatekeeper { 
+            position: fixed; 
+            inset: 0; 
+            z-index: 10000; 
+            background: radial-gradient(circle at center, #0a0a1a 0%, #020204 100%); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
 
-        /* TOAST NOTIFICATION */
-        #toast-box { position: fixed; top: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 12px; }
-        .toast {
-            background: var(--bg-card); border: 1px solid var(--border); padding: 16px 24px;
-            border-radius: var(--radius-md); display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6); backdrop-filter: blur(10px);
-            transform: translateX(150%); animation: toastIn 0.4s forwards; min-width: 320px;
-        }
-        .toast.success { border-left: 4px solid var(--success); }
-        .toast.error { border-left: 4px solid var(--danger); }
-        @keyframes toastIn { to { transform: translateX(0); } }
+        .login-frame { 
+            background: var(--bg-panel); 
+            border: 1px solid var(--border); 
+            padding: 40px 30px; 
+            border-radius: 30px; 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
 
-        /* LOGIN SCREEN */
-        #login-screen {
-            position: fixed; inset: 0; background: radial-gradient(circle at center, #111827 0%, #000 100%);
-            z-index: 10000; display: flex; align-items: center; justify-content: center;
-        }
-        .login-card {
-            background: rgba(21, 21, 26, 0.8); border: 1px solid var(--border);
-            padding: 48px; border-radius: 24px; width: 440px; text-align: center;
-            backdrop-filter: blur(20px); box-shadow: 0 0 80px rgba(0,0,0,0.5);
-        }
-        .login-card h2 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+        .f-group input { 
+            width: 100%; 
+            background: #000; 
+            border: 1px solid var(--border); 
+            padding: 16px; 
+            border-radius: 15px; 
+            color: #fff; 
+            margin-top: 12px; 
+            outline: none; 
+            font-size: 16px; 
+            transition: 0.3s;
+        }
 
-        /* SIDEBAR */
-        aside {
-            width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border);
-            padding: 32px 20px; display: flex; flex-direction: column;
-        }
-        .logo-box {
-            width: 48px; height: 48px; background: var(--primary); border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; color: #fff; font-size: 24px; box-shadow: 0 0 20px var(--primary-glow);
-        }
-        .nav-group { margin-top: 40px; flex: 1; }
-        .nav-item {
-            width: 100%; padding: 14px 18px; border-radius: var(--radius-md); border: none;
-            background: transparent; color: var(--text-muted); font-size: 15px; font-weight: 600;
-            text-align: left; cursor: pointer; transition: var(--transition);
-            display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
-        }
-        .nav-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
-        .nav-item.active { background: var(--primary); color: #fff; box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2); }
+        .f-group input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
 
-        /* MAIN AREA */
-        main { flex: 1; padding: 48px; overflow-y: auto; position: relative; }
-        .page { display: none; }
-        .page.active { display: block; animation: pageFade 0.4s ease-out; }
-        @keyframes pageFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- STRUKTUR --- */
+        #titan-root { display: none; width: 100%; height: 100%; flex-direction: row; }
+        
+        aside { 
+            width: var(--sidebar-w); 
+            background: var(--bg-panel); 
+            border-right: 1px solid var(--border); 
+            padding: 35px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-shrink: 0;
+            z-index: 100;
+        }
 
-        /* DASHBOARD STATS */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
-        .stat-box {
-            background: var(--bg-card); border: 1px solid var(--border); padding: 28px;
-            border-radius: var(--radius-lg); position: relative; overflow: hidden;
-        }
-        .stat-box::after {
-            content: ''; position: absolute; top: 0; right: 0; width: 100px; height: 100px;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.03)); border-radius: 0 0 0 100%;
-        }
+        main { flex: 1; overflow-y: auto; padding: 40px; position: relative; scroll-behavior: smooth; }
 
-        /* GAME GRID */
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-        .game-card {
-            background: var(--bg-card); border: 1px solid var(--border); padding: 24px;
-            border-radius: var(--radius-md); cursor: pointer; transition: var(--transition);
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .game-card:hover { border-color: var(--primary); transform: scale(1.02); background: #1a1a20; }
-        .game-card .icon-circle {
-            width: 40px; height: 40px; background: rgba(255,255,255,0.05);
-            border-radius: 10px; display: flex; align-items: center; justify-content: center;
-        }
+        /* --- NAVİQASİYA --- */
+        .nav-link { 
+            padding: 16px 20px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            transition: 0.3s; 
+            font-size: 15px;
+            color: #555;
+        }
 
-        /* PRICE EDITOR */
-        .editor-container {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 32px; margin-top: 32px; display: none;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-        }
-        .price-list-header {
-            display: grid; grid-template-columns: 2fr 1fr 120px 60px; gap: 16px;
-            padding: 0 16px 12px; border-bottom: 1px solid var(--border);
-            color: var(--text-muted); font-size: 13px; font-weight: 700; text-transform: uppercase;
-        }
-        .price-row {
-            display: grid; grid-template-columns: 2fr 1fr 120px 60px; gap: 16px;
-            align-items: center; padding: 16px; background: rgba(255,255,255,0.02);
-            border-radius: var(--radius-md); margin-top: 12px; border: 1px solid transparent;
-        }
-        .price-row:hover { border-color: var(--border); background: rgba(255,255,255,0.04); }
-        
-        /* INPUTS & BUTTONS */
-        .input-field {
-            width: 100%; background: var(--bg-dark); border: 1px solid var(--border);
-            padding: 12px 16px; border-radius: 10px; color: #fff; outline: none; transition: var(--transition);
-        }
-        .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-        
-        .btn {
-            padding: 12px 24px; border-radius: 10px; border: none; font-weight: 700;
-            cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 10px;
-        }
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3); }
-        .btn-ghost { background: rgba(255,255,255,0.05); color: #fff; }
-        .btn-ghost:hover { background: rgba(255,255,255,0.1); }
-        .btn-success { background: var(--success); color: #000; }
-        .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
-        .btn-danger:hover { background: var(--danger); color: #fff; }
+        .nav-link i { font-size: 18px; }
+        .nav-link:hover { background: rgba(255,255,255,0.03); color: #fff; }
+        .nav-link.active { background: var(--primary); color: #000; box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2); }
+        
+        /* --- PANEL ELEMENTLƏRİ --- */
+        .glass-panel { 
+            background: var(--bg-panel); 
+            border: 1px solid var(--border); 
+            border-radius: 30px; 
+            padding: 25px; 
+            margin-bottom: 30px; 
+            position: relative;
+            overflow: hidden;
+        }
 
-        /* TERMINAL LOQS */
-        .terminal-wrap {
-            background: #000; border: 1px solid var(--border); border-radius: var(--radius-md);
-            padding: 24px; height: 500px; overflow-y: auto; font-family: 'Fira Code', monospace;
-        }
-        .log-entry {
-            display: flex; gap: 20px; padding: 10px 0; border-bottom: 1px solid #111;
-            font-size: 13px; line-height: 1.5;
-        }
-        .log-ts { color: var(--text-muted); min-width: 160px; }
-        .log-user { color: var(--primary); font-weight: 600; min-width: 120px; }
-        .log-msg { color: #e4e4e7; }
+        input, select, textarea { 
+            width: 100%; 
+            background: #000; 
+            border: 1px solid #1a1a1a; 
+            color: #fff; 
+            padding: 14px; 
+            border-radius: 12px; 
+            margin-bottom: 12px; 
+            outline: none; 
+            font-family: inherit; 
+            font-size: 15px;
+            transition: 0.3s;
+        }
 
-    </style>
+        .price-box { 
+            background: var(--glass); 
+            padding: 12px; 
+            border-radius: 18px; 
+            margin-bottom: 10px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            border: 1px solid var(--border);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+        .p-key { flex: 2; color: var(--primary); font-weight: bold; background: #050505 !important; border: none !important; margin-bottom: 0 !important; }
+        .p-val { flex: 1; text-align: center; margin-bottom: 0 !important; border-color: #222 !important; }
+        
+        .btn-del { 
+            background: rgba(255, 62, 62, 0.1); 
+            border: none; 
+            color: var(--danger); 
+            cursor: pointer; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .btn-del:hover { background: var(--danger); color: #fff; }
+
+        .btn-main { 
+            width: 100%; 
+            padding: 18px; 
+            border-radius: 15px; 
+            border: none; 
+            background: var(--primary); 
+            color: #000; 
+            font-weight: 900; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        .btn-clear-logs { 
+            background: var(--danger); 
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        /* --- MOBİL --- */
+        @media (max-width: 768px) {
+            #titan-root { flex-direction: column; }
+            aside { 
+                width: 100%; 
+                height: auto; 
+                border-right: none; 
+                border-bottom: 1px solid var(--border); 
+                position: sticky; 
+                top: 0; 
+                z-index: 1000; 
+                flex-direction: row; 
+                overflow-x: auto; 
+                padding: 12px; 
+                gap: 8px;
+            }
+            aside h3 { display: none; }
+            .nav-link { padding: 12px 18px; font-size: 13px; margin-bottom: 0; white-space: nowrap; border-radius: 10px; }
+            main { padding: 20px; }
+            .price-box { flex-direction: column; gap: 8px; }
+            .p-key, .p-val { width: 100%; text-align: left; }
+            .btn-del { width: 100%; height: 45px; }
+        }
+
+        .view { display: none; } 
+        .view.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        #logs-container::-webkit-scrollbar { width: 5px; }
+        #logs-container::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+    </style>
 </head>
 <body>
 
-    <div id="toast-box"></div>
+    <div id="gatekeeper">
+        <div class="login-frame">
+            <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h2 style="color:#fff; font-weight:900; letter-spacing: 2px;">GLIDOX ADMIN</h2>
+            <p style="font-size: 12px; margin-bottom: 25px; color: #555;">Sistemə daxil olmaq üçün məlumatları daxil edin</p>
+            <div class="f-group">
+                <input type="email" id="f-email" placeholder="E-poçt ünvanı">
+                <input type="password" id="f-pass" placeholder="Şifrə">
+            </div>
+            <button class="btn-main" id="btn-login-trigger" style="margin-top:25px;">GİRİŞ ET</button>
+            <p id="auth-err" style="color:var(--danger); font-size:12px; margin-top:15px; font-weight: bold;"></p>
+        </div>
+    </div>
 
-    <div id="login-screen">
-        <div class="login-card">
-            <div class="logo-box" style="margin: 0 auto 24px;">X</div>
-            <h2>XERON ADMIN</h2>
-            <p style="color: var(--text-muted); margin-bottom: 40px;">Zəhmət olmasa kimliyinizi təsdiq edin</p>
-            
-            <div style="text-align: left; margin-bottom: 20px;">
-                <label style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px; display: block;">E-POÇT</label>
-                <input type="email" id="email" class="input-field" placeholder="admin@xeron.com">
-            </div>
-            <div style="text-align: left; margin-bottom: 32px;">
-                <label style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px; display: block;">ŞİFRƏ</label>
-                <input type="password" id="pass" class="input-field" placeholder="••••••••">
-            </div>
-            
-            <button id="btn-login" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px;">
-                SİSTEMƏ DAXİL OL <i class="fa-solid fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
+    <div id="titan-root">
+        <aside>
+            <h3 style="color:#fff; margin-bottom:30px; font-weight: 900;"><i class="fa-solid fa-bolt" style="color:var(--primary)"></i> GLIDOX</h3>
+            <div class="nav-link active" data-target="pg-dash"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+            <div class="nav-link" data-target="pg-prices"><i class="fa-solid fa-tags"></i> Qiymətlər</div>
+            <div class="nav-link" data-target="pg-ann"><i class="fa-solid fa-bullhorn"></i> Duyurular</div>
+            <div class="nav-link" data-target="pg-blist"><i class="fa-solid fa-user-lock"></i> Blacklist</div>
+            <div id="owner-link-container" style="display: none;">
+                <div class="nav-link" data-target="pg-logs" style="color:var(--owner-gold)"><i class="fa-solid fa-fingerprint"></i> Sistem Loqları</div>
+            </div>
+            <button id="btn-logout" style="background:rgba(255,62,62,0.05); border:1px solid var(--danger); color:var(--danger); padding:12px; border-radius:12px; cursor:pointer; margin-top:auto; font-weight: bold;">SİSTEMDƏN ÇIXIŞ</button>
+        </aside>
 
-    <div id="app-content" style="display: none; width: 100%; height: 100%;">
-        <aside>
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <div class="logo-box">X</div>
-                <div>
-                    <h3 style="letter-spacing: -0.5px;">XERON V8</h3>
-                    <span style="font-size: 11px; color: var(--success); font-weight: 800; text-transform: uppercase;">Cloud Secure</span>
-                </div>
-            </div>
+        <main>
+            <div id="pg-dash" class="view active">
+                <div class="glass-panel">
+                    <h2 id="panel-welcome-title" style="color: #fff; font-size: 28px;">Xoş Gəldiniz</h2>
+                    <p id="role-text" style="font-weight:900; margin-top: 10px; letter-spacing: 1px;"></p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="glass-panel" style="text-align: center;">
+                        <i class="fa-solid fa-clock" style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i>
+                        <h4 style="color:#fff">Server Vaxtı</h4>
+                        <p id="server-clock" style="font-size: 20px; color: #fff; font-weight: bold;">--:--:--</p>
+                    </div>
+                </div>
+            </div>
 
-            <nav class="nav-group">
-                <button class="nav-item active" onclick="switchPage('dash', this)"><i class="fa-solid fa-grid-2"></i> Dashboard</button>
-                <button class="nav-item" onclick="switchPage('prices', this)"><i class="fa-solid fa-tags"></i> Qiymət İdarəsi</button>
-                <button class="nav-item" onclick="switchPage('ann', this)"><i class="fa-solid fa-bullhorn"></i> Duyurular</button>
-                <div style="height: 1px; background: var(--border); margin: 24px 0;"></div>
-                <button id="nav-logs" class="nav-item" onclick="switchPage('logs', this)" style="color: var(--warning);"><i class="fa-solid fa-shield-halved"></i> Audit Loqları</button>
-            </nav>
+            <div id="pg-prices" class="view">
+                <div class="glass-panel">
+                    <h3 style="color:#fff; margin-bottom:20px;">Oyun Qiymətlərini İdarə Et</h3>
+                    <select id="game-select">
+                        <option value="">-- Oyun Seçin --</option>
+                        <option value="roblox">1. Roblox</option>
+                        <option value="pubg">2. PUBG Mobile</option>
+                        <option value="steambalans">3. Steam Balans</option>
+                        <option value="mlbb">4. Mobile Legends</option>
+                        <option value="valorant">5. Valorant</option>
+                        <option value="freefire">6. Free Fire</option>
+                        <option value="brawlstars">7. Brawl Stars</option>
+                        <option value="clashofclans">8. Clash of Clans</option>
+                        <option value="genshin">9. Genshin Impact</option>
+                        <option value="efootball">10. eFootball PES</option>
+                        <option value="codm">11. COD Mobile</option>
+                        <option value="leagueoflegends">12. League of Legends</option>
+                    </select>
+                    
+                    <div id="price-fields-container" style="margin-top: 20px;"></div>
+                    
+                    <div id="new-package-area" style="display:none; margin-top:30px; padding-top:20px; border-top: 1px dashed #222;">
+                        <p style="font-size:13px; color:var(--primary); margin-bottom:15px; font-weight: bold;">+ YENİ PAKET ƏLAVƏ ET</p>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="new-p-key" placeholder="Paket adı (məs: 1000 UC)">
+                            <input type="text" id="new-p-val" placeholder="Qiymət (məs: 15.50)">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-main" id="btn-save-prices" style="display:none; margin-top:20px;">DƏYİŞİKLİKLƏRİ YADDA SAXLA</button>
+                </div>
+            </div>
 
-            <button class="btn btn-danger" onclick="handleLogout()" style="width: 100%; justify-content: center;">
-                <i class="fa-solid fa-power-off"></i> ÇIXIŞ ET
-            </button>
-        </aside>
+            <div id="pg-ann" class="view">
+                <div class="glass-panel">
+                    <h3 style="color:#fff; margin-bottom:15px;">Duyuru Mesajı</h3>
+                    <p style="font-size: 12px; margin-bottom: 15px;">Ana səhifədə görünəcək vacib bildiriş.</p>
+                    <textarea id="ann-text" rows="6" placeholder="Bura yazın..."></textarea>
+                    <button class="btn-main" id="btn-save-ann">YAYIMLA</button>
+                </div>
+            </div>
 
-        <main>
-            <div id="page-dash" class="page active">
-                <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 8px;">Xoş gəldin, Admin</h1>
-                <p style="color: var(--text-muted); margin-bottom: 40px;">Sistem statusu hazırda optimal vəziyyətdədir.</p>
+            <div id="pg-blist" class="view">
+                <div class="glass-panel">
+                    <h3 style="color:#fff; margin-bottom:20px;">Qara Siyahı (Blacklist)</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                        <input type="text" id="bl-user-input" placeholder="İstifadəçi ID və ya Email" style="margin-bottom:0">
+                        <button class="btn-main" id="btn-add-bl" style="width: auto; padding: 0 30px;">BLOKLA</button>
+                    </div>
+                    <div id="bl-list-container"></div>
+                </div>
+            </div>
 
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <small style="color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Sistem Saatı</small>
-                        <h2 id="clock-display" style="font-size: 36px; margin-top: 10px; font-family: 'Fira Code';">00:00:00</h2>
-                    </div>
-                    <div class="stat-box">
-                        <small style="color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Aktiv Oyunlar</small>
-                        <h2 style="font-size: 36px; margin-top: 10px; color: var(--primary);">12 List</h2>
-                    </div>
-                    <div class="stat-box">
-                        <small style="color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Baza Bağlantısı</small>
-                        <h2 style="font-size: 36px; margin-top: 10px; color: var(--success);">Stabil</h2>
-                    </div>
-                </div>
-            </div>
+            <div id="pg-logs" class="view">
+                <div class="glass-panel">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                        <h3 style="color:#fff;">Təhlükəsizlik Jurnalı</h3>
+                        <button class="btn-clear-logs" id="btn-clear-logs"><i class="fa-solid fa-trash-can"></i> Loqları Təmizlə</button>
+                    </div>
+                    <div id="logs-container" style="height:500px; overflow-y:auto; background:#000; padding:15px; border-radius:15px; border: 1px solid #111;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-            <div id="page-prices" class="page">
-                <h2 style="font-size: 24px; margin-bottom: 24px;">Oyun Siyahısı (Master 12)</h2>
-                
-                <div class="game-grid" id="master-game-list">
-                    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, get, set, push, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-                <div class="editor-container" id="main-editor">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-                        <div>
-                            <h2 id="active-game-title" style="color: var(--primary); font-size: 24px;">Seçilməyib</h2>
-                            <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Paket qiymətlərini birbaşa aşağıdan yeniləyin.</p>
-                        </div>
-                        <button class="btn btn-ghost" onclick="closeEditor()">Bağla</button>
-                    </div>
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8", 
+            databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app", 
+            projectId: "glidoxshop" 
+        };
 
-                    <div style="background: rgba(59, 130, 246, 0.03); border: 1px dashed var(--primary); padding: 24px; border-radius: var(--radius-md); margin-bottom: 32px;">
-                        <h4 style="font-size: 14px; margin-bottom: 16px;">YENİ PAKET ƏLAVƏ ET</h4>
-                        <div style="display: flex; gap: 12px;">
-                            <input type="text" id="new-p-name" class="input-field" placeholder="Paket Adı (Məs: 10 UC)" style="flex: 2;">
-                            <input type="text" id="new-p-val" class="input-field" placeholder="Qiymət (AZN)" style="flex: 1;">
-                            <button class="btn btn-primary" onclick="addNewPackage()">ƏLAVƏ ET</button>
-                        </div>
-                    </div>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
 
-                    <div class="price-list-header">
-                        <span>Paket Adı</span>
-                        <span>Mövcud Qiymət</span>
-                        <span>Hərəkət</span>
-                        <span>Sil</span>
-                    </div>
-                    <div id="price-rows-container">
-                        </div>
-                </div>
-            </div>
+        // Sessiyanı yaddaşda saxla (Reload edəndə çıxmasın deyə)
+        setPersistence(auth, browserLocalPersistence);
 
-            <div id="page-ann" class="page">
-                <h2 style="margin-bottom: 24px;">Qlobal Duyuru Sistemi</h2>
-                <div style="max-width: 700px; background: var(--bg-card); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border);">
-                    <label style="display: block; color: var(--text-muted); font-weight: 600; margin-bottom: 12px;">Müştəri Panelində Görünəcək Mətn</label>
-                    <textarea id="ann-input" style="width: 100%; height: 180px; background: var(--bg-dark); border: 1px solid var(--border); color: #fff; padding: 20px; border-radius: var(--radius-md); outline: none; margin-bottom: 24px; resize: none;"></textarea>
-                    <button class="btn btn-primary" onclick="saveGlobalAnn()">
-                        <i class="fa-solid fa-paper-plane"></i> DUYURUNU YAYIMLA
-                    </button>
-                </div>
-            </div>
+        const OWNER_UID = "dXDTZPPuVKaO1ecsO7UbCOXr15i1";
+        const ADMINS = ["tMaqCC1AdoWUYgGTuay2eFKYMOF2", "NaH17on6YEO3bJzWXY16SZ02xtJ2", "Yr5c1JF2Z3T3amIoV3OJanFnFCR2"];
+        let userIp = "0.0.0.0";
 
-            <div id="page-logs" class="page">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h2>Sistem Audit Loqları</h2>
-                    <button class="btn btn-danger" onclick="clearAllLogs()">Loqları Təmizlə</button>
-                </div>
-                <div class="terminal-wrap" id="log-display">
-                    <p style="color: #444;">Loqlar sinxronizasiya edilir...</p>
-                </div>
-            </div>
-        </main>
-    </div>
+        // IP Əldə et
+        fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIp = d.ip);
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        // Saat funksiyası
+        setInterval(() => {
+            document.getElementById('server-clock').innerText = new Date().toLocaleTimeString('az-AZ');
+        }, 1000);
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8",
-            databaseURL: "https://xeronshop-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "xeronshop"
-        };
+        async function createLog(action) {
+            const user = auth.currentUser;
+            if(!user) return;
+            try {
+                await push(ref(db, 'logs'), {
+                    user: user.email,
+                    action: action,
+                    ip: userIp,
+                    time: new Date().toLocaleString('az-AZ')
+                });
+            } catch(e) { console.error("Log error", e); }
+        }
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+        onAuthStateChanged(auth, (user) => {
+            if(user && (user.uid === OWNER_UID || ADMINS.includes(user.uid))) {
+                document.getElementById('gatekeeper').style.display = 'none';
+                document.getElementById('titan-root').style.display = 'flex';
+                
+                const isOwner = user.uid === OWNER_UID;
+                document.getElementById('panel-welcome-title').innerText = isOwner ? "Owner Kontrol Paneli" : "Admin Kontrol Paneli";
+                const roleText = document.getElementById('role-text');
+                roleText.innerText = isOwner ? "YETKİ: TAM (OWNER)" : "YETKİ: MƏHDUD (ADMIN)";
+                roleText.style.color = isOwner ? "var(--owner-gold)" : "var(--primary)";
 
-        // Core Configuration
-        const ADMIN_LIST = ["dXDTZPPuVKaO1ecsO7UbCOXr15i1", "tMaqCC1AdoWUYgGTuay2eFKYMOF2", "NaH17on6YEO3bJzWXY16SZ02xtJ2", "Yr5c1JF2Z3T3amIoV3OJanFnFCR2"];
-        const CORE_12_GAMES = [
-            { id: 'steam', name: 'Steam Wallet' },
-            { id: 'pubg', name: 'PUBG Mobile' },
-            { id: 'mlbb', name: 'Mobile Legends' },
-            { id: 'val_tr', name: 'Valorant TR' },
-            { id: 'val_eu', name: 'Valorant EU' },
-            { id: 'apple', name: 'Apple Balans' },
-            { id: 'freefire', name: 'Free Fire' },
-            { id: 'roblox', name: 'Roblox' },
-            { id: 'delta', name: 'Delta Force' },
-            { id: 'standoff', name: 'Standoff 2' },
-            { id: 'weplay', name: 'WePlay' },
-            { id: 'discord', name: 'Discord Nitro' }
-        ];
+                if(isOwner) {
+                    document.getElementById('owner-link-container').style.display = 'block';
+                    loadLogs();
+                }
+                
+                setupPanelActions(user, isOwner);
+            } else if(user) {
+                signOut(auth);
+            }
+        });
 
-        let activeGameID = null;
+        function setupPanelActions(user, isOwner) {
+            const priceFields = document.getElementById('price-fields-container');
 
-        // Utilities
-        window.toast = (msg, type = 'success') => {
-            const box = document.getElementById('toast-box');
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.innerHTML = `<i class="fa-solid ${type==='success'?'fa-circle-check':'fa-circle-xmark'}"></i> ${msg}`;
-            box.appendChild(t);
-            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3000);
-        };
+            // --- Qiymətləri Yüklə ---
+            document.getElementById('game-select').addEventListener('change', (e) => {
+                const game = e.target.value;
+                if(!game) {
+                    priceFields.innerHTML = "";
+                    document.getElementById('btn-save-prices').style.display = "none";
+                    document.getElementById('new-package-area').style.display = "none";
+                    return;
+                }
 
-        setInterval(() => {
-            document.getElementById('clock-display').innerText = new Date().toLocaleTimeString();
-        }, 1000);
+                document.getElementById('btn-save-prices').style.display = "block";
+                document.getElementById('new-package-area').style.display = "block";
 
-        window.switchPage = (page, btn) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(`page-${page}`).classList.add('active');
-            btn.classList.add('active');
-        };
+                onValue(ref(db, `prices/${game}`), (snap) => {
+                    priceFields.innerHTML = "";
+                    const data = snap.val();
+                    if(data) {
+                        Object.keys(data).sort().forEach(key => {
+                            const div = document.createElement('div');
+                            div.className = 'price-box';
+                            div.innerHTML = `
+                                <input type="text" class="p-key" value="${key}" readonly>
+                                <input type="text" class="p-val" value="${data[key]}">
+                                <button class="btn-del" title="Sil"><i class="fa-solid fa-xmark"></i></button>
+                            `;
+                            div.querySelector('.btn-del').onclick = () => div.remove();
+                            priceFields.appendChild(div);
+                        });
+                    }
+                }, { onlyOnce: true });
+            });
 
-        // Audit Logs
-        async function writeAuditLog(action) {
-            if(!auth.currentUser) return;
-            const logRef = ref(db, 'audit_logs_v8');
-            await push(logRef, {
-                u: auth.currentUser.email.split('@')[0],
-                a: action,
-                t: new Date().toLocaleString('az-AZ'),
-                ts: Date.now()
-            });
-        }
+            // --- Qiymətləri Saxla (Reload-suz) ---
+            document.getElementById('btn-save-prices').onclick = async () => {
+                const game = document.getElementById('game-select').value;
+                const rows = priceFields.querySelectorAll('.price-box');
+                const nK = document.getElementById('new-p-key').value.trim();
+                const nV = document.getElementById('new-p-val').value.trim();
+                
+                let upData = {};
+                rows.forEach(r => {
+                    const k = r.querySelector('.p-key').value;
+                    const v = r.querySelector('.p-val').value;
+                    upData[k] = v;
+                });
+                
+                if(nK && nV) upData[nK] = nV;
 
-        function loadAuditLogs() {
-            onValue(ref(db, 'audit_logs_v8'), (snap) => {
-                const display = document.getElementById('log-display');
-                display.innerHTML = "";
-                let logs = [];
-                snap.forEach(child => { logs.push(child.val()); });
-                logs.sort((a,b) => b.ts - a.ts).forEach(l => {
-                    display.innerHTML += `
-                        <div class="log-entry">
-                            <span class="log-ts">[${l.t}]</span>
-                            <span class="log-user">@${l.u}</span>
-                            <span class="log-msg">${l.a}</span>
-                        </div>
-                    `;
-                });
-            });
-        }
+                try {
+                    await set(ref(db, `prices/${game}`), upData);
+                    await createLog(`${game} oyun qiymətlərini yenilədi`);
+                    
+                    document.getElementById('new-p-key').value = "";
+                    document.getElementById('new-p-val').value = "";
+                    
+                    alert("Uğurla yadda saxlanıldı!");
+                } catch(e) { alert("Xəta baş verdi!"); }
+            };
 
-        // Auth Logic
-        onAuthStateChanged(auth, (user) => {
-            if(user && ADMIN_LIST.includes(user.uid)) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-content').style.display = 'flex';
-                initSystem();
-                writeAuditLog("Sistemə daxil oldu.");
-            } else {
-                document.getElementById('login-screen').style.display = 'flex';
-                document.getElementById('app-content').style.display = 'none';
-                if(user) signOut(auth);
-            }
-        });
+            // --- Duyuru ---
+            document.getElementById('btn-save-ann').onclick = async () => {
+                const msg = document.getElementById('ann-text').value;
+                await update(ref(db, 'announcement'), { 
+                    message: msg,
+                    date: new Date().toLocaleString()
+                });
+                await createLog("Duyuru mesajını yenilədi");
+                alert("Duyuru yayımlandı!");
+            };
 
-        document.getElementById('btn-login').onclick = () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('pass').value;
-            signInWithEmailAndPassword(auth, e, p).catch(() => toast("Giriş məlumatları yanlışdır!", "error"));
-        };
+            // --- Loqların Təmizlənməsi ---
+            if(isOwner) {
+                document.getElementById('btn-clear-logs').onclick = async () => {
+                    if(confirm("DİQQƏT: Bütün fəaliyyət tarixçəsi silinsin?")) {
+                        await remove(ref(db, 'logs'));
+                        await createLog("SİSTEM LOQLARINI TƏMİZLƏDİ");
+                        alert("Tarixçə təmizləndi.");
+                    }
+                };
+            }
+        }
 
-        window.handleLogout = async () => {
-            await writeAuditLog("Sistemdən çıxış etdi.");
-            signOut(auth);
-        };
+        function loadLogs() {
+            onValue(ref(db, 'logs'), (snap) => {
+                const lBox = document.getElementById('logs-container');
+                lBox.innerHTML = "";
+                let logData = [];
+                snap.forEach(c => { logData.push(c.val()); });
+                logData.reverse().forEach(l => {
+                    const d = document.createElement('div');
+                    d.style.cssText = "padding:10px; border-bottom:1px solid #111; font-family:monospace;";
+                    d.innerHTML = `
+                        <span style="color:#555">[${l.time}]</span> 
+                        <b style="color:var(--primary)">${l.user}</b> 
+                        <span style="color:#333">(${l.ip})</span>: 
+                        <span style="color:#eee">${l.action}</span>
+                    `;
+                    lBox.appendChild(d);
+                });
+            });
+        }
 
-        // Price Engine
-        function initSystem() {
-            const grid = document.getElementById('master-game-list');
-            grid.innerHTML = "";
-            CORE_12_GAMES.forEach(game => {
-                grid.innerHTML += `
-                    <div class="game-card" onclick="openEditor('${game.id}', '${game.name}')">
-                        <div style="display:flex; align-items:center; gap:16px;">
-                            <div class="icon-circle"><i class="fa-solid fa-gamepad"></i></div>
-                            <span style="font-weight:700;">${game.name}</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted); font-size:12px;"></i>
-                    </div>
-                `;
-            });
+        // Giriş Prosesi
+        document.getElementById('btn-login-trigger').onclick = () => {
+            const e = document.getElementById('f-email').value;
+            const p = document.getElementById('f-pass').value;
+            if(!e || !p) return;
+            
+            signInWithEmailAndPassword(auth, e, p).catch(err => {
+                document.getElementById('auth-err').innerText = "Giriş rədd edildi: Email və ya Şifrə yanlışdır.";
+            });
+        };
 
-            // Sync Ann
-            onValue(ref(db, 'global_announcement/msg'), (snap) => {
-                document.getElementById('ann-input').value = snap.val() || "";
-            });
+        // Çıxış
+        document.getElementById('btn-logout').onclick = async () => {
+            if(confirm("Çıxış etmək istədiyinizə əminsiniz?")) {
+                await createLog("Sistemdən çıxış etdi");
+                signOut(auth).then(() => {
+                    location.reload();
+                });
+            }
+        };
 
-            loadAuditLogs();
-        }
-
-        window.openEditor = (id, name) => {
-            activeGameID = id;
-            document.getElementById('active-game-title').innerText = name;
-            document.getElementById('main-editor').style.display = 'block';
-            
-            const container = document.getElementById('price-rows-container');
-            onValue(ref(db, `prices/${id}`), (snap) => {
-                container.innerHTML = "";
-                if(snap.exists()) {
-                    snap.forEach(child => {
-                        const pName = child.key;
-                        const pVal = child.val();
-                        container.innerHTML += `
-                            <div class="price-row">
-                                <span style="font-weight:600;">${pName}</span>
-                                <input type="text" id="input-${pName}" class="input-field" value="${pVal}">
-                                <button class="btn btn-success" onclick="updatePkgPrice('${pName}')">YENİLƏ</button>
-                                <button class="btn btn-danger" onclick="deletePkg('${pName}')"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        `;
-                    });
-                } else {
-                    container.innerHTML = "<p style='padding:20px; color:var(--text-muted);'>Hələ paket əlavə edilməyib.</p>";
-                }
-            });
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        };
-
-        window.closeEditor = () => {
-            document.getElementById('main-editor').style.display = 'none';
-            activeGameID = null;
-        };
-
-        window.updatePkgPrice = async (pName) => {
-            const newVal = document.getElementById(`input-${pName}`).value.trim();
-            if(!newVal) return toast("Qiymət boş ola bilməz!", "error");
-            
-            try {
-                await set(ref(db, `prices/${activeGameID}/${pName}`), newVal);
-                await writeAuditLog(`${activeGameID} oyununda "${pName}" qiymətini dəyişdi: ${newVal} AZN`);
-                toast("Qiymət uğurla yeniləndi!");
-            } catch(e) { toast(e.message, "error"); }
-        };
-
-        window.addNewPackage = async () => {
-            const name = document.getElementById('new-p-name').value.trim();
-            const val = document.getElementById('new-p-val').value.trim();
-            if(!name || !val) return toast("Məlumatları doldurun!", "error");
-
-            try {
-                await set(ref(db, `prices/${activeGameID}/${name}`), val);
-                await writeAuditLog(`${activeGameID} oyununa yeni paket əlavə etdi: ${name} (${val} AZN)`);
-                toast("Yeni paket əlavə edildi!");
-                document.getElementById('new-p-name').value = "";
-                document.getElementById('new-p-val').value = "";
-            } catch(e) { toast(e.message, "error"); }
-        };
-
-        window.deletePkg = async (pName) => {
-            if(confirm(`"${pName}" paketini silmək istəyirsiniz?`)) {
-                await remove(ref(db, `prices/${activeGameID}/${pName}`));
-                await writeAuditLog(`${activeGameID} oyunundan paket sildi: ${pName}`);
-                toast("Paket silindi.");
-            }
-        };
-
-        window.saveGlobalAnn = async () => {
-            const msg = document.getElementById('ann-input').value.trim();
-            await set(ref(db, 'global_announcement/msg'), msg);
-            await writeAuditLog("Sistem duyurusunu yenilədi.");
-            toast("Duyuru yayımlandı!");
-        };
-
-        window.clearAllLogs = async () => {
-            if(confirm("Bütün audit loqları silinsin?")) {
-                await remove(ref(db, 'audit_logs_v8'));
-                toast("Loqlar təmizləndi.");
-            }
-        };
-
-        // Global Expose
-        window.switchPage = switchPage;
-        window.openEditor = openEditor;
-        window.closeEditor = closeEditor;
-        window.updatePkgPrice = updatePkgPrice;
-        window.addNewPackage = addNewPackage;
-        window.deletePkg = deletePkg;
-        window.saveGlobalAnn = saveGlobalAnn;
-        window.clearAllLogs = clearAllLogs;
-        window.handleLogout = handleLogout;
-
-    </script>
+        // Tab keçidləri
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.onclick = () => {
+                document.querySelectorAll('.nav-link, .view').forEach(el => el.classList.remove('active'));
+                link.classList.add('active');
+                document.getElementById(link.dataset.target).classList.add('active');
+            };
+        });
+    </script>
 </body>
 </html>
