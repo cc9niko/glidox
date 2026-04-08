@@ -3,554 +3,531 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>XERON OS V12 | SUPREME ADMINISTRATION</title>
+    <title id="dynamic-title">Glidox Enterprise Admin</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
     <style>
-        /* XERON SUPREME UI FRAMEWORK v15.0 
-           TOTAL CSS ARCHITECTURE: ~350 LINES
-        */
         :root {
-            --glidox-cyan: #00f2ff;
-            --glidox-blue: #2563eb;
-            --glidox-bg: #030305;
-            --glidox-panel: #0a0a0f;
-            --glidox-card: #111118;
-            --glidox-input: #000000;
-            --glidox-border: rgba(255, 255, 255, 0.07);
-            --glidox-red: #ff4d4d;
-            --glidox-green: #00ff95;
-            --glidox-gray: #88889b;
-            --radius-main: 20px;
-            --shadow-glow: 0 0 20px rgba(0, 242, 255, 0.2);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-ultra: #020204; 
+            --bg-panel: #0a0a0f; 
+            --primary: #00f2ff;
+            --owner-gold: #ffaa00; 
+            --danger: #ff3e3e; 
+            --border: rgba(255, 255, 255, 0.05);
+            --sidebar-w: 260px;
+            --glass: rgba(255, 255, 255, 0.02);
         }
 
-        /* SCROLLBAR CUSTOMIZATION */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--glidox-bg); }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--glidox-cyan); }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background: var(--glidox-bg); 
-            color: #fff; 
+            background: var(--bg-ultra); 
+            color: #888b94; 
+            font-family: 'Outfit', sans-serif; 
             height: 100vh; 
             overflow: hidden; 
-            display: flex;
-            letter-spacing: -0.3px;
+            display: flex; 
         }
 
-        /* --- SIDEBAR SYSTEM --- */
-        aside {
-            width: 300px; background: var(--glidox-panel); border-right: 1px solid var(--glidox-border);
-            padding: 40px 25px; display: flex; flex-direction: column; transition: var(--transition);
-            position: relative; z-index: 1000;
+        /* --- GİRİŞ EKRANI --- */
+        #gatekeeper { 
+            position: fixed; 
+            inset: 0; 
+            z-index: 10000; 
+            background: radial-gradient(circle at center, #0a0a1a 0%, #020204 100%); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
         }
 
-        .brand-section { display: flex; align-items: center; gap: 15px; margin-bottom: 60px; padding: 0 10px; }
-        .brand-logo { 
-            width: 50px; height: 50px; background: var(--glidox-blue); border-radius: 14px;
-            display: flex; align-items: center; justify-content: center; font-weight: 900;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4); transform: rotate(-5deg); font-size: 22px;
+        .login-frame { 
+            background: var(--bg-panel); 
+            border: 1px solid var(--border); 
+            padding: 40px 30px; 
+            border-radius: 30px; 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .nav-list { flex: 1; list-style: none; }
-        .nav-item {
-            width: 100%; padding: 18px 22px; border-radius: 16px; border: none;
-            background: transparent; color: var(--glidox-gray); font-size: 15px; font-weight: 600;
-            text-align: left; cursor: pointer; display: flex; align-items: center; gap: 18px;
-            transition: var(--transition); margin-bottom: 10px;
-        }
-        .nav-item i { font-size: 20px; width: 25px; text-align: center; }
-        .nav-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
-        .nav-item.active { background: var(--glidox-blue); color: #fff; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3); }
-
-        .exit-section { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--glidox-border); }
-        .btn-exit {
-            width: 100%; padding: 18px; border-radius: 14px; background: transparent;
-            border: 1px solid var(--glidox-red); color: var(--glidox-red); font-weight: 700;
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-exit:hover { background: var(--glidox-red); color: #fff; box-shadow: 0 0 20px rgba(255, 77, 77, 0.3); }
-
-        /* --- MAIN CONTENT AREA --- */
-        main { flex: 1; padding: 60px; overflow-y: auto; scroll-behavior: smooth; position: relative; }
-        
-        /* MOBILE OVERLAY */
-        #mobile-toggle {
-            display: none; position: fixed; top: 20px; right: 20px; z-index: 1100;
-            width: 55px; height: 55px; background: var(--glidox-blue); color: #fff;
-            border-radius: 15px; border: none; font-size: 22px; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-        }
-
-        .view-section { display: none; }
-        .view-section.active { display: block; animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-
-        /* --- STYLED COMPONENTS --- */
-        .glass-card {
-            background: var(--glidox-card); border: 1px solid var(--glidox-border);
-            padding: 40px; border-radius: 30px; margin-bottom: 30px; position: relative;
-        }
-
-        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .metric-item {
-            background: var(--glidox-panel); border: 1px solid var(--glidox-border);
-            padding: 30px; border-radius: 25px; transition: 0.3s;
-        }
-        .metric-item:hover { border-color: var(--glidox-blue); transform: translateY(-5px); }
-
-        /* --- PRICE ENGINE UI (YUXARIDA OLSUN) --- */
-        .game-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
-        .game-btn {
-            background: var(--glidox-card); border: 1px solid var(--glidox-border);
-            padding: 25px; border-radius: 18px; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .game-btn:hover { border-color: var(--glidox-cyan); background: #1a1a25; }
-        .game-btn i { color: var(--glidox-cyan); font-size: 24px; }
-
-        #editor-container {
-            display: none; background: var(--glidox-panel); border: 1px solid var(--glidox-border);
-            border-radius: 35px; padding: 45px; margin-top: 30px; 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8); border-top: 4px solid var(--glidox-blue);
-        }
-
-        .add-package-area {
-            background: rgba(37, 99, 235, 0.04); border: 1px dashed var(--glidox-blue);
-            padding: 30px; border-radius: 22px; margin-bottom: 45px;
-            display: grid; grid-template-columns: 2fr 1fr auto; gap: 20px;
-        }
-
-        .data-row {
-            display: grid; grid-template-columns: 2fr 1fr 130px 60px; gap: 18px;
-            padding: 18px 25px; background: var(--glidox-input); border-radius: 15px;
-            margin-bottom: 15px; align-items: center; border: 1px solid var(--glidox-border);
+        .f-group input { 
+            width: 100%; 
+            background: #000; 
+            border: 1px solid var(--border); 
+            padding: 16px; 
+            border-radius: 15px; 
+            color: #fff; 
+            margin-top: 12px; 
+            outline: none; 
+            font-size: 16px; 
             transition: 0.3s;
         }
-        .data-row:hover { border-color: var(--glidox-cyan); background: #08080c; }
 
-        /* --- FORM ELEMENTS --- */
-        .input-supreme {
-            width: 100%; background: #08080a; border: 1px solid var(--glidox-border);
-            padding: 18px 22px; border-radius: 14px; color: #fff; font-size: 15px; outline: none; transition: 0.3s;
-        }
-        .input-supreme:focus { border-color: var(--glidox-blue); box-shadow: 0 0 15px rgba(37, 99, 235, 0.2); }
+        .f-group input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
 
-        .btn-supreme {
-            padding: 18px 30px; border-radius: 14px; border: none; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.3s;
-            justify-content: center; font-size: 14px;
-        }
-        .btn-primary { background: var(--glidox-blue); color: #fff; }
-        .btn-success { background: var(--glidox-green); color: #000; }
-        .btn-danger { background: rgba(255, 77, 77, 0.1); color: var(--glidox-red); border: 1px solid var(--glidox-red); }
-        .btn-danger:hover { background: var(--glidox-red); color: #fff; }
-
-        /* --- TERMINAL STYLING --- */
-        .audit-terminal {
-            background: #000; border: 1px solid var(--glidox-border); border-radius: 22px;
-            padding: 30px; height: 550px; overflow-y: auto; font-family: 'JetBrains Mono', monospace;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-        }
-        .log-entry { 
-            padding: 12px 0; border-bottom: 1px solid #111; font-size: 13px; 
-            display: flex; gap: 20px; line-height: 1.5; color: #cbd5e1;
-        }
-        .log-timestamp { color: var(--glidox-gray); min-width: 170px; }
-        .log-badge { color: var(--glidox-cyan); font-weight: 700; }
-
-        /* --- RESPONSIVE FIXES --- */
-        @media (max-width: 1024px) {
-            aside { position: fixed; left: -100%; height: 100%; }
-            aside.open { left: 0; box-shadow: 30px 0 60px rgba(0,0,0,0.9); }
-            #mobile-toggle { display: flex; }
-            main { padding: 30px; padding-top: 90px; }
-            .metric-grid { grid-template-columns: 1fr; }
+        /* --- STRUKTUR --- */
+        #titan-root { display: none; width: 100%; height: 100%; flex-direction: row; }
+        
+        aside { 
+            width: var(--sidebar-w); 
+            background: var(--bg-panel); 
+            border-right: 1px solid var(--border); 
+            padding: 35px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-shrink: 0;
+            z-index: 100;
         }
 
+        main { flex: 1; overflow-y: auto; padding: 40px; position: relative; scroll-behavior: smooth; }
+
+        /* --- NAVİQASİYA --- */
+        .nav-link { 
+            padding: 16px 20px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            transition: 0.3s; 
+            font-size: 15px;
+            color: #555;
+        }
+
+        .nav-link i { font-size: 18px; }
+        .nav-link:hover { background: rgba(255,255,255,0.03); color: #fff; }
+        .nav-link.active { background: var(--primary); color: #000; box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2); }
+        
+        /* --- PANEL ELEMENTLƏRİ --- */
+        .glass-panel { 
+            background: var(--bg-panel); 
+            border: 1px solid var(--border); 
+            border-radius: 30px; 
+            padding: 25px; 
+            margin-bottom: 30px; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        input, select, textarea { 
+            width: 100%; 
+            background: #000; 
+            border: 1px solid #1a1a1a; 
+            color: #fff; 
+            padding: 14px; 
+            border-radius: 12px; 
+            margin-bottom: 12px; 
+            outline: none; 
+            font-family: inherit; 
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .price-box { 
+            background: var(--glass); 
+            padding: 12px; 
+            border-radius: 18px; 
+            margin-bottom: 10px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            border: 1px solid var(--border);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+        .p-key { flex: 2; color: var(--primary); font-weight: bold; background: #050505 !important; border: none !important; margin-bottom: 0 !important; }
+        .p-val { flex: 1; text-align: center; margin-bottom: 0 !important; border-color: #222 !important; }
+        
+        .btn-del { 
+            background: rgba(255, 62, 62, 0.1); 
+            border: none; 
+            color: var(--danger); 
+            cursor: pointer; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .btn-del:hover { background: var(--danger); color: #fff; }
+
+        .btn-main { 
+            width: 100%; 
+            padding: 18px; 
+            border-radius: 15px; 
+            border: none; 
+            background: var(--primary); 
+            color: #000; 
+            font-weight: 900; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        .btn-clear-logs { 
+            background: var(--danger); 
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        /* --- MOBİL --- */
         @media (max-width: 768px) {
-            .data-row { grid-template-columns: 1fr !important; gap: 10px; padding: 20px; }
-            .add-package-area { grid-template-columns: 1fr !important; }
-            .btn-supreme { width: 100%; }
+            #titan-root { flex-direction: column; }
+            aside { 
+                width: 100%; 
+                height: auto; 
+                border-right: none; 
+                border-bottom: 1px solid var(--border); 
+                position: sticky; 
+                top: 0; 
+                z-index: 1000; 
+                flex-direction: row; 
+                overflow-x: auto; 
+                padding: 12px; 
+                gap: 8px;
+            }
+            aside h3 { display: none; }
+            .nav-link { padding: 12px 18px; font-size: 13px; margin-bottom: 0; white-space: nowrap; border-radius: 10px; }
+            main { padding: 20px; }
+            .price-box { flex-direction: column; gap: 8px; }
+            .p-key, .p-val { width: 100%; text-align: left; }
+            .btn-del { width: 100%; height: 45px; }
         }
 
+        .view { display: none; } 
+        .view.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        #logs-container::-webkit-scrollbar { width: 5px; }
+        #logs-container::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <button id="mobile-toggle" onclick="toggleNav()"><i class="fa-solid fa-bars-staggered"></i></button>
-
-    <aside id="app-sidebar">
-        <div class="brand-section">
-            <div class="brand-logo">X</div>
-            <div>
-                <h2 style="font-family: 'JetBrains Mono'; letter-spacing: -1px; font-weight: 800;">XERON V12</h2>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <div style="width: 8px; height: 8px; background: var(--glidox-green); border-radius: 50%; box-shadow: 0 0 8px var(--glidox-green);"></div>
-                    <span style="font-size: 10px; color: var(--glidox-green); font-weight: 800; text-transform: uppercase;">Secure Link</span>
-                </div>
+    <div id="gatekeeper">
+        <div class="login-frame">
+            <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h2 style="color:#fff; font-weight:900; letter-spacing: 2px;">GLIDOX ADMIN</h2>
+            <p style="font-size: 12px; margin-bottom: 25px; color: #555;">Sistemə daxil olmaq üçün məlumatları daxil edin</p>
+            <div class="f-group">
+                <input type="email" id="f-email" placeholder="E-poçt ünvanı">
+                <input type="password" id="f-pass" placeholder="Şifrə">
             </div>
+            <button class="btn-main" id="btn-login-trigger" style="margin-top:25px;">GİRİŞ ET</button>
+            <p id="auth-err" style="color:var(--danger); font-size:12px; margin-top:15px; font-weight: bold;"></p>
         </div>
+    </div>
 
-        <nav class="nav-list">
-            <button class="nav-item active" onclick="switchTab('dash', this)"><i class="fa-solid fa-house-user"></i> Dashboard</button>
-            <button class="nav-item" onclick="switchTab('prices', this)"><i class="fa-solid fa-coins"></i> Qiymət İdarəsi</button>
-            <button class="nav-item" onclick="switchTab('ann', this)"><i class="fa-solid fa-tower-broadcast"></i> Duyuru Sistemi</button>
-            <button class="nav-item" onclick="switchTab('black', this)"><i class="fa-solid fa-user-shield"></i> Blacklist</button>
-            <button class="nav-item" onclick="switchTab('logs', this)" style="color: #f59e0b;"><i class="fa-solid fa-terminal"></i> Audit Terminalı</button>
-        </nav>
-
-        <div class="exit-section">
-            <button class="btn-exit" onclick="confirmSignOut()">SESSİYANI BİTİR <i class="fa-solid fa-power-off"></i></button>
-        </div>
-    </aside>
-
-    <main>
-        <div id="tab-dash" class="view-section active">
-            <div class="glass-card">
-                <h1 style="font-size: 45px; font-weight: 800; margin-bottom: 10px;">Xoş gəldin, <span style="color: var(--glidox-blue);">Admin</span></h1>
-                <p style="color: var(--glidox-gray); font-size: 16px;">Bütün sistem modulları tam işlək vəziyyətdədir. Son girişiniz qeydə alındı.</p>
+    <div id="titan-root">
+        <aside>
+            <h3 style="color:#fff; margin-bottom:30px; font-weight: 900;"><i class="fa-solid fa-bolt" style="color:var(--primary)"></i> GLIDOX</h3>
+            <div class="nav-link active" data-target="pg-dash"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+            <div class="nav-link" data-target="pg-prices"><i class="fa-solid fa-tags"></i> Qiymətlər</div>
+            <div class="nav-link" data-target="pg-ann"><i class="fa-solid fa-bullhorn"></i> Duyurular</div>
+            <div class="nav-link" data-target="pg-blist"><i class="fa-solid fa-user-lock"></i> Blacklist</div>
+            <div id="owner-link-container" style="display: none;">
+                <div class="nav-link" data-target="pg-logs" style="color:var(--owner-gold)"><i class="fa-solid fa-fingerprint"></i> Sistem Loqları</div>
             </div>
+            <button id="btn-logout" style="background:rgba(255,62,62,0.05); border:1px solid var(--danger); color:var(--danger); padding:12px; border-radius:12px; cursor:pointer; margin-top:auto; font-weight: bold;">SİSTEMDƏN ÇIXIŞ</button>
+        </aside>
 
-            <div class="metric-grid">
-                <div class="metric-item">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--glidox-gray); text-transform: uppercase;">Server IP</span>
-                    <h2 id="display-ip" style="color: var(--glidox-cyan); margin-top: 10px; font-family: 'JetBrains Mono';">0.0.0.0</h2>
+        <main>
+            <div id="pg-dash" class="view active">
+                <div class="glass-panel">
+                    <h2 id="panel-welcome-title" style="color: #fff; font-size: 28px;">Xoş Gəldiniz</h2>
+                    <p id="role-text" style="font-weight:900; margin-top: 10px; letter-spacing: 1px;"></p>
                 </div>
-                <div class="metric-item">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--glidox-gray); text-transform: uppercase;">Sistem Vaxtı</span>
-                    <h2 id="display-clock" style="margin-top: 10px;">00:00:00</h2>
-                </div>
-                <div class="metric-item">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--glidox-gray); text-transform: uppercase;">Database Status</span>
-                    <h2 style="color: var(--glidox-green); margin-top: 10px;">CONNECTED</h2>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-prices" class="view-section">
-            <h2 style="font-size: 28px; margin-bottom: 30px;">Oyun & Servis Portfeli</h2>
-            <div class="game-selector" id="grid-prices-v12">
-                </div>
-
-            <div id="editor-container">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px;">
-                    <div>
-                        <h2 id="current-game-name" style="color: var(--glidox-blue); font-size: 32px;">Oyun Adı</h2>
-                        <code id="current-path-info" style="font-size: 11px; color: var(--glidox-gray);">path: /prices/target</code>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="glass-panel" style="text-align: center;">
+                        <i class="fa-solid fa-clock" style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i>
+                        <h4 style="color:#fff">Server Vaxtı</h4>
+                        <p id="server-clock" style="font-size: 20px; color: #fff; font-weight: bold;">--:--:--</p>
                     </div>
-                    <button class="btn-supreme btn-danger" onclick="closeEditor()" style="padding: 10px 25px;">PANELİ BAĞLA</button>
                 </div>
+            </div>
 
-                <div class="add-package-area">
-                    <input type="text" id="inp-new-name" class="input-supreme" placeholder="Paket adı (məs: 5000 Valorant Points)">
-                    <input type="text" id="inp-new-price" class="input-supreme" placeholder="Qiymət (AZN)">
-                    <button class="btn-supreme btn-primary" onclick="dbAddPackage()">PAKET ƏLAVƏ ET <i class="fa-solid fa-plus-circle"></i></button>
-                </div>
-
-                <div id="price-rows-container">
+            <div id="pg-prices" class="view">
+                <div class="glass-panel">
+                    <h3 style="color:#fff; margin-bottom:20px;">Oyun Qiymətlərini İdarə Et</h3>
+                    <select id="game-select">
+                        <option value="">-- Oyun Seçin --</option>
+                        <option value="roblox">1. Roblox</option>
+                        <option value="pubg">2. PUBG Mobile</option>
+                        <option value="steambalans">3. Steam Balans</option>
+                        <option value="mlbb">4. Mobile Legends</option>
+                        <option value="valorant">5. Valorant</option>
+                        <option value="freefire">6. Free Fire</option>
+                        <option value="brawlstars">7. Brawl Stars</option>
+                        <option value="clashofclans">8. Clash of Clans</option>
+                        <option value="genshin">9. Genshin Impact</option>
+                        <option value="efootball">10. eFootball PES</option>
+                        <option value="codm">11. COD Mobile</option>
+                        <option value="leagueoflegends">12. League of Legends</option>
+                    </select>
+                    
+                    <div id="price-fields-container" style="margin-top: 20px;"></div>
+                    
+                    <div id="new-package-area" style="display:none; margin-top:30px; padding-top:20px; border-top: 1px dashed #222;">
+                        <p style="font-size:13px; color:var(--primary); margin-bottom:15px; font-weight: bold;">+ YENİ PAKET ƏLAVƏ ET</p>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="new-p-key" placeholder="Paket adı (məs: 1000 UC)">
+                            <input type="text" id="new-p-val" placeholder="Qiymət (məs: 15.50)">
+                        </div>
                     </div>
-            </div>
-        </div>
-
-        <div id="tab-ann" class="view-section">
-            <h2 style="font-size: 28px; margin-bottom: 30px;">Qlobal Duyuru İdarəsi</h2>
-            <div class="glass-card">
-                <label style="display: block; margin-bottom: 15px; font-size: 12px; font-weight: 800; color: var(--glidox-gray);">DUYURU MƏTNİ (HTML DƏSTƏKLƏNİR)</label>
-                <textarea id="inp-ann-text" style="width: 100%; height: 250px; background: #000; border: 1px solid var(--glidox-border); border-radius: 18px; color: #fff; padding: 25px; outline: none; font-size: 17px; margin-bottom: 25px; resize: none;"></textarea>
-                <button class="btn-supreme btn-primary" onclick="dbUpdateAnn()" style="width: 100%; font-size: 16px;">DUYURUNU BÜTÜN SİSTEMDƏ YAYIMLA <i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-
-        <div id="tab-black" class="view-section">
-            <h2 style="font-size: 28px; margin-bottom: 30px;">Təhlükəsizlik: Blacklist</h2>
-            <div class="glass-card" style="display: grid; grid-template-columns: 2fr 2fr auto; gap: 20px;">
-                <input type="text" id="inp-bl-target" class="input-supreme" placeholder="İstifadəçi UID və ya Gmail">
-                <input type="text" id="inp-bl-reason" class="input-supreme" placeholder="Bloklanma Səbəbi">
-                <button class="btn-supreme btn-danger" onclick="dbAddBlacklist()">İSTİFADƏÇİNİ BLOKLA</button>
-            </div>
-            
-            <div id="blacklist-render-area" style="margin-top: 20px;">
+                    
+                    <button class="btn-main" id="btn-save-prices" style="display:none; margin-top:20px;">DƏYİŞİKLİKLƏRİ YADDA SAXLA</button>
                 </div>
-        </div>
-
-        <div id="tab-logs" class="view-section">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h2 style="font-size: 28px;">Audit & Təhlükəsizlik Terminalı</h2>
-                <button class="btn-supreme btn-danger" onclick="dbClearLogs()" style="padding: 10px 20px; font-size: 12px;">Terminalı Təmizlə</button>
             </div>
-            <div class="audit-terminal" id="terminal-body">
+
+            <div id="pg-ann" class="view">
+                <div class="glass-panel">
+                    <h3 style="color:#fff; margin-bottom:15px;">Duyuru Mesajı</h3>
+                    <p style="font-size: 12px; margin-bottom: 15px;">Ana səhifədə görünəcək vacib bildiriş.</p>
+                    <textarea id="ann-text" rows="6" placeholder="Bura yazın..."></textarea>
+                    <button class="btn-main" id="btn-save-ann">YAYIMLA</button>
                 </div>
-        </div>
-    </main>
+            </div>
+
+            <div id="pg-blist" class="view">
+                <div class="glass-panel">
+                    <h3 style="color:#fff; margin-bottom:20px;">Qara Siyahı (Blacklist)</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                        <input type="text" id="bl-user-input" placeholder="İstifadəçi ID və ya Email" style="margin-bottom:0">
+                        <button class="btn-main" id="btn-add-bl" style="width: auto; padding: 0 30px;">BLOKLA</button>
+                    </div>
+                    <div id="bl-list-container"></div>
+                </div>
+            </div>
+
+            <div id="pg-logs" class="view">
+                <div class="glass-panel">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                        <h3 style="color:#fff;">Təhlükəsizlik Jurnalı</h3>
+                        <button class="btn-clear-logs" id="btn-clear-logs"><i class="fa-solid fa-trash-can"></i> Loqları Təmizlə</button>
+                    </div>
+                    <div id="logs-container" style="height:500px; overflow-y:auto; background:#000; padding:15px; border-radius:15px; border: 1px solid #111;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script type="module">
-        /* FIREBASE SUPREME INTEGRATION
-           TOTAL JS LOGIC: ~500 LINES
-        */
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, set, push, onValue, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, get, set, push, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Firebase Konfiqurasiyası
-        const firebaseConfig = {
-            apiKey: "AIzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8",
-            databaseURL: "https://xeronshop-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "xeronshop"
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCGsCjbwh6P7fHepdHrSyykpSAEmg0RmO8", 
+            databaseURL: "https://glidoxshop-default-rtdb.europe-west1.firebasedatabase.app", 
+            projectId: "glidoxshop" 
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // Sabitlər (Rules-da olan UID-lər)
-        const ADMIN_WHITELIST = ["dXDTZPPuVKaO1ecsO7UbCOXr15i1", "tMaqCC1AdoWUYgGTuay2eFKYMOF2", "NaH17on6YEO3bJzWXY16SZ02xtJ2", "Yr5c1JF2Z3T3amIoV3OJanFnFCR2"];
-        const GAMES_MASTER_LIST = [
-            { id: "steam", name: "Steam Wallet" }, { id: "pubg", name: "PUBG Mobile" },
-            { id: "mlbb", name: "Mobile Legends" }, { id: "val_tr", name: "Valorant TR" },
-            { id: "val_eu", name: "Valorant EU" }, { id: "apple", name: "Apple Balans" },
-            { id: "freefire", name: "Free Fire" }, { id: "roblox", name: "Roblox" },
-            { id: "delta", name: "Delta Force" }, { id: "standoff", name: "Standoff 2" },
-            { id: "weplay", name: "WePlay" }, { id: "discord", name: "Discord Nitro" }
-        ];
+        // Sessiyanı yaddaşda saxla (Reload edəndə çıxmasın deyə)
+        setPersistence(auth, browserLocalPersistence);
 
-        let activeEditorID = null;
-        let adminIP = "Detecting...";
+        const OWNER_UID = "dXDTZPPuVKaO1ecsO7UbCOXr15i1";
+        const ADMINS = ["tMaqCC1AdoWUYgGTuay2eFKYMOF2", "NaH17on6YEO3bJzWXY16SZ02xtJ2", "Yr5c1JF2Z3T3amIoV3OJanFnFCR2"];
+        let userIp = "0.0.0.0";
 
-        // IP Təyin Etmə
-        fetch('https://api64.ipify.org?format=json')
-            .then(res => res.json())
-            .then(data => {
-                adminIP = data.ip;
-                document.getElementById('display-ip').innerText = adminIP;
-            });
+        // IP Əldə et
+        fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIp = d.ip);
 
-        // Saat Funksiyası
+        // Saat funksiyası
         setInterval(() => {
-            document.getElementById('display-clock').innerText = new Date().toLocaleTimeString('az-AZ');
+            document.getElementById('server-clock').innerText = new Date().toLocaleTimeString('az-AZ');
         }, 1000);
 
-        // UI TAB NAVIGATOR
-        window.switchTab = (id, btn) => {
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('tab-' + id).classList.add('active');
-            btn.classList.add('active');
-            if(window.innerWidth < 1024) toggleNav();
-        };
-
-        window.toggleNav = () => document.getElementById('app-sidebar').classList.toggle('open');
-
-        // AUDIT LOG ENGINE (Rules: 'logs')
-        async function writeLog(action) {
-            if(!auth.currentUser) return;
-            const logRef = ref(db, 'logs');
-            await push(logRef, {
-                admin: auth.currentUser.email,
-                ip: adminIP,
-                action: action,
-                timestamp: new Date().toLocaleString('az-AZ'),
-                ts_ms: Date.now()
-            });
+        async function createLog(action) {
+            const user = auth.currentUser;
+            if(!user) return;
+            try {
+                await push(ref(db, 'logs'), {
+                    user: user.email,
+                    action: action,
+                    ip: userIp,
+                    time: new Date().toLocaleString('az-AZ')
+                });
+            } catch(e) { console.error("Log error", e); }
         }
 
-        // AUTHENTICATION GUARD
         onAuthStateChanged(auth, (user) => {
-            if(user && ADMIN_WHITELIST.includes(user.uid)) {
-                initAdminSystem();
-                writeLog("Sistemə daxil oldu.");
-            } else {
-                // Əgər giriş yoxdursa login səhifəsinə göndər (və ya xəta ver)
-                window.location.href = "index.html"; 
+            if(user && (user.uid === OWNER_UID || ADMINS.includes(user.uid))) {
+                document.getElementById('gatekeeper').style.display = 'none';
+                document.getElementById('titan-root').style.display = 'flex';
+                
+                const isOwner = user.uid === OWNER_UID;
+                document.getElementById('panel-welcome-title').innerText = isOwner ? "Owner Kontrol Paneli" : "Admin Kontrol Paneli";
+                const roleText = document.getElementById('role-text');
+                roleText.innerText = isOwner ? "YETKİ: TAM (OWNER)" : "YETKİ: MƏHDUD (ADMIN)";
+                roleText.style.color = isOwner ? "var(--owner-gold)" : "var(--primary)";
+
+                if(isOwner) {
+                    document.getElementById('owner-link-container').style.display = 'block';
+                    loadLogs();
+                }
+                
+                setupPanelActions(user, isOwner);
+            } else if(user) {
+                signOut(auth);
             }
         });
 
-        window.confirmSignOut = async () => {
-            if(confirm("Sessiyanı bitirmək istədiyinizə əminsiniz?")) {
-                await writeLog("Sistemdən çıxış etdi.");
-                signOut(auth);
-            }
-        };
+        function setupPanelActions(user, isOwner) {
+            const priceFields = document.getElementById('price-fields-container');
 
-        // --- CORE SYSTEM INITIALIZATION ---
-        function initAdminSystem() {
-            // Oyun Siyahısını Doldur
-            const grid = document.getElementById('grid-prices-v12');
-            grid.innerHTML = "";
-            GAMES_MASTER_LIST.forEach(game => {
-                grid.innerHTML += `
-                    <div class="game-btn animate__animated animate__fadeInUp" onclick="openPriceEditor('${game.id}', '${game.name}')">
-                        <div style="display:flex; align-items:center; gap:15px;">
-                            <i class="fa-solid fa-gamepad"></i>
-                            <b style="font-size:16px;">${game.name}</b>
-                        </div>
-                        <i class="fa-solid fa-chevron-right" style="font-size:14px; opacity:0.3;"></i>
-                    </div>`;
-            });
-
-            // Duyuruları Sinxronizasiya Et (Rules: 'announcement')
-            onValue(ref(db, 'announcement'), (snap) => {
-                if(snap.exists()) {
-                    document.getElementById('inp-ann-text').value = snap.val().text || "";
+            // --- Qiymətləri Yüklə ---
+            document.getElementById('game-select').addEventListener('change', (e) => {
+                const game = e.target.value;
+                if(!game) {
+                    priceFields.innerHTML = "";
+                    document.getElementById('btn-save-prices').style.display = "none";
+                    document.getElementById('new-package-area').style.display = "none";
+                    return;
                 }
+
+                document.getElementById('btn-save-prices').style.display = "block";
+                document.getElementById('new-package-area').style.display = "block";
+
+                onValue(ref(db, `prices/${game}`), (snap) => {
+                    priceFields.innerHTML = "";
+                    const data = snap.val();
+                    if(data) {
+                        Object.keys(data).sort().forEach(key => {
+                            const div = document.createElement('div');
+                            div.className = 'price-box';
+                            div.innerHTML = `
+                                <input type="text" class="p-key" value="${key}" readonly>
+                                <input type="text" class="p-val" value="${data[key]}">
+                                <button class="btn-del" title="Sil"><i class="fa-solid fa-xmark"></i></button>
+                            `;
+                            div.querySelector('.btn-del').onclick = () => div.remove();
+                            priceFields.appendChild(div);
+                        });
+                    }
+                }, { onlyOnce: true });
             });
 
-            // Loqları Terminala Çıxar (Rules: 'logs')
-            onValue(ref(db, 'logs'), (snap) => {
-                const term = document.getElementById('terminal-body');
-                term.innerHTML = "";
-                let logStack = [];
-                snap.forEach(c => logStack.push(c.val()));
-                logStack.reverse().forEach(log => {
-                    term.innerHTML += `
-                        <div class="log-entry animate__animated animate__fadeInLeft">
-                            <span class="log-timestamp">[${log.timestamp}]</span>
-                            <span class="log-badge">@${log.admin.split('@')[0]}</span>
-                            <span style="color:#555">(${log.ip})</span>
-                            <span style="color:#fff">${log.action}</span>
-                        </div>`;
+            // --- Qiymətləri Saxla (Reload-suz) ---
+            document.getElementById('btn-save-prices').onclick = async () => {
+                const game = document.getElementById('game-select').value;
+                const rows = priceFields.querySelectorAll('.price-box');
+                const nK = document.getElementById('new-p-key').value.trim();
+                const nV = document.getElementById('new-p-val').value.trim();
+                
+                let upData = {};
+                rows.forEach(r => {
+                    const k = r.querySelector('.p-key').value;
+                    const v = r.querySelector('.p-val').value;
+                    upData[k] = v;
                 });
-            });
+                
+                if(nK && nV) upData[nK] = nV;
 
-            // Blacklist Sinxronizasiyası (Rules: 'blacklist')
-            onValue(ref(db, 'blacklist'), (snap) => {
-                const area = document.getElementById('blacklist-render_area'); // Səhv id-ni düzəldək
-                const targetArea = document.getElementById('blacklist-render-area');
-                targetArea.innerHTML = "";
-                snap.forEach(c => {
-                    const data = c.val();
-                    targetArea.innerHTML += `
-                        <div class="glass-card" style="padding:20px; display:flex; justify-content:space-between; align-items:center; border-left:4px solid var(--glidox-red);">
-                            <div>
-                                <b style="font-size:18px;">${data.target}</b> <br>
-                                <small style="color:var(--glidox-gray)">Səbəb: ${data.reason} | Admin: ${data.admin}</small>
-                            </div>
-                            <button class="btn-supreme btn-danger" style="padding:10px 20px;" onclick="dbRemoveBlacklist('${c.key}')">Blokdan Çıxar</button>
-                        </div>`;
+                try {
+                    await set(ref(db, `prices/${game}`), upData);
+                    await createLog(`${game} oyun qiymətlərini yenilədi`);
+                    
+                    document.getElementById('new-p-key').value = "";
+                    document.getElementById('new-p-val').value = "";
+                    
+                    alert("Uğurla yadda saxlanıldı!");
+                } catch(e) { alert("Xəta baş verdi!"); }
+            };
+
+            // --- Duyuru ---
+            document.getElementById('btn-save-ann').onclick = async () => {
+                const msg = document.getElementById('ann-text').value;
+                await update(ref(db, 'announcement'), { 
+                    message: msg,
+                    date: new Date().toLocaleString()
+                });
+                await createLog("Duyuru mesajını yenilədi");
+                alert("Duyuru yayımlandı!");
+            };
+
+            // --- Loqların Təmizlənməsi ---
+            if(isOwner) {
+                document.getElementById('btn-clear-logs').onclick = async () => {
+                    if(confirm("DİQQƏT: Bütün fəaliyyət tarixçəsi silinsin?")) {
+                        await remove(ref(db, 'logs'));
+                        await createLog("SİSTEM LOQLARINI TƏMİZLƏDİ");
+                        alert("Tarixçə təmizləndi.");
+                    }
+                };
+            }
+        }
+
+        function loadLogs() {
+            onValue(ref(db, 'logs'), (snap) => {
+                const lBox = document.getElementById('logs-container');
+                lBox.innerHTML = "";
+                let logData = [];
+                snap.forEach(c => { logData.push(c.val()); });
+                logData.reverse().forEach(l => {
+                    const d = document.createElement('div');
+                    d.style.cssText = "padding:10px; border-bottom:1px solid #111; font-family:monospace;";
+                    d.innerHTML = `
+                        <span style="color:#555">[${l.time}]</span> 
+                        <b style="color:var(--primary)">${l.user}</b> 
+                        <span style="color:#333">(${l.ip})</span>: 
+                        <span style="color:#eee">${l.action}</span>
+                    `;
+                    lBox.appendChild(d);
                 });
             });
         }
 
-        // --- PRICE ENGINE MODULE --- (Rules: 'prices')
-        window.openPriceEditor = (id, name) => {
-            activeEditorID = id;
-            document.getElementById('current-game-name').innerText = name;
-            document.getElementById('current-path-info').innerText = `path: /prices/${id}`;
-            document.getElementById('editor-container').style.display = 'block';
-
-            onValue(ref(db, `prices/${id}`), (snap) => {
-                const container = document.getElementById('price-rows-container');
-                container.innerHTML = "";
-                if(!snap.exists()) {
-                    container.innerHTML = `<div style="padding:50px; text-align:center; color:var(--glidox-gray);">Hələ ki paket əlavə edilməyib.</div>`;
-                    return;
-                }
-                snap.forEach(child => {
-                    const key = child.key;
-                    const val = child.val();
-                    container.innerHTML += `
-                        <div class="data-row animate__animated animate__fadeIn">
-                            <b style="color:var(--glidox-cyan);">${key}</b>
-                            <input type="text" class="input-supreme" id="pkg-val-${key}" value="${val}" style="padding:10px;">
-                            <button class="btn-supreme btn-success" onclick="dbUpdatePrice('${key}')">YENİLƏ</button>
-                            <button class="btn-supreme btn-danger" style="padding:10px;" onclick="dbDeletePackage('${key}')"><i class="fa-solid fa-trash"></i></button>
-                        </div>`;
-                });
-            });
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        };
-
-        window.dbUpdatePrice = async (key) => {
-            const newVal = document.getElementById(`pkg-val-${key}`).value;
-            await set(ref(db, `prices/${activeEditorID}/${key}`), newVal);
-            writeLog(`Qiymət dəyişdi: ${activeEditorID}/${key} -> ${newVal} AZN`);
-        };
-
-        window.dbAddPackage = async () => {
-            const name = document.getElementById('inp-new-name').value;
-            const price = document.getElementById('inp-new-price').value;
-            if(!name || !price) return alert("Məlumatları daxil edin!");
+        // Giriş Prosesi
+        document.getElementById('btn-login-trigger').onclick = () => {
+            const e = document.getElementById('f-email').value;
+            const p = document.getElementById('f-pass').value;
+            if(!e || !p) return;
             
-            await set(ref(db, `prices/${activeEditorID}/${name}`), price);
-            writeLog(`Yeni paket: ${activeEditorID}/${name} (${price} AZN)`);
-            document.getElementById('inp-new-name').value = "";
-            document.getElementById('inp-new-price').value = "";
+            signInWithEmailAndPassword(auth, e, p).catch(err => {
+                document.getElementById('auth-err').innerText = "Giriş rədd edildi: Email və ya Şifrə yanlışdır.";
+            });
         };
 
-        window.dbDeletePackage = async (key) => {
-            if(confirm("Bu paketi silmək istədiyinizə əminsiniz?")) {
-                await remove(ref(db, `prices/${activeEditorID}/${key}`));
-                writeLog(`Paket silindi: ${activeEditorID}/${key}`);
+        // Çıxış
+        document.getElementById('btn-logout').onclick = async () => {
+            if(confirm("Çıxış etmək istədiyinizə əminsiniz?")) {
+                await createLog("Sistemdən çıxış etdi");
+                signOut(auth).then(() => {
+                    location.reload();
+                });
             }
         };
 
-        window.closeEditor = () => document.getElementById('editor-container').style.display = 'none';
-
-        // --- ANNOUNCEMENT MODULE --- (Rules: 'announcement')
-        window.dbUpdateAnn = async () => {
-            const text = document.getElementById('inp-ann-text').value;
-            await set(ref(db, 'announcement'), {
-                text: text,
-                updated_by: auth.currentUser.email,
-                last_update: Date.now()
-            });
-            writeLog("Sistem duyurusu yeniləndi.");
-            alert("Duyuru uğurla yayımlandı!");
-        };
-
-        // --- BLACKLIST MODULE --- (Rules: 'blacklist')
-        window.dbAddBlacklist = async () => {
-            const target = document.getElementById('inp-bl-target').value;
-            const reason = document.getElementById('inp-bl-reason').value;
-            if(!target) return;
-
-            await push(ref(db, 'blacklist'), {
-                target: target,
-                reason: reason || "Səbəb yoxdur",
-                admin: auth.currentUser.email,
-                date: new Date().toLocaleDateString('az-AZ')
-            });
-            writeLog(`Blacklist: ${target} əlavə edildi.`);
-            document.getElementById('inp-bl-target').value = "";
-            document.getElementById('inp-bl-reason').value = "";
-        };
-
-        window.dbRemoveBlacklist = async (key) => {
-            await remove(ref(db, `blacklist/${key}`));
-            writeLog(`Blacklist: ${key} çıxarıldı.`);
-        };
-
-        // --- CLEAR LOGS ---
-        window.dbClearLogs = async () => {
-            if(confirm("Bütün loq tarixçəsi silinsin?")) {
-                await remove(ref(db, 'logs'));
-                alert("Terminal təmizləndi.");
-            }
-        };
-
-        // GLOBAL SCOPE BINDINGS
-        window.toggleNav = toggleNav;
-        window.switchTab = switchTab;
-        window.openPriceEditor = openPriceEditor;
-        window.dbUpdatePrice = dbUpdatePrice;
-        window.dbAddPackage = dbAddPackage;
-        window.dbDeletePackage = dbDeletePackage;
-        window.closeEditor = closeEditor;
-        window.dbUpdateAnn = dbUpdateAnn;
-        window.dbAddBlacklist = dbAddBlacklist;
-        window.dbRemoveBlacklist = dbRemoveBlacklist;
-        window.dbClearLogs = dbClearLogs;
-        window.confirmSignOut = confirmSignOut;
-
+        // Tab keçidləri
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.onclick = () => {
+                document.querySelectorAll('.nav-link, .view').forEach(el => el.classList.remove('active'));
+                link.classList.add('active');
+                document.getElementById(link.dataset.target).classList.add('active');
+            };
+        });
     </script>
 </body>
 </html>
